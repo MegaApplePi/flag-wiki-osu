@@ -1,0 +1,71 @@
+html, body{ height: 100%; }
+body{
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+}
+x-container{
+  display: flex;
+  height: calc(80%);
+  margin-bottom: 2em;
+}
+x-label{
+  display: block;
+}
+x-input, x-output{
+  border: 2px solid #000;
+  display: block;
+  height: 100%;
+  margin: 2px;
+  position: relative;
+  width: calc(50% - 8px);
+}
+textarea{
+  border: none;
+  background: initial;
+  display: block;
+  font-family: monospace;
+  height: 100%;
+  outline: none;
+  overflow: auto;
+  padding: 0;
+  resize: none;
+  white-space: pre;
+  width: 100%;
+}
+x-input:before{
+  background: #000;
+  left: -2px;
+  bottom: -1.4em;
+  color: #fff;
+  content: "input";
+  padding: 2px;
+  position: absolute;
+}
+x-output:before{
+  background: #000;
+  left: -2px;
+  bottom: -1.4em;
+  color: #fff;
+  content: "output";
+  padding: 2px;
+  position: absolute;
+}
+x-button{
+  background: #007fff;
+  color: #fff;
+  cursor: pointer;
+  left: 50%;
+  margin: 2px;
+  padding: 8px 16px;
+  position: absolute;
+  transition: 100ms background;
+  user-select: none;
+  transform: translate(-50%);
+}
+x-button:hover{
+  background: #0059b3;
+}
+x-button:active{
+  background: #0072e6;
+}
