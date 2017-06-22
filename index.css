@@ -1,13 +1,72 @@
+.button{
+  background: #007fff;
+  color: #fff;
+  cursor: pointer;
+  margin: 2px;
+  padding: 8px 16px;
+  transition: 100ms background;
+  user-select: none;
+}
+.button:hover{
+  background: #0059b3;
+}
+.button:active{
+  background: #0072e6;
+}
+
 html, body{ height: 100%; }
 body{
-  padding: 0;
-  margin: 0;
   font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: -10;
 }
+
+x-header{
+  background: #fff;
+  box-shadow: 0 1px 4px #000;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  position: relative;
+}
+x-header > x-left{
+  display: flex;
+}
+x-accordion{
+  background: #fff;
+  box-shadow: 1px 1px 4px #000;
+  padding: 8px;
+  position: absolute;
+  top: 100%;
+  transform: translateY(0);
+  transition: 1s transform;
+  z-index: -1;
+}
+x-accordion[data-hidden]{
+  transform: translateY(calc(-100% - 4px));
+}
+x-accordion li p{
+  margin: 0;
+}
+x-accordion code{
+  background: #000;
+  color: #fff;
+  padding: 1px 2px;
+}
+x-accordion x-h2{
+  display: block;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
 x-container{
   display: flex;
-  height: calc(80%);
+  height: calc(100% - 36px - 3em);
   margin-bottom: 2em;
+  position: relative;
+  z-index: -2;
 }
 x-label{
   display: block;
@@ -47,25 +106,7 @@ x-output:before{
   left: -2px;
   bottom: -1.4em;
   color: #fff;
-  content: "output";
+  content: "output (read-only)";
   padding: 2px;
   position: absolute;
-}
-x-button{
-  background: #007fff;
-  color: #fff;
-  cursor: pointer;
-  left: 50%;
-  margin: 2px;
-  padding: 8px 16px;
-  position: absolute;
-  transition: 100ms background;
-  user-select: none;
-  transform: translate(-50%);
-}
-x-button:hover{
-  background: #0059b3;
-}
-x-button:active{
-  background: #0072e6;
 }

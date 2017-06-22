@@ -5,6 +5,55 @@
     <link href="index.css" rel="stylesheet"/>
   </head>
   <body>
+    <x-header>
+      <x-left>
+        <x-help class="button">Help</x-help>
+        <x-example class="button">Example</x-example>
+      </x-left>
+      <x-patch class="button">Find Flags</x-patch>
+      <x-accordion>
+        <x-h2>How to use flag-osu</x-h2>
+        <ol>
+          <li>
+            <p>Start with the tournament article you need flag reference links for.</p>
+          </li>
+          <li>
+            <p>Before you begin using <code>flag-osu</code>, you need to make sure that the article you are using uses the correct flag reference names that <code>flag-osu</code> looks for.<br/>The format looks like this:</p>
+            <ul>
+              <li>
+                <p><code>![][flag_XX]</code>, where <code>XX</code> is the <em>ISO 3166-1 alpha-2</em> country codes in uppercase letters.</p>
+              </li>
+              <li>
+                <p><code>![][flag_XXYY]</code>, where <code>XXYY</code> is a combination of the <em>ISO 3166-1 alpha-2</em> country codes in uppercase letters (you will rarely use this at all).</p>
+              </li>
+              <li>
+                <p>You can also see <a href="https://github.com/ppy/osu-wiki/issues/328">ppy/osu-wiki/issues/328</a> for a full list of <code>osu-wiki</code> flags icons.</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Copy and paste the tournament article into the <code>input</code> text field (left).</p>
+          </li>
+          <li>
+            <p>Click the <code>Find Flags</code> button. This will parse the text and will return an output on the right.</p>
+          </li>
+          <li>
+            <p>Inspect the <code>output</code> text field (right).</p>
+            <ul>
+              <li>
+                <p>If the output appears OK, copy the <code>output</code> text field (right) and paste it back into the article.</p>
+              </li>
+              <li>
+                <p>If not, check the input text field (left) or open an <a href="https://github.com/MegaApplePi/flag-osu/issues">issue</a>.</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Voilà, you're done! (Click the <code>Help</code> button or anywhere but this dialog to close this dialog.)</p>
+          </li>
+        </ol>
+      </x-accordion>
+    </x-header>
     <x-container>
       <x-input>
         <textarea></textarea>
@@ -13,7 +62,6 @@
         <textarea></textarea>
       </x-output>
     </x-container>
-    <x-button>Find Flags</x-button>
     <script src="index.js"></script>
   </body>
 </html>
