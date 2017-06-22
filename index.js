@@ -2,6 +2,7 @@
 (function(){
   'use strict';
   const $help = document.querySelectorAll('x-help')[0];
+  const $example = document.querySelectorAll('x-example')[0];
   const $accordion = document.querySelectorAll('x-accordion')[0];
   const $patch = document.querySelectorAll('x-patch')[0];
   const $input_text = document.querySelectorAll('x-input > textarea')[0];
@@ -108,5 +109,9 @@
   $output_text.addEventListener('input', function(e){
     this.value = output;
     return false;
+  });
+
+  $example.addEventListener('click', function(){
+    $input_text.value = '# Example Tournament 2017\n\n![osu! World Cup 2017](logo.jpg)\n\nThe **Example Tournament 2017 (_ET 2017_)** is not a real tournament because this is an example.\nIt is the 1st installment and test for `flag-osu`.\n\n## Tournament Schedule\n\n| Event              | Timestamp              |\n|--------------------|------------------------|\n| Registration Phase | Yesterday              |\n| Drawings           | Today                  |\n| Group Stage        | Tomorrow               |\n| Round of 16        | Next week              |\n| Quarterfinals      | After Round of 16      |\n| Semifinals         | When there are only 4  |\n| Finals - Week 1    | When there is a winner |\n| Finals - Week 2    | lol jk                 |\n\n## Prizes\n\nNo prizes (we\'re all winners).\n\n## Organization\n\nThe Example Tournament 2017 is ran by various community members by distributing the multitude of tasks into various fields of responsibility.\n\n### Tournament Management\n\n- ![][flag_De] [Loctav](https://osu.ppy.sh/u/71366 "Loctav")\n- ![][flag_De] [p3n](https://osu.ppy.sh/u/123703 "p3n")\n- ![][flag_Es] [Deif](https://osu.ppy.sh/u/318565 "Deif")\n- ![][flag_Fr] [shARPII](https://osu.ppy.sh/u/776257 "shARPII")\n\n### Map Selectors\n\n- ![][flag_Jp] [Asahina Momoko](https://osu.ppy.sh/u/3650145 "Asahina Momoko")\n- ![][flag_De] [Okorin](https://osu.ppy.sh/u/1623405 "Okorin")\n- ![][flag_Hk] [Skystar](https://osu.ppy.sh/u/873961 "Skystar")\n\n### Commentators\n\n- ![][flag_Au] [Bauxe](https://osu.ppy.sh/u/1881685 "Bauxe")\n- ![][flag_Us] [Daikyi](https://osu.ppy.sh/u/811832 "Daikyi")\n- ![][flag_Nz] [deadbeat](https://osu.ppy.sh/u/128370 "deadbeat")\n- ![][flag_Gb] [Doomsday](https://osu.ppy.sh/u/18983 "Doomsday")\n- ![][flag_Ca] [Evrien](https://osu.ppy.sh/u/791660 "Evrien")\n- ![][flag_Ar] [juankristal](https://osu.ppy.sh/u/443656 "juankristal")\n- ![][flag_At] [Omgforz](https://osu.ppy.sh/u/578943 "Omgforz")\n- ![][flag_Gb] [Rime](https://osu.ppy.sh/u/1397232 "Rime")\n- ![][flag_Fr] [Slainv](https://osu.ppy.sh/u/4823843 "Slainv")\n- ![][flag_Us] [ztrot](https://osu.ppy.sh/u/6347 "ztrot")\n\n### Statistician\n\n- ![][flag_Nz] [deadbeat](https://osu.ppy.sh/u/128370 "deadbeat")\n- ![][flag_De] [Nwolf](https://osu.ppy.sh/u/1910766 "Nwolf")\n';
   });
 })();
