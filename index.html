@@ -10,8 +10,7 @@
         <x-help class="button">Help</x-help>
         <x-example class="button">Example</x-example>
       </x-left>
-      <x-patch class="button">Find Flags</x-patch>
-      <x-accordion>
+      <x-accordion data-help>
         <x-h2>How to use flag-osu</x-h2>
         <ol>
           <li>
@@ -52,6 +51,16 @@
             <p>Voilà, you're done! (Click the <code>Help</code> button or anywhere but this dialog to close this dialog.)</p>
           </li>
         </ol>
+      </x-accordion>
+      <x-right>
+        <x-error class="button">Errors (0)</x-error>
+        <x-patch class="button">Find Flags</x-patch>
+      </x-right>
+      <x-accordion data-error data-hidden>
+        <p>Invalid Flags:</p>
+        <ul>
+          <li>None found!</li>
+        </ul>
       </x-accordion>
     </x-header>
     <x-container>
