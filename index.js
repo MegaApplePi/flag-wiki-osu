@@ -90,7 +90,6 @@
     let invalid_flags_found =[];
     for( let i = 0; i < lines.length; i++ ){
       if( /\!\[\]\[flag_..(?:..)?\]/g.test(lines[i]) ){
-        let alt = lines[i].match(/\!\[\]/g);
         let key = lines[i].match(/\[flag_..(?:..)?\]/g);
         if( key ){
           for( let j = 0; j < key.length; j++ ){
@@ -121,14 +120,6 @@
         for( let j = 0; j < ref1.length; j++ ){
           lines[i] = lines[i].replace(ref1[j], regex.fixRef);
         }
-      }
-      if( /\!\[\]\[flag_..(?:..)?\]/g.test(lines[i]) ){
-        let flagName1 = lines[i].match(/_..(?:..)?\]/g)[0];
-        let flagName2 = flagName1.substring(1, (flagName1.length - 1));
-        
-        let parts = lines[i].split("");
-        parts.splice((parts.indexOf("[") + 1), 0, flagName2);
-        lines[i] = parts.join("");
       }
     }
     while( $accordionErrorUl.firstChild ){
