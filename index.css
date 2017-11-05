@@ -1,5 +1,9 @@
-.button{
-  background: #007fff;
+::selection {
+  background: #E0F2F1;
+}
+
+.button {
+  background: #009688;
   color: #fff;
   cursor: pointer;
   margin: 2px;
@@ -7,15 +11,20 @@
   transition: 100ms background;
   user-select: none;
 }
-.button:hover{
-  background: #0059b3;
-}
-.button:active{
-  background: #0072e6;
+
+.button:hover {
+  background: #26A69A;
 }
 
-html, body{ height: 100%; }
-body{
+.button:active {
+  background: #00897B;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
   font-family: sans-serif;
   margin: 0;
   padding: 0;
@@ -23,7 +32,7 @@ body{
   z-index: -10;
 }
 
-x-header{
+x-header {
   background: #fff;
   box-shadow: 0 1px 4px #000;
   display: flex;
@@ -31,10 +40,12 @@ x-header{
   margin-bottom: 4px;
   position: relative;
 }
-x-header > x-left, x-header > x-right{
+
+x-header > x-left, x-header > x-right {
   display: flex;
 }
-x-accordion{
+
+x-accordion {
   background: #fff;
   padding: 8px;
   position: absolute;
@@ -43,49 +54,59 @@ x-accordion{
   transition: 1s transform;
   z-index: -1;
 }
-x-accordion[data-help]{
+
+x-accordion[data-help] {
   box-shadow: 1px 1px 4px #000;
 }
-x-accordion[data-error]{
+
+x-accordion[data-error] {
   right: 0;
   box-shadow: -1px 1px 4px #000;
 }
-x-accordion[data-hidden]{
+
+x-accordion[data-hidden] {
   transform: translateY(calc(-100% - 4px));
 }
-x-accordion li p{
+
+x-accordion li p {
   margin: 0;
 }
-x-accordion code{
-  background: #000;
-  color: #fff;
+
+x-accordion code {
+  font-family: monospace;
   padding: 1px 2px;
+  border: 1px solid #009688;
 }
-x-accordion x-h2{
+
+x-accordion x-h2 {
   display: block;
   font-size: 1.5em;
   font-weight: bold;
 }
 
-x-container{
+x-container {
   display: flex;
   height: calc(100% - 36px - 3em);
   margin-bottom: 2em;
   position: relative;
   z-index: -2;
 }
-x-label{
+
+x-label {
   display: block;
 }
-x-input, x-output{
-  border: 2px solid #000;
+
+x-input, x-output {
+  border: 2px solid #009688;
   display: block;
   height: 100%;
   margin: 2px;
+  top: 1.5em;
   position: relative;
   width: calc(50% - 8px);
 }
-textarea{
+
+textarea {
   border: none;
   background: initial;
   display: block;
@@ -98,21 +119,20 @@ textarea{
   white-space: pre;
   width: 100%;
 }
-x-input:before{
-  background: #000;
+
+x-input:before, x-output:before {
+  background: #009688;
   left: -2px;
-  bottom: -1.4em;
+  top: -1.5em;
   color: #fff;
-  content: "input";
   padding: 2px;
   position: absolute;
 }
-x-output:before{
-  background: #000;
-  left: -2px;
-  bottom: -1.4em;
-  color: #fff;
+
+x-input:before {
+  content: "input";
+}
+
+x-output:before {
   content: "output (read-only)";
-  padding: 2px;
-  position: absolute;
 }
