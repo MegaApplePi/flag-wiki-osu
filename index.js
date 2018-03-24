@@ -149,14 +149,6 @@
     $output_text.value = lines + "\n" + flags_output;
     output = $output_text.value;
   });
-  $input_text.addEventListener('scroll', function () {
-    $output_text.scrollTop = $input_text.scrollTop;
-    $output_text.scrollLeft = $input_text.scrollLeft;
-  });
-  $output_text.addEventListener('scroll', function () {
-    $input_text.scrollTop = $output_text.scrollTop;
-    $input_text.scrollLeft = $output_text.scrollLeft;
-  });
   $output_text.addEventListener('input', function (e) {
     this.value = output;
     return false;
