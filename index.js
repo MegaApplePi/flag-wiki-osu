@@ -1,17 +1,29 @@
-/* globals document */
-(function () {
-  'use strict';
-  const $help = document.querySelectorAll('x-help')[0];
-  const $example = document.querySelectorAll('x-example')[0];
-  const $accordionHelp = document.querySelectorAll('x-accordion[data-help]')[0];
-  const $patch = document.querySelectorAll('x-patch')[0];
-  const $input_text = document.querySelectorAll('x-input > textarea')[0];
-  const $output_text = document.querySelectorAll('x-output > textarea')[0];
-  const $error = document.querySelectorAll('x-error')[0];
-  const $accordionError = document.querySelectorAll('x-accordion[data-error]')[0];
-  const $accordionErrorUl = document.querySelectorAll('x-accordion[data-error] > ul')[0];
+(function() {
+  "use strict";
+  /* DOM */
+  const $btnHelp = document.querySelector("[data-button=\"help\"]");
+  const $diaHelp = document.querySelector("[data-dialog=\"help\"]");
+  const $btnHelpClose = document.querySelector("[data-button=\"help-close\"]");
 
-  const valid_flags = Object.freeze([
+  const $btnExample = document.querySelector("[data-button=\"example\"]");
+
+  // const $config = document.querySelector("[data-button=\"config\"]");
+
+  const $btnErrors = document.querySelector("[data-button=\"errors\"]");
+  const $diaErrors = document.querySelector("[data-dialog=\"errors\"]");
+  const $btnErrorsClose = document.querySelector("[data-button=\"errors-close\"]");
+  const $diaErrorsList = document.querySelector("#errors-list");
+
+  const $parse = document.querySelector("[data-button=\"parse\"]");
+
+  const $input = document.querySelector("#input");
+
+  const $output = document.querySelector("#output");
+  const $diaOutput = document.querySelector("[data-dialog=\"output\"]");
+  const $btnOutputClose = document.querySelector("[data-button=\"output-close\"]");
+
+  /* flags list */
+  const FLAGS = Object.freeze([
     "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AN", "AO", "AR", "AS", "AT", "AU", "AW", "AX", "AZ",
     "BA", "BB", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BM", "BN", "BO", "BR", "BS", "BT", "BV", "BW", "BY", "BZ",
     "CA", "CC", "CD", "CF", "CG", "CH", "CI", "CK", "CL", "CM", "CN", "CO", "CR", "CS", "CU", "CV", "CX", "CY", "CZ",
@@ -40,55 +52,94 @@
     "BRCL", "ITNL",
   ]);
 
-  document.body.addEventListener('click', function (e) {
-    if (!$accordionHelp.hasAttribute('data-hidden')) {
-      if (!e.path.includes($help) && !e.path.includes($accordionHelp)) {
-        $accordionHelp.setAttribute('data-hidden', '');
-        document.cookie = 'help_visted=true';
-      }
-    }
-  });
-  if (document.cookie.replace(/(?:(?:^|.*;\s*)help_visted\s*\=\s*([^;]*).*$)|^.*$/, "$1") === 'true') {
-    $accordionHelp.setAttribute('data-hidden', '');
+  /* help events */
+  function $btnHelp_click() {
+    delete $diaHelp.dataset.hidden;
   }
+  $btnHelp.addEventListener("click", $btnHelp_click);
 
-  let output = "";
+  function $btnHelpClose_click() {
+    $diaHelp.dataset.hidden = "";
+  }
+  $btnHelpClose.addEventListener("click", $btnHelpClose_click);
 
-  const regex = Object.freeze({
-    'newKey': function (text) {
+  /* example events */
+  function $btnExample_click() {
+    $input.value = "# Example Tournament XXYY\n\n![World Cup XXYY](logo.jpg)\n\nThe Example Tournament XXYY (*ET XXYY*) is not a real tournament because this is an example. It is the first and last installment for `flag-wiki-osu`.\n\n## Tournament schedule\n\nTo be announced.\n\n## Organisation\n\nThe Example Tournament XXYY is ran by various community members by distributing the multitude of tasks into various fields of responsibility.\n\n### Tournament management\n\n-   ![][flag_DE] [Loctav](/users/71366)\n-   ![][flag_DE] [p3n](/users/123703)\n-   ![][flag_ES] [Deif](/users/318565)\n-   ![][flag_FR] [shARPII](/users/776257)\n\n### Map selectors\n\n-   ![][flag_JP] [Asahina Momoko](/users/3650145)\n-   ![][flag_DE] [Okorin](/users/1623405)\n-   ![][flag_HK] [Skystar](/users/873961)\n\n### Commentators\n\n-   ![][flag_AU] [Bauxe](/users/1881685)\n-   ![][flag_US] [Daikyi](/users/811832)\n-   ![][flag_NZ] [deadbeat](/users/128370)\n-   ![][flag_GB] [Doomsday](/users/18983)\n-   ![][flag_CA] [Evrien](/users/791660)\n-   ![][flag_AR] [juankristal](/users/443656)\n-   ![][flag_AT] [Omgforz](/users/578943)\n-   ![][flag_GB] [Rime](/users/1397232)\n-   ![][flag_FR] [Slainv](/users/4823843)\n-   ![][flag_US] [ztrot](/users/6347)\n\n### Statistician\n\n-   ![][flag_NZ] [deadbeat](/users/128370)\n-   ![][flag_DE] [Nwolf](/users/1910766)\n";
+  }
+  $btnExample.addEventListener("click", $btnExample_click);
+
+  /* error events */
+  function $btnErrors_click() {
+    delete $diaErrors.dataset.hidden;
+  }
+  $btnErrors.addEventListener("click", $btnErrors_click);
+
+  function $btnErrorsClose_click() {
+    $diaErrors.dataset.hidden = "";
+  }
+  $btnErrorsClose.addEventListener("click", $btnErrorsClose_click);
+
+  /* output events */
+  function $btnOutputClose_click() {
+    $diaOutput.dataset.hidden = "";
+  }
+  $btnOutputClose.addEventListener("click", $btnOutputClose_click);
+
+  /* drop events */
+  function fileReader_load(e) {
+    let text = e.target.result;
+    if (text) {
+      $input.value = text;
+    }
+  }
+  function window_drop(e) {
+    let fileReader = new FileReader();
+    fileReader.addEventListener("load", fileReader_load);
+    e.preventDefault();
+    let file = e.dataTransfer.files[0];
+    if (file && file.type === "text/markdown") {
+      fileReader.readAsText(file);
+    }
+  }
+  window.addEventListener("drop", window_drop);
+
+  /* parsing events */
+  // TODO ParseFlags shouldn't be a class
+  class ParseFlags {
+    newKey(text) {
       let key_text1 = text.match(/_..(?:..)?\]/)[0];
       let key_text2 = key_text1.substring(1, (key_text1.length - 1));
-      return "[flag_" + key_text2.toUpperCase() + "]";
-    },
-    'fixLink': function (text) {
+      return `[flag_${key_text2.toUpperCase()}]`;
+    }
+
+    fixLink(text) {
       let link2 = text.match(/\/..(?:..)?\./)[0];
       let link3 = link2.substring(1, (link2.length - 1));
       let ext = text.substring(text.lastIndexOf("."), text.length);
-      return "/flag/" + link3.toUpperCase() + ext;
-    },
-    'fixRef': function (text) {
+      return `/flag/${link3.toUpperCase()}${ext}`;
+    }
+
+    fixRef(text) {
       let ref2 = text.match(/_..(?:..)?\]/)[0];
       let ref3 = ref2.substring(1, (ref2.length - 1));
-      return "[flag_" + ref3.toUpperCase() + "]";
+      return `[flag_${ref3.toUpperCase()}]`;
     }
-  });
-  $help.addEventListener('click', function () {
-    if ($accordionHelp.hasAttribute('data-hidden')) {
-      $accordionHelp.removeAttribute('data-hidden');
-    } else {
-      $accordionHelp.setAttribute('data-hidden', '');
-      if (document.cookie.replace(/(?:(?:^|.*;\s*)help_visted\s*\=\s*([^;]*).*$)|^.*$/, "$1") !== 'true') {
-        document.cookie = 'help_visted=true';
-      }
+  }
+
+  $parse.addEventListener("click", () => {
+    while ($diaErrorsList.firstChild) {
+      $diaErrorsList.firstChild.remove();
     }
-  });
-  $patch.addEventListener('click', function () {
-    let lines = $input_text.value.split("\n");
+
+    let patch = new ParseFlags();
+
+    let lines = $input.value.split("\n");
     let flags_unsort = {};
     let flags_output = "";
-    let invalid_flags_found = [];
+    let invalid_flags = [];
     for (let i = 0; i < lines.length; i++) {
-      if (/\!\[\]\[flag_..(?:..)?\]/g.test(lines[i])) {
+      if (/!\[\]\[flag_..(?:..)?\]/g.test(lines[i])) {
         let key = lines[i].match(/\[flag_..(?:..)?\]/g);
         if (key) {
           for (let j = 0; j < key.length; j++) {
@@ -100,10 +151,10 @@
             } else if (name2.length === 4) {
               ext = ".png";
             }
-            let newKey = key[j].replace(key[j], regex.newKey);
-            flags_unsort[newKey] = "/wiki/shared/flag/" + name2 + ext;
-            if (!valid_flags.includes(name2)) {
-              invalid_flags_found.push([name2, (i + 1)]);
+            let newKey = key[j].replace(key[j], patch.newKey);
+            flags_unsort[newKey] = `/wiki/shared/flag/${name2}${ext}`;
+            if (!FLAGS.includes(name2)) {
+              invalid_flags.push([name2, (i + 1)]);
             }
           }
         }
@@ -111,57 +162,40 @@
       let link1 = lines[i].match(/\/flag\/..(?:..)?\.(gif|jpe?g|png)/g);
       if (link1) {
         for (let j = 0; j < link1.length; j++) {
-          lines[i] = lines[i].replace(link1[j], regex.fixLink);
+          lines[i] = lines[i].replace(link1[j], patch.fixLink);
         }
       }
       let ref1 = lines[i].match(/\[flag_..(?:..)?\]/g);
       if (ref1) {
         for (let j = 0; j < ref1.length; j++) {
-          lines[i] = lines[i].replace(ref1[j], regex.fixRef);
+          lines[i] = lines[i].replace(ref1[j], patch.fixRef);
         }
       }
     }
-    while ($accordionErrorUl.firstChild) {
-      $accordionErrorUl.removeChild($accordionErrorUl.firstChild);
-    }
-    if (invalid_flags_found.length > 0) {
-      $error.textContent = "Errors (" + invalid_flags_found.length + ")";
-      $accordionError.removeAttribute('data-hidden');
-      for (let i = 0; i < invalid_flags_found.length; i++) {
-        let error_output = invalid_flags_found[i][0] + " (line: " + invalid_flags_found[i][1] + ")";
-        $accordionErrorUl.insertAdjacentHTML('beforeEnd', "<li>" + error_output + "</li>");
+    if (invalid_flags.length > 0) {
+      $btnErrors.textContent = `Errors (${invalid_flags.length})`;
+      for (let i = 0; i < invalid_flags.length; i++) {
+        let $_li = document.createElement("li");
+        $_li.textContent = `${invalid_flags[i][0]} (line: ${invalid_flags[i][1]})`;
+        $diaErrorsList.insertAdjacentElement("beforeEnd", $_li);
       }
     } else {
-      $error.textContent = "Errors (0)";
-      $accordionError.setAttribute('data-hidden', '');
-      $accordionErrorUl.insertAdjacentHTML('beforeEnd', "<li>No errors found!</li>");
+      $btnErrors.textContent = "Errors (0)";
     }
-    lines = lines.join('\n');
+    lines = lines.join("\n");
     let flags_sort = {};
-    Object.keys(flags_unsort).sort().forEach(function (key) {
-      flags_sort[key] = flags_unsort[key];
-    });
+    Object.keys(flags_unsort).sort()
+      .forEach((key) => {
+        flags_sort[key] = flags_unsort[key];
+      });
     for (let key in flags_sort) {
       if (flags_sort.hasOwnProperty(key)) {
-        flags_output += key + ": " + flags_sort[key] + "\n";
+        flags_output += `${key}: ${flags_sort[key]}\n`;
       }
     }
-    $output_text.value = lines + "\n" + flags_output;
-    output = $output_text.value;
-  });
-  $output_text.addEventListener('input', function (e) {
-    this.value = output;
-    return false;
-  });
-
-  $example.addEventListener('click', function () {
-    $input_text.value = '# Example Tournament XX17\n\n![osu! World Cup XX17](logo.jpg)\n\nThe **Example Tournament XX17 (_ET XX17_)** is not a real tournament because this is an example. It is the 1st installment and test for `flag-osu`.\n\n## Tournament Schedule\n\n| Event              | Timestamp              |\n|--------------------|------------------------|\n| Registration Phase | Yesterday              |\n| Drawings           | Today                  |\n| Group Stage        | Tomorrow               |\n| Round of 16        | Next week              |\n| Quarterfinals      | After Round of 16      |\n| Semifinals         | When there are only 4  |\n| Finals - Week 1    | When there is a winner |\n| Finals - Week 2    | lol jk                 |\n\n## Prizes\n\nNo prizes (we\'re all winners).\n\n## Organization\n\nThe Example Tournament XX17 is ran by various community members by distributing the multitude of tasks into various fields of responsibility.\n\n### Tournament Management\n\n- ![][flag_DE] [Loctav](https://osu.ppy.sh/u/71366 "Loctav")\n- ![][flag_DE] [p3n](https://osu.ppy.sh/u/123703 "p3n")\n- ![][flag_ES] [Deif](https://osu.ppy.sh/u/318565 "Deif")\n- ![][flag_FR] [shARPII](https://osu.ppy.sh/u/776257 "shARPII")\n\n### Map Selectors\n\n- ![][flag_JP] [Asahina Momoko](https://osu.ppy.sh/u/3650145 "Asahina Momoko")\n- ![][flag_DE] [Okorin](https://osu.ppy.sh/u/1623405 "Okorin")\n- ![][flag_HK] [Skystar](https://osu.ppy.sh/u/873961 "Skystar")\n\n### Commentators\n\n- ![][flag_AU] [Bauxe](https://osu.ppy.sh/u/1881685 "Bauxe")\n- ![][flag_US] [Daikyi](https://osu.ppy.sh/u/811832 "Daikyi")\n- ![][flag_NZ] [deadbeat](https://osu.ppy.sh/u/128370 "deadbeat")\n- ![][flag_GB] [Doomsday](https://osu.ppy.sh/u/18983 "Doomsday")\n- ![][flag_CA] [Evrien](https://osu.ppy.sh/u/791660 "Evrien")\n- ![][flag_AR] [juankristal](https://osu.ppy.sh/u/443656 "juankristal")\n- ![][flag_AT] [Omgforz](https://osu.ppy.sh/u/578943 "Omgforz")\n- ![][flag_GB] [Rime](https://osu.ppy.sh/u/1397232 "Rime")\n- ![][flag_FR] [Slainv](https://osu.ppy.sh/u/4823843 "Slainv")\n- ![][flag_US] [ztrot](https://osu.ppy.sh/u/6347 "ztrot")\n\n### Statistician\n\n- ![][flag_NZ] [deadbeat](https://osu.ppy.sh/u/128370 "deadbeat")\n- ![][flag_DE] [Nwolf](https://osu.ppy.sh/u/1910766 "Nwolf")\n';
-  });
-  $error.addEventListener('click', function () {
-    if ($accordionError.hasAttribute('data-hidden')) {
-      $accordionError.removeAttribute('data-hidden');
-    } else {
-      $accordionError.setAttribute('data-hidden', '');
-    }
+    // TEMP need to create a dialog to output results (just results)
+    // $input.value = lines + "\n" + flags_output;
+    $output.textContent = flags_output;
+    delete $diaOutput.dataset.hidden;
   });
 })();
