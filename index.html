@@ -12,7 +12,7 @@
       <div>
         <div data-button="help">Help</div>
         <div data-button="example">Example</div>
-        <!-- <div data-button="config">Options</div> -->
+        <div data-button="config">Options</div>
       </div>
       <div>
         <div data-button="errors">Errors (0)</div>
@@ -35,10 +35,46 @@
           </div>
         </div>
       </div>
-      <div data-dialog="errors" data-hidden>
+      <div data-dialog="config" data-hidden>
         <div class="dialog-container">
           <div class="dialog-scrollable">
-            <ul id="errors-list"></ul>
+            <div>
+              <label>
+                <input type="checkbox" data-checkbox="ignore-errors"/>
+                Ignore errors
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" data-checkbox="country-title"/>
+                Set country name as title (hover text)
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" data-checkbox="country-alt"/>
+                Set country code as alt (image failed to load text)
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" data-checkbox="output-input"/>
+                Include input with output
+              </label>
+            </div>
+          </div>
+          <div class="dialog-buttons">
+            <div data-button="config-close">CLOSE</div>
+          </div>
+        </div>
+      </div>
+      <div data-dialog="errors" data-hidden>
+        <div class="dialog-container">
+          <div>
+            <h2>List of Errors</h2>
+            <div class="dialog-scrollable">
+              <ul id="errors-list"></ul>
+            </div>
           </div>
           <div class="dialog-buttons">
             <div data-button="errors-close">CLOSE</div>
@@ -47,8 +83,11 @@
       </div>
       <div data-dialog="output" data-hidden>
         <div class="dialog-container">
-          <div class="dialog-scrollable">
-            <pre id="output"></pre>
+          <div class="dialog-contents">
+            <div class="dialog-scrollable">
+              <pre id="output"></pre>
+            </div>
+            <span id="output-errors"></span>
           </div>
           <div class="dialog-buttons">
             <div data-button="output-close">CLOSE</div>

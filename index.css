@@ -63,6 +63,14 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center; }
+  [data-dialog] h2 {
+    margin: 0;
+    font-size: 18px; }
+  [data-dialog] .dialog-contents {
+    display: contents; }
+    @supports not (display: contents) {
+      [data-dialog] .dialog-contents {
+        height: 300px; } }
   [data-dialog] .dialog-container {
     background: #fff;
     padding: 8px;
@@ -75,6 +83,9 @@ main {
     flex-direction: column; }
     [data-dialog] .dialog-container .dialog-scrollable {
       overflow: auto; }
+      @supports not (display: contents) {
+        [data-dialog] .dialog-container .dialog-scrollable {
+          height: 100%; } }
 
 #errors-list:empty {
   margin: 0;
@@ -87,9 +98,9 @@ main {
   padding: 2px;
   user-select: all;
   position: relative;
-  top: 1em; }
+  top: 1em;
+  white-space: pre-wrap; }
   #output:before {
-    background-color: #fff;
     font-family: sans-serif;
     content: "Click inside box to select all.";
     display: block;
