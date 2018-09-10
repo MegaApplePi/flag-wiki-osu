@@ -10,11 +10,12 @@
   const $btnConfig = document.querySelector("[data-button=\"config\"]");
   const $diaConfig = document.querySelector("[data-dialog=\"config\"]");
   const $btnConfigClose = document.querySelector("[data-button=\"config-close\"]");
+  const $chkConfigIgnoreErrors = document.querySelector("[data-checkbox=\"ignore-errors\"]");
   const $chkConfigCountryTitle = document.querySelector("[data-checkbox=\"country-title\"]");
   const $chkConfigCountryAlt = document.querySelector("[data-checkbox=\"country-alt\"]");
   const $chkConfigOutputInput = document.querySelector("[data-checkbox=\"output-input\"]");
-  const $chkConfigIgnoreErrors = document.querySelector("[data-checkbox=\"ignore-errors\"]");
 
+  const $errorsOutput = document.querySelector("#errors-output");
   const $btnErrors = document.querySelector("[data-button=\"errors\"]");
   const $diaErrors = document.querySelector("[data-dialog=\"errors\"]");
   const $btnErrorsClose = document.querySelector("[data-button=\"errors-close\"]");
@@ -500,6 +501,7 @@
       }
     }
     if (invalid_flags.length > 0) {
+      delete $errorsOutput.dataset.hidden;
       $btnErrors.textContent = `Errors (${invalid_flags.length})`;
       $outputErrors.textContent = `${invalid_flags.length} error${invalid_flags.length === 1 ? "" : "s"} found`;
       for (let i = 0; i < invalid_flags.length; i++) {
@@ -508,6 +510,7 @@
         $diaErrorsList.insertAdjacentElement("beforeEnd", $_li);
       }
     } else {
+      $errorsOutput.dataset.hidden = "";
       $btnErrors.textContent = "Errors (0)";
       $outputErrors.textContent = "";
     }
