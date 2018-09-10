@@ -348,7 +348,7 @@
 
   /* example events */
   function $btnExample_click() {
-    $input.value = "# Example Tournament XXYY\n\n![World Cup XXYY](logo.jpg)\n\nThe Example Tournament XXYY (*ET XXYY*) is not a real tournament because this is an example. It is the first and last installment for `flag-wiki-osu`.\n\n## Tournament schedule\n\nTo be announced.\n\n## Organisation\n\nThe Example Tournament XXYY is ran by various community members by distributing the multitude of tasks into various fields of responsibility.\n\n### Tournament management\n\n-   ![][flag_DE] [Loctav](/users/71366)\n-   ![][flag_DE] [p3n](/users/123703)\n-   ![][flag_ES] [Deif](/users/318565)\n-   ![][flag_FR] [shARPII](/users/776257)\n\n### Map selectors\n\n-   ![][flag_JP] [Asahina Momoko](/users/3650145)\n-   ![][flag_DE] [Okorin](/users/1623405)\n-   ![][flag_HK] [Skystar](/users/873961)\n\n### Commentators\n\n-   ![][flag_AU] [Bauxe](/users/1881685)\n-   ![][flag_US] [Daikyi](/users/811832)\n-   ![][flag_NZ] [deadbeat](/users/128370)\n-   ![][flag_GB] [Doomsday](/users/18983)\n-   ![][flag_CA] [Evrien](/users/791660)\n-   ![][flag_AR] [juankristal](/users/443656)\n-   ![][flag_AT] [Omgforz](/users/578943)\n-   ![][flag_GB] [Rime](/users/1397232)\n-   ![][flag_FR] [Slainv](/users/4823843)\n-   ![][flag_US] [ztrot](/users/6347)\n\n### Statistician\n\n-   ![][flag_NZ] [deadbeat](/users/128370)\n-   ![][flag_DE] [Nwolf](/users/1910766)\n";
+    $input.value = "# Example Tournament XXYY\n\n![World Cup XXYY](logo.jpg)\n\nThe Example Tournament XXYY (*ET XXYY*) is not a real tournament because this is an example. It is the first and last installment for `flag-wiki-osu`.\n\n## Tournament schedule\n\nTo be announced.\n\n## Organisation\n\nThe Example Tournament XXYY is ran by various community members by distributing the multitude of tasks into various fields of responsibility.\n\n### Tournament management\n\n-   ![][flag_DE] [Loctav](/users/71366)\n-   ![][flag_DE] [p3n](/users/123703)\n-   ![ES][flag_ES] [Deif](/users/318565)\n-   ![][flag_FR] [shARPII](/users/776257)\n\n### Map selectors\n\n-   ![][flag_JP] [Asahina Momoko](/users/3650145)\n-   ![][flag_DE] [Okorin](/users/1623405)\n-   ![][flag_HK] [Skystar](/users/873961)\n\n### Commentators\n\n-   ![][flag_AU] [Bauxe](/users/1881685)\n-   ![][flag_US] [Daikyi](/users/811832)\n-   ![][flag_NZ] [deadbeat](/users/128370)\n-   ![][flag_GB] [Doomsday](/users/18983)\n-   ![](/wiki/shared/flag/CA.gif) [Evrien](/users/791660)\n-   ![][flag_AR] [juankristal](/users/443656)\n-   ![](/wiki/shared/flag/AT.gif \"Austria\") [Omgforz](/users/578943)\n-   ![][flag_GB] [Rime](/users/1397232)\n-   ![][flag_FR] [Slainv](/users/4823843)\n-   ![][flag_US] [ztrot](/users/6347)\n\n### Statistician\n\n-   ![][flag_NZ] [deadbeat](/users/128370)\n-   ![][flag_DE] [Nwolf](/users/1910766)\n";
   }
   $btnExample.addEventListener("click", $btnExample_click);
 
@@ -389,7 +389,9 @@
 
   /* parsing events */
   function getCode(text) {
-    let code = text.match(/_..(?:..)?\]/)[0];
+    // reference links = _xxyy]
+    // inline links = /xxyy.
+    let code = text.match(/(_|\/)..(?:..)?(\]|\.)/)[0];
     let codeFormatted = code.substring(1, (code.length - 1));
     return codeFormatted.toUpperCase();
   }
@@ -398,11 +400,10 @@
     return `[flag_${getCode(text)}]`;
   }
 
-  function getFixedLink(text) {
-    let link2 = text.match(/\/..(?:..)?\./)[0];
-    let link3 = link2.substring(1, (link2.length - 1));
-    let ext = text.substring(text.lastIndexOf("."), text.length);
-    return `/flag/${link3.toUpperCase()}${ext}`;
+  function getReplacementLink(text) {
+    let code = text.match(/\/..(?:..)?\./)[0];
+    let codeFormatted = code.substring(1, (code.length - 1));
+    return `[flag_${codeFormatted.toUpperCase()}]`;
   }
 
   function getFixedRef(text) {
@@ -444,16 +445,44 @@
           }
         }
       }
-      let link1 = lines[i].match(/\/flag\/..(?:..)?\.(gif|jpe?g|png)/g);
-      if (link1) {
-        for (let j = 0; j < link1.length; j++) {
-          lines[i] = lines[i].replace(link1[j], getFixedLink);
+      if (/\(\/wiki\/shared\/flag\/..(?:..)?\.(gif|jpe?g|png)(?: ".*")?\)/g.test(lines[i])) {
+        let key = lines[i].match(/\/flag\/..(?:..)?\./g);
+        if (key) {
+          for (let j = 0; j < key.length; j++) {
+            let name1 = key[j].match(/\/..(?:..)?\./g)[0];
+            let name2 = name1.substring(1, (name1.length - 1)).toUpperCase();
+            let ext;
+            if (name2.length === 2) {
+              ext = ".gif";
+            } else if (name2.length === 4) {
+              ext = ".png";
+            }
+            let newKey = key[j].replace(key[j], getNewKey);
+            if (!FLAG_CODES.includes(name2)) {
+              invalid_flags.push([name2, (i + 1)]);
+            }
+            // parse with broken flags anyways
+            if ($chkConfigCountryTitle.checked) {
+              flags_unsort[newKey] = `/wiki/shared/flag/${name2}${ext} "${FLAGS[name2] ? FLAGS[name2] : "NOT_FOUND"}"`;
+            } else {
+              flags_unsort[newKey] = `/wiki/shared/flag/${name2}${ext}`;
+            }
+          }
         }
       }
-      let ref1 = lines[i].match(/\[flag_..(?:..)?\]/g);
-      if (ref1) {
-        for (let j = 0; j < ref1.length; j++) {
-          lines[i] = lines[i].replace(ref1[j], getFixedRef);
+
+      // linkPath = "(/wiki/shared/flags/XX.xxx)" part; recognising title is supported
+      let linkPath = lines[i].match(/\(\/wiki\/shared\/flag\/..(?:..)?\.(gif|jpe?g|png)(?: ".*")?\)/g);
+      if (linkPath) {
+        for (let j = 0; j < linkPath.length; j++) {
+          lines[i] = lines[i].replace(linkPath[j], getReplacementLink);
+        }
+      }
+      // referenceName = "[flag_XX]" part
+      let referenceName = lines[i].match(/\[flag_..(?:..)?\]/g);
+      if (referenceName) {
+        for (let j = 0; j < referenceName.length; j++) {
+          lines[i] = lines[i].replace(referenceName[j], getFixedRef);
         }
       }
     }
