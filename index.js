@@ -7,6 +7,7 @@
 
   const $btnExample = document.querySelector("[data-button=\"example\"]");
 
+  // TODO use cookies to remember the settings
   const $btnConfig = document.querySelector("[data-button=\"config\"]");
   const $diaConfig = document.querySelector("[data-dialog=\"config\"]");
   const $btnConfigClose = document.querySelector("[data-button=\"config-close\"]");
@@ -434,52 +435,66 @@
     let flags_output = "";
     let invalid_flags = [];
     for (let i = 0; i < lines.length; i++) {
+      /* ref links */
       if (/!\[(.+)?\]\[flag_..(?:..)?\]/g.test(lines[i])) {
         let key = lines[i].match(/\[flag_..(?:..)?\]/g);
         if (key) {
           for (let j = 0; j < key.length; j++) {
-            let name1 = key[j].match(/_..(?:..)?\]/g)[0];
-            let name2 = name1.substring(1, (name1.length - 1)).toUpperCase();
+            let countryMatch = key[j].match(/_..(?:..)?\]/g)[0];
+            let countryCode = countryMatch.substring(1, (countryMatch.length - 1)).toUpperCase();
+
+            // TOFIX this is duplicated to below
             let ext;
-            if (name2.length === 2) {
+            if (countryCode.length === 2) {
               ext = ".gif";
-            } else if (name2.length === 4) {
+            } else if (countryCode.length === 4) {
               ext = ".png";
             }
             let newKey = key[j].replace(key[j], getNewKey);
-            if (!FLAG_CODES.includes(name2)) {
-              invalid_flags.push([name2, (i + 1)]);
+            if (!FLAG_CODES.includes(countryCode)) {
+              invalid_flags.push([countryCode, (i + 1)]);
             }
             // parse with broken flags anyways
             if ($chkConfigCountryTitle.checked) {
-              flags_unsort[newKey] = `/wiki/shared/flag/${name2}${ext} "${FLAGS[name2] ? FLAGS[name2] : "NOT_FOUND"}"`;
+              flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext} "${FLAGS[countryCode] ? FLAGS[countryCode] : "NOT_FOUND"}"`;
             } else {
-              flags_unsort[newKey] = `/wiki/shared/flag/${name2}${ext}`;
+              flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext}`;
+            }
+
+            if ($chkConfigCountryAlt.checked) {
+              lines[i] = lines[i].replace(/!\[\]/g, `![${countryCode}]`);
             }
           }
         }
       }
+      /* inline links */
       if (/\(\/wiki\/shared\/flag\/..(?:..)?\.(gif|jpe?g|png)(?: ".*")?\)/g.test(lines[i])) {
         let key = lines[i].match(/\/flag\/..(?:..)?\./g);
         if (key) {
           for (let j = 0; j < key.length; j++) {
-            let name1 = key[j].match(/\/..(?:..)?\./g)[0];
-            let name2 = name1.substring(1, (name1.length - 1)).toUpperCase();
+            let countryMatch = key[j].match(/\/..(?:..)?\./g)[0];
+            let countryCode = countryMatch.substring(1, (countryMatch.length - 1)).toUpperCase();
+
+            // TOFIX this is duplicated from above
             let ext;
-            if (name2.length === 2) {
+            if (countryCode.length === 2) {
               ext = ".gif";
-            } else if (name2.length === 4) {
+            } else if (countryCode.length === 4) {
               ext = ".png";
             }
             let newKey = key[j].replace(key[j], getNewKey);
-            if (!FLAG_CODES.includes(name2)) {
-              invalid_flags.push([name2, (i + 1)]);
+            if (!FLAG_CODES.includes(countryCode)) {
+              invalid_flags.push([countryCode, (i + 1)]);
             }
             // parse with broken flags anyways
             if ($chkConfigCountryTitle.checked) {
-              flags_unsort[newKey] = `/wiki/shared/flag/${name2}${ext} "${FLAGS[name2] ? FLAGS[name2] : "NOT_FOUND"}"`;
+              flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext} "${FLAGS[countryCode] ? FLAGS[countryCode] : "NOT_FOUND"}"`;
             } else {
-              flags_unsort[newKey] = `/wiki/shared/flag/${name2}${ext}`;
+              flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext}`;
+            }
+
+            if ($chkConfigCountryAlt.checked) {
+              lines[i] = lines[i].replace(/!\[\]/g, `![${countryCode}]`);
             }
           }
         }
