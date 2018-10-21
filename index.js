@@ -434,7 +434,7 @@
     let flags_output = "";
     let invalid_flags = [];
     for (let i = 0; i < lines.length; i++) {
-      if (/!\[\]\[flag_..(?:..)?\]/g.test(lines[i])) {
+      if (/!\[(.+)?\]\[flag_..(?:..)?\]/g.test(lines[i])) {
         let key = lines[i].match(/\[flag_..(?:..)?\]/g);
         if (key) {
           for (let j = 0; j < key.length; j++) {
