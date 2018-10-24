@@ -1,6 +1,10 @@
 (function() {
   "use strict";
   /* DOM */
+  const $totNoCookie = document.querySelector("[data-toast=\"no-cookie\"]");
+  const $timNoCookie = document.querySelector("[data-toast=\"no-cookie\"] [data-time]");
+  const COOKIE_ENABLED = navigator.cookieEnabled;
+
   const $btnHelp = document.querySelector("[data-button=\"help\"]");
   const $diaHelp = document.querySelector("[data-dialog=\"help\"]");
   const $btnHelpClose = document.querySelector("[data-button=\"help-close\"]");
@@ -15,19 +19,34 @@
   const $chkConfigCountryAlt = document.querySelector("[data-checkbox=\"country-alt\"]");
   const $chkConfigOutputInput = document.querySelector("[data-checkbox=\"output-input\"]");
 
-  if (localStorage.getItem("ignore-errors") === "true") {
-    $chkConfigIgnoreErrors.checked = true;
-  }
-  if (localStorage.getItem("country-title") === "true") {
-    $chkConfigCountryTitle.checked = true;
-  }
-  if (localStorage.getItem("country-alt") === "true") {
-    $chkConfigCountryAlt.checked = true;
-    $chkConfigOutputInput.checked = true;
-    $chkConfigOutputInput.disabled = true;
-  }
-  if (localStorage.getItem("output-input") === "true") {
-    $chkConfigOutputInput.checked = true;
+  if (COOKIE_ENABLED) {
+    if (localStorage.getItem("ignore-errors") === "true") {
+      $chkConfigIgnoreErrors.checked = true;
+    }
+    if (localStorage.getItem("country-title") === "true") {
+      $chkConfigCountryTitle.checked = true;
+    }
+    if (localStorage.getItem("country-alt") === "true") {
+      $chkConfigCountryAlt.checked = true;
+      $chkConfigOutputInput.checked = true;
+      $chkConfigOutputInput.disabled = true;
+    }
+    if (localStorage.getItem("output-input") === "true") {
+      $chkConfigOutputInput.checked = true;
+    }
+  } else {
+    delete $totNoCookie.dataset.hidden;
+    let tick = 5;
+    $timNoCookie.textContent = `${tick} second${tick === 1 ? "" : "s"}`;
+
+    let timer = window.setInterval(() => {
+      tick--;
+      $timNoCookie.textContent = `${tick} second${tick === 1 ? "" : "s"}`;
+      if (tick === 0) {
+        $totNoCookie.dataset.hidden = "";
+        window.clearInterval(timer);
+      }
+    }, 1000);
   }
 
   const $errorsOutput = document.querySelector("#errors-output");
@@ -386,10 +405,12 @@
       }
     }
   }
-  $chkConfigIgnoreErrors.addEventListener("change", $$config_change);
-  $chkConfigCountryTitle.addEventListener("change", $$config_change);
-  $chkConfigCountryAlt.addEventListener("change", $$config_change);
-  $chkConfigOutputInput.addEventListener("change", $$config_change);
+  if (COOKIE_ENABLED) {
+    $chkConfigIgnoreErrors.addEventListener("change", $$config_change);
+    $chkConfigCountryTitle.addEventListener("change", $$config_change);
+    $chkConfigCountryAlt.addEventListener("change", $$config_change);
+    $chkConfigOutputInput.addEventListener("change", $$config_change);
+  }
 
   /* example events */
   function $btnExample_click() {

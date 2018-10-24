@@ -87,6 +87,16 @@ main {
         [data-dialog] .dialog-container .dialog-scrollable {
           height: 100%; } }
 
+[data-toast] {
+  background-color: #2f54eb;
+  color: #fff;
+  position: fixed;
+  padding: 8px 16px;
+  margin: 16px;
+  bottom: 0;
+  left: 0;
+  user-select: none; }
+
 #errors-list:empty {
   margin: 0;
   padding: 0; }
