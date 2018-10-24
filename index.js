@@ -7,7 +7,6 @@
 
   const $btnExample = document.querySelector("[data-button=\"example\"]");
 
-  // TODO use cookies to remember the settings
   const $btnConfig = document.querySelector("[data-button=\"config\"]");
   const $diaConfig = document.querySelector("[data-dialog=\"config\"]");
   const $btnConfigClose = document.querySelector("[data-button=\"config-close\"]");
@@ -15,6 +14,21 @@
   const $chkConfigCountryTitle = document.querySelector("[data-checkbox=\"country-title\"]");
   const $chkConfigCountryAlt = document.querySelector("[data-checkbox=\"country-alt\"]");
   const $chkConfigOutputInput = document.querySelector("[data-checkbox=\"output-input\"]");
+
+  if (localStorage.getItem("ignore-errors") === "true") {
+    $chkConfigIgnoreErrors.checked = true;
+  }
+  if (localStorage.getItem("country-title") === "true") {
+    $chkConfigCountryTitle.checked = true;
+  }
+  if (localStorage.getItem("country-alt") === "true") {
+    $chkConfigCountryAlt.checked = true;
+    $chkConfigOutputInput.checked = true;
+    $chkConfigOutputInput.disabled = true;
+  }
+  if (localStorage.getItem("output-input") === "true") {
+    $chkConfigOutputInput.checked = true;
+  }
 
   const $errorsOutput = document.querySelector("#errors-output");
   const $btnErrors = document.querySelector("[data-button=\"errors\"]");
@@ -360,6 +374,22 @@
     }
   }
   $chkConfigCountryAlt.addEventListener("change", $chkConfigCountryAlt_change);
+
+  function $$config_change(e) {
+    let targetName = e.target.dataset.checkbox;
+    if (e.target.checked) {
+      localStorage.setItem(targetName, "true");
+    } else {
+      localStorage.setItem(targetName, "false");
+      if (targetName === "country-alt") {
+        localStorage.setItem("output-input", "false");
+      }
+    }
+  }
+  $chkConfigIgnoreErrors.addEventListener("change", $$config_change);
+  $chkConfigCountryTitle.addEventListener("change", $$config_change);
+  $chkConfigCountryAlt.addEventListener("change", $$config_change);
+  $chkConfigOutputInput.addEventListener("change", $$config_change);
 
   /* example events */
   function $btnExample_click() {
