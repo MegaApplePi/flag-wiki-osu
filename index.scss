@@ -77,6 +77,19 @@ main {
   justify-content: center;
   align-items: center;
 
+  h2 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .dialog-contents {
+    display: contents;
+    // display: contents; is not be supported everywhere :(
+    @supports not (display: contents) {
+      height: 300px;
+    }
+  }
+
   .dialog-container {
     background: #fff;
     padding: 8px;
@@ -90,6 +103,9 @@ main {
 
     .dialog-scrollable {
       overflow: auto;
+      @supports not (display: contents) {
+        height: 100%;
+      }
     }
   }
 }
@@ -108,8 +124,8 @@ main {
   user-select: all;
   position: relative;
   top: 1em;
+  white-space: pre-wrap;
   &:before {
-    background-color: #fff;
     font-family: sans-serif;
     content: "Click inside box to select all.";
     display: block;
