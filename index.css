@@ -112,11 +112,14 @@ main {
   white-space: pre-wrap; }
   #output:before {
     font-family: sans-serif;
-    content: "Click inside box to select all.";
+    content: "";
     display: block;
     position: absolute;
     left: 0;
     bottom: 100%; }
+    @supports (user-select: all) {
+      #output:before {
+        content: "Click inside box to select all."; } }
   #output:empty {
     margin: 0;
     padding: 0;
