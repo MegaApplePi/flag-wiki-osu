@@ -343,8 +343,15 @@
     "ZM": "Zambia",
     "ZW": "Zimbabwe",
 
+    /* combined flags */
+    "ARCO": "Argentina-Colombia",
     "BRCL": "Brazil-Chile",
-    "ITNL": "Italy-Netherlands"
+    "CZPL": "Czechia-Poland",
+    "DKNO": "Denmark-Norway",
+    "ITNL": "Italy-Netherlands",
+    "RUUA": "Russian Federation-Ukraine",
+    "SVVE": "El Salvador-Venezuela",
+    "__": "NO_FLAG"
   });
   const FLAG_CODES = Object.freeze(Object.keys(FLAGS));
 
