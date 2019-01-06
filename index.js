@@ -283,7 +283,7 @@
     "SD": "Sudan",
     "SE": "Sweden",
     "SG": "Singapore",
-    // "SH": "Saint Helena, Ascension and Tristan da Cunha",
+    "SH": "Saint Helena, Ascension and Tristan da Cunha",
     "SI": "Slovenia",
     "SJ": "Svalbard and Jan Mayen",
     "SK": "Slovakia",
