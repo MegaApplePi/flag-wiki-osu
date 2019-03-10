@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+		"target": "es2018",
+		"sourceMap": true,
+    "outDir": "."
+  },
+  "include": [
+      "."
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
