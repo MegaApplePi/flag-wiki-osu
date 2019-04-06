@@ -2,10 +2,10 @@
   "compilerOptions": {
 		"target": "es2018",
 		"sourceMap": true,
-    "outDir": "."
+    "outDir": "resources/js"
   },
   "include": [
-      "."
+      "resources/ts/**/*"
   ],
   "exclude": [
     "node_modules"

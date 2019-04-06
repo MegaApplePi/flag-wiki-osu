@@ -1,0 +1,190 @@
+::selection {
+  background-color: rgba(240, 245, 255, 0.6);
+  background-color: #f0f5ff99;
+}
+
+body {
+  background-color: #f0f5ff;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: -10;
+}
+
+[data-button] {
+  background-color: #2f54eb;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  margin: 2px;
+  padding: 8px 16px;
+  transition: 25ms background-color;
+  user-select: none;
+
+  &:hover {
+    background-color: #597ef7;
+  }
+
+  &:active {
+    background-color: #1d39c4;
+  }
+
+  &[data-disabled] {
+    background-color: #bfbfbf;
+    cursor: not-allowed;
+  }
+}
+
+header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  height: 64px;
+  margin: 0 5%;
+  position: relative;
+
+  > div {
+    display: flex;
+  }
+}
+
+main {
+  margin: 0 10%;
+
+  textarea#input {
+    background-color: #fff;
+    border: 2px solid #2f54eb;
+    box-sizing: border-box;
+    color: #000;
+    display: block;
+    font-family: monospace;
+    height: 100vh;
+    height: calc(100vh - 64px - 16px);
+    margin: 0;
+    margin-bottom: 16px;
+    min-height: 300px;
+    outline: none;
+    padding: 0;
+    position: relative;
+    resize: none;
+    transition: 25ms background-color;
+    width: 100%;
+
+    &:disabled {
+      background-color: #bfbfbf;
+      color: #fff;
+    }
+  }
+
+  textarea#output {
+    background-color: #eee;
+    border: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    resize: none;
+    top: 1em;
+    user-select: all;
+    white-space: pre-wrap;
+    width: 100%;
+
+    &:before {
+      font-family: sans-serif;
+      content: "";
+      /* @supports (user-select: all) {
+        content: "Click inside box to select all.";
+      } */
+      display: block;
+      position: absolute;
+      left: 0;
+      bottom: 100%;
+    }
+
+    &:empty {
+      margin: 0;
+      padding: 0;
+      background-color: unset;
+      position: unset;
+      top: unset;
+
+      &:before {
+        content: "No flags found";
+        position: unset;
+        left: unset;
+        bottom: unset;
+      }
+    }
+  }
+}
+
+[data-hidden] {
+  display: none!important;
+}
+
+[data-dialog] {
+  align-items: center;
+  background-color: rgba(217, 217, 217, 0.5);
+  background-color: #d9d9d9bf;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+
+  h2 {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  .dialog-contents {
+    display: contents;
+    // display: contents; is not be supported everywhere :(
+    @supports not (display: contents) {
+      height: 300px;
+    }
+  }
+
+  .dialog-container {
+    background: #fff;
+    padding: 8px;
+    display: flex;
+    min-height: 300px;
+    max-height: 90%;
+    justify-content: space-between;
+    flex-direction: column;
+    min-width: 400px;
+    max-width: 90%;
+
+    .dialog-scrollable {
+      height: 100%;
+      overflow: auto;
+    }
+  }
+}
+
+[data-toast] {
+  background-color: #2f54eb;
+  color: #fff;
+  position: fixed;
+  padding: 8px 16px;
+  margin: 16px;
+  bottom: 0;
+  left: 0;
+  user-select: none;
+}
+
+#errors-list {
+  &:empty {
+    margin: 0;
+    padding: 0;
+
+    &:before {
+      content: "No errors";
+    }
+  }
+}

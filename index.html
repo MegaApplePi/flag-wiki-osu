@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="description"/>
     <title>flag-wiki-osu</title>
-    <link rel="stylesheet" href="index.css"/>
+    <link rel="stylesheet" href="resources/css/index.css"/>
     <link rel="icon" href="favicon.png"/>
   </head>
   <body>
@@ -87,11 +87,12 @@
         <div class="dialog-container">
           <div class="dialog-contents">
             <div class="dialog-scrollable">
-              <pre id="output"></pre>
+              <textarea id="output" readonly></textarea>
             </div>
             <span id="output-errors"></span>
           </div>
           <div class="dialog-buttons">
+            <div data-button="output-copy">COPY</div>
             <div data-button="output-close">CLOSE</div>
           </div>
         </div>
@@ -111,6 +112,6 @@
         <span><small>Dismissing in <span data-time></span></small></span>
       </div>
     </main>
-    <script src="index.js"></script>
+    <script src="resources/js/index.js" type="module"></script>
   </body>
 </html>
