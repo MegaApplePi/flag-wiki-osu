@@ -10,17 +10,17 @@
   <body>
     <header>
       <div>
-        <div data-button="help">Help</div>
-        <div data-button="example">Example</div>
-        <div data-button="config">Settings</div>
+        <div data-button="help" data-disabled>Help</div>
+        <div data-button="example" data-disabled>Example</div>
+        <div data-button="config" data-disabled>Settings</div>
       </div>
       <div>
-        <div data-button="errors">Errors (0)</div>
-        <div data-button="parse">Find Flags</div>
+        <div data-button="errors" data-disabled>Errors (0)</div>
+        <div data-button="parse" data-disabled>Find Flags</div>
       </div>
     </header>
     <main>
-      <textarea id="input"></textarea>
+      <textarea id="input" disabled></textarea>
       <div data-dialog="help" data-hidden>
         <div class="dialog-container">
           <div class="dialog-scrollable">
