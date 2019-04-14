@@ -1,19 +1,62 @@
 import L10n from "./L10n.js";
-/* DOM */
-const $totNoCookie = document.querySelector("[data-toast=\"no-cookie\"]");
-const $timNoCookie = document.querySelector("[data-toast=\"no-cookie\"] [data-time]");
+//#region DOM
+const $totNoCookie = document.querySelector('[data-toast="no-cookie"]');
+const $timNoCookie = document.querySelector('[data-toast="no-cookie"] [data-time]');
 const COOKIE_ENABLED = navigator.cookieEnabled;
-const $btnHelp = document.querySelector("[data-button=\"help\"]");
-const $diaHelp = document.querySelector("[data-dialog=\"help\"]");
-const $btnHelpClose = document.querySelector("[data-button=\"help-close\"]");
-const $btnExample = document.querySelector("[data-button=\"example\"]");
-const $btnConfig = document.querySelector("[data-button=\"config\"]");
-const $diaConfig = document.querySelector("[data-dialog=\"config\"]");
-const $btnConfigClose = document.querySelector("[data-button=\"config-close\"]");
-const $chkConfigIgnoreErrors = document.querySelector("[data-checkbox=\"ignore-errors\"]");
-const $chkConfigCountryTitle = document.querySelector("[data-checkbox=\"country-title\"]");
-const $chkConfigCountryAlt = document.querySelector("[data-checkbox=\"country-alt\"]");
-const $chkConfigOutputInput = document.querySelector("[data-checkbox=\"output-input\"]");
+const $btnHelp = document.querySelector('[data-button="help"]');
+const $diaHelp = document.querySelector('[data-dialog="help"]');
+const $btnHelpClose = document.querySelector('[data-button="help-close"]');
+const $btnExample = document.querySelector('[data-button="example"]');
+const $btnConfig = document.querySelector('[data-button="config"]');
+const $diaConfig = document.querySelector('[data-dialog="config"]');
+const $btnConfigClose = document.querySelector('[data-button="config-close"]');
+const $chkConfigIgnoreErrors = document.querySelector('[data-checkbox="ignore-errors"]');
+const $chkConfigCountryTitle = document.querySelector('[data-checkbox="country-title"]');
+const $chkConfigCountryAlt = document.querySelector('[data-checkbox="country-alt"]');
+const $chkConfigOutputInput = document.querySelector('[data-checkbox="output-input"]');
+const $selConfigLanguage = document.querySelector('[data-select="language"]');
+const $errorsOutput = document.querySelector("#errors-output");
+const $btnErrors = document.querySelector('[data-button="errors"]');
+const $diaErrors = document.querySelector('[data-dialog="errors"]');
+const $btnErrorsClose = document.querySelector('[data-button="errors-close"]');
+const $diaErrorsList = document.querySelector("#errors-list");
+const $btnParse = document.querySelector('[data-button="parse"]');
+const $input = document.querySelector("#input");
+const $output = document.querySelector("#output");
+const $outputErrors = document.querySelector("#output-errors");
+const $diaOutput = document.querySelector('[data-dialog="output"]');
+const $btnOutputClose = document.querySelector('[data-button="output-close"]');
+const $btnOutputCopy = document.querySelector('[data-button="output-copy"]');
+//#endregion
+//#region create lanauage selector options
+let lanauages = L10n.getLocales();
+for (let lang of lanauages) {
+    let $option = document.createElement("option");
+    $option.setAttribute("value", lang);
+    $option.textContent = L10n.getLocaleName(lang);
+    $selConfigLanguage.insertAdjacentElement("beforeend", $option);
+}
+//#endregion
+//#region update interface strings
+function updateInterfaceStrings() {
+    $btnHelp.textContent = L10n.getInterfaceString("help");
+    $diaHelp.querySelector('[data-help="1"]').textContent = L10n.getInterfaceString("help1");
+    $diaHelp.querySelector('[data-help="2"]').textContent = L10n.getInterfaceString("help2");
+    $diaHelp.querySelector('[data-help="3"]').textContent = L10n.getInterfaceString("help3");
+    $diaHelp.querySelector('[data-help="feedback"]').textContent = L10n.getInterfaceString("feedback");
+    $btnHelpClose.textContent = L10n.getInterfaceString("close");
+    $btnExample.textContent = L10n.getInterfaceString("example");
+    $btnConfig.textContent = L10n.getInterfaceString("config");
+    $chkConfigIgnoreErrors.nextElementSibling.textContent = L10n.getInterfaceString("config-ignore");
+    $chkConfigCountryTitle.nextElementSibling.textContent = L10n.getInterfaceString("config-name");
+    $chkConfigCountryAlt.nextElementSibling.textContent = L10n.getInterfaceString("config-code");
+    $chkConfigOutputInput.nextElementSibling.textContent = L10n.getInterfaceString("config-inout");
+    $selConfigLanguage.previousElementSibling.textContent = L10n.getInterfaceString("config-lang");
+    $btnConfigClose.textContent = L10n.getInterfaceString("close");
+    $btnErrors.textContent = `${L10n.getInterfaceString("errors")} (0)`;
+}
+//#endregion
+//#region restore options
 if (COOKIE_ENABLED) {
     if (localStorage.getItem("ignore-errors") === "true") {
         $chkConfigIgnoreErrors.checked = true;
@@ -29,6 +72,18 @@ if (COOKIE_ENABLED) {
     if (localStorage.getItem("output-input") === "true") {
         $chkConfigOutputInput.checked = true;
     }
+    // Using try instead. If the lanauge does not exist, it will throw into the catch.
+    try {
+        $selConfigLanguage.querySelector(`option[value="${localStorage.getItem("output-language")}"]`).setAttribute("selected", "");
+        L10n.setLocale(localStorage.getItem("output-language"));
+    }
+    catch (_a) {
+        $selConfigLanguage.querySelector('option[value="en"]').setAttribute("selected", "");
+        L10n.setLocale("en");
+    }
+    finally {
+        updateInterfaceStrings();
+    }
 }
 else {
     delete $totNoCookie.dataset.hidden;
@@ -43,26 +98,19 @@ else {
         }
     }, 1000);
 }
-const $errorsOutput = document.querySelector("#errors-output");
-const $btnErrors = document.querySelector("[data-button=\"errors\"]");
-const $diaErrors = document.querySelector("[data-dialog=\"errors\"]");
-const $btnErrorsClose = document.querySelector("[data-button=\"errors-close\"]");
-const $diaErrorsList = document.querySelector("#errors-list");
-const $btnParse = document.querySelector("[data-button=\"parse\"]");
-const $input = document.querySelector("#input");
-const $output = document.querySelector("#output");
-const $outputErrors = document.querySelector("#output-errors");
-const $diaOutput = document.querySelector("[data-dialog=\"output\"]");
-const $btnOutputClose = document.querySelector("[data-button=\"output-close\"]");
+//#endregion
+//#region enable interface
 $btnHelp.removeAttribute("data-disabled");
 $btnExample.removeAttribute("data-disabled");
 $btnConfig.removeAttribute("data-disabled");
 $btnParse.removeAttribute("data-disabled");
 $input.removeAttribute("disabled");
-/* flags list */
+//#endregion
+//#region get flags list from locale
 const FLAGS = L10n.getString("flag");
 const FLAG_CODES = Object.freeze(Object.keys(FLAGS));
-/* help events */
+//#endregion
+//#region help button events
 function $btnHelp_click() {
     if (!$btnHelp.hasAttribute("data-disabled")) {
         delete $diaHelp.dataset.hidden;
@@ -73,7 +121,8 @@ function $btnHelpClose_click() {
     $diaHelp.dataset.hidden = "";
 }
 $btnHelpClose.addEventListener("click", $btnHelpClose_click);
-/* config events */
+//#endregion
+//#region config events
 function $btnConfig_click() {
     if (!$btnConfig.hasAttribute("data-disabled")) {
         delete $diaConfig.dataset.hidden;
@@ -97,6 +146,7 @@ function $chkConfigCountryAlt_change() {
     }
 }
 $chkConfigCountryAlt.addEventListener("change", $chkConfigCountryAlt_change);
+// for checkboxes
 function $$config_change(event) {
     let target = event.target;
     let targetName = target.dataset.checkbox;
@@ -110,20 +160,29 @@ function $$config_change(event) {
         }
     }
 }
+// for language select
+function $selConfigLanguage_change(event) {
+    let target = event.target;
+    localStorage.setItem("output-language", target.value);
+}
+// Do not set the config events if cookies are disabled (upon setting will prevent the site from functioning properly)
 if (COOKIE_ENABLED) {
     $chkConfigIgnoreErrors.addEventListener("change", $$config_change);
     $chkConfigCountryTitle.addEventListener("change", $$config_change);
     $chkConfigCountryAlt.addEventListener("change", $$config_change);
     $chkConfigOutputInput.addEventListener("change", $$config_change);
+    $selConfigLanguage.addEventListener("change", $selConfigLanguage_change);
 }
-/* example events */
+//#endregion
+//#region example button events
 function $btnExample_click() {
     if (!$btnExample.hasAttribute("data-disabled")) {
         $input.value = L10n.getString("example");
     }
 }
 $btnExample.addEventListener("click", $btnExample_click);
-/* error events */
+//#endregion
+//#region error button events
 function $btnErrors_click() {
     if (!$btnErrors.hasAttribute("data-disabled")) {
         delete $diaErrors.dataset.hidden;
@@ -134,11 +193,44 @@ function $btnErrorsClose_click() {
     $diaErrors.dataset.hidden = "";
 }
 $btnErrorsClose.addEventListener("click", $btnErrorsClose_click);
+//#endregion
 /* output events */
 function $btnOutputClose_click() {
     $diaOutput.dataset.hidden = "";
 }
 $btnOutputClose.addEventListener("click", $btnOutputClose_click);
+function $btnOutputCopy_click() {
+    if (!$btnOutputCopy.hasAttribute("data-disabled")) {
+        if ("clipboard" in navigator) {
+            navigator.clipboard.writeText($output.value)
+                .then(() => {
+                $btnOutputCopy.dataset.disabled = "";
+                $btnOutputCopy.textContent = "Copied";
+            })
+                .catch(() => {
+                $btnOutputCopy.dataset.disabled = "";
+                $btnOutputCopy.textContent = "FAILED";
+            });
+        }
+        else {
+            try {
+                $output.select();
+                document.execCommand("copy");
+                $btnOutputCopy.dataset.disabled = "";
+                $btnOutputCopy.textContent = "Copied";
+            }
+            catch (_a) {
+                $btnOutputCopy.dataset.disabled = "";
+                $btnOutputCopy.textContent = "FAILED";
+            }
+        }
+    }
+    setTimeout(() => {
+        delete $btnOutputCopy.dataset.disabled;
+        $btnOutputCopy.textContent = "Copy";
+    }, 1000);
+}
+$btnOutputCopy.addEventListener("click", $btnOutputCopy_click);
 /* drop events */
 function fileReader_load(e) {
     let text = e.target.result;
@@ -264,8 +356,9 @@ $btnParse.addEventListener("click", () => {
         }
     }
     if (invalid_flags.length > 0) {
+        delete $btnErrors.dataset.disabled;
         delete $errorsOutput.dataset.hidden;
-        $btnErrors.textContent = `Errors (${invalid_flags.length})`;
+        $btnErrors.textContent = `${L10n.getInterfaceString("errors")} (${invalid_flags.length})`;
         $outputErrors.textContent = `${invalid_flags.length} error${invalid_flags.length === 1 ? "" : "s"} found`;
         for (let i = 0; i < invalid_flags.length; i++) {
             let $_li = document.createElement("li");
@@ -275,7 +368,7 @@ $btnParse.addEventListener("click", () => {
     }
     else {
         $errorsOutput.dataset.hidden = "";
-        $btnErrors.textContent = "Errors (0)";
+        $btnErrors.textContent = `${L10n.getInterfaceString("errors")} (0)`;
         $outputErrors.textContent = "";
     }
     if (invalid_flags.length > 0 && !$chkConfigIgnoreErrors.checked) {
@@ -294,7 +387,7 @@ $btnParse.addEventListener("click", () => {
             }
         }
         if ($chkConfigOutputInput.checked) {
-            $output.textContent = `${lines.join("\n")}\n${flags_output}\n`;
+            $output.textContent = `${lines.join("\n")}\n${flags_output}`;
         }
         else {
             $output.textContent = flags_output;
