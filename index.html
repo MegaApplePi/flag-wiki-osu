@@ -25,15 +25,15 @@
         <div class="dialog-container">
           <div class="dialog-scrollable">
             <ol>
-              <li>Copy and paste your markdown into the text box (or drag-and-drop).</li>
-              <li>Click "Find Flags".</li>
-              <li>Copy and paste the results into your markdown file.</li>
+              <li data-help="1">Copy and paste your markdown into the text box (or drag-and-drop).</li>
+              <li data-help="2">Click "Find Flags".</li>
+              <li data-help="3">Copy and paste the results into your markdown file.</li>
             </ol>
             <hr/>
-            <p><a href="https://github.com/MegaApplePi/flag-wiki-osu/issues/new">Issues or Feedback</a></p>
+            <p><a data-help="feedback" href="https://github.com/MegaApplePi/flag-wiki-osu/issues/new">Issues or Feedback</a></p>
           </div>
           <div class="dialog-buttons">
-            <div data-button="help-close">CLOSE</div>
+            <div data-button="help-close">Close</div>
           </div>
         </div>
       </div>
@@ -43,30 +43,37 @@
             <div>
               <label>
                 <input type="checkbox" data-checkbox="ignore-errors"/>
-                Ignore errors
+                <span>Ignore errors</span>
               </label>
             </div>
             <div>
               <label>
                 <input type="checkbox" data-checkbox="country-title"/>
-                Set country name in title (hover text)
+                <span>Set country name in title (hover text)</span>
               </label>
             </div>
             <div>
               <label>
                 <input type="checkbox" data-checkbox="country-alt"/>
-                Set country code in alt (image failed to load text)
+                <span>Set country code in alt (image failed to load text)</span>
               </label>
             </div>
             <div>
               <label>
                 <input type="checkbox" data-checkbox="output-input"/>
-                Include input with output
+                <span>Include input with output</span>
+              </label>
+            </div>
+            <hr/>
+            <div>
+              <label>
+                <span>Output Lanauage:</span>
+                <select data-select="language"></select>
               </label>
             </div>
           </div>
           <div class="dialog-buttons">
-            <div data-button="config-close">CLOSE</div>
+            <div data-button="config-close">Close</div>
           </div>
         </div>
       </div>
@@ -79,21 +86,19 @@
             </div>
           </div>
           <div class="dialog-buttons">
-            <div data-button="errors-close">CLOSE</div>
+            <div data-button="errors-close">Close</div>
           </div>
         </div>
       </div>
       <div data-dialog="output" data-hidden>
         <div class="dialog-container">
           <div class="dialog-contents">
-            <div class="dialog-scrollable">
-              <textarea id="output" readonly></textarea>
-            </div>
+            <textarea id="output" readonly></textarea>
             <span id="output-errors"></span>
           </div>
           <div class="dialog-buttons">
-            <div data-button="output-copy">COPY</div>
-            <div data-button="output-close">CLOSE</div>
+            <div data-button="output-close">Close</div>
+            <div data-button="output-copy">Copy</div>
           </div>
         </div>
       </div>
@@ -103,7 +108,7 @@
         <div data-toast="no-javascript">
           <span>If you are reading this, your web browser's JavaScript is (probably) disabled!</span>
           <br>
-          <span><small>All parsing is done inside your web browser, please enable JavaScript then reload this page.</small></span>
+          <span><small>All parsing is done inside your web browser using JavaScript, please enable it then reload this page.</small></span>
         </div>
       </noscript>
       <div data-toast="no-cookie" data-hidden>

@@ -1,7 +1,7 @@
 import en from "./Strings/en.js";
 
 const Strings: object = {
-  "en": en,
+  "en": en
 };
 
 export default Strings;

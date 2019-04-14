@@ -9,7 +9,7 @@ class L10n {
         }
         else {
             this.locale = "en";
-            throw new Error("Invalid locale");
+            throw new Error("Undefined locale");
         }
     }
     static getString(string) {
@@ -18,11 +18,36 @@ class L10n {
         }
         return Strings["en"][string];
     }
+    static getInterfaceString(string) {
+        if (Strings[this.locale].interface[string]) {
+            return Strings[this.locale].interface[string];
+        }
+        return Strings["en"].interface[string];
+    }
+    static getFlagString(string) {
+        if (Strings[this.locale].flag[string]) {
+            return Strings[this.locale].flag[string];
+        }
+        return Strings["en"].flag[string];
+    }
     static hasLocale(locale) {
         if (locale in Strings) {
             return true;
         }
         return false;
+    }
+    static getLocales() {
+        return Object.keys(Strings);
+    }
+    static getLocaleName(locale) {
+        return Strings[locale]._name;
+    }
+    /**
+     * Get the locale's version number. Used for comparision between the locale and English.
+     * @param locale The locale name
+     */
+    static getLocaleVersion(locale) {
+        return Strings[locale]._version;
     }
 }
 L10n.locale = "en";
