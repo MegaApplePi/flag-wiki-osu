@@ -10,32 +10,103 @@ body {
   position: relative;
   z-index: -10; }
 
-[data-button] {
-  background-color: #2f54eb;
-  color: #fff;
-  cursor: pointer;
-  display: inline-flex;
-  margin: 2px;
-  padding: 8px 16px;
-  transition: 25ms background-color;
-  user-select: none; }
-  [data-button]:hover {
-    background-color: #597ef7; }
-  [data-button]:active {
-    background-color: #1d39c4; }
-  [data-button][data-disabled] {
-    background-color: #bfbfbf;
-    cursor: not-allowed; }
-
-header {
+.menu {
   align-items: center;
   display: flex;
   justify-content: space-between;
   height: 64px;
   margin: 0 5%;
   position: relative; }
-  header > div {
+  .menu__group {
     display: flex; }
+  .menu__button {
+    background-color: #2f54eb;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    margin: 2px;
+    padding: 8px 16px;
+    transition: 25ms background-color;
+    user-select: none; }
+    .menu__button:hover {
+      background-color: #597ef7; }
+    .menu__button:active {
+      background-color: #1d39c4; }
+    .menu__button--disabled {
+      background-color: #bfbfbf;
+      cursor: not-allowed;
+      transition: none; }
+      .menu__button--disabled:hover, .menu__button--disabled:active {
+        background-color: #bfbfbf; }
+
+.dialog {
+  align-items: center;
+  background-color: rgba(217, 217, 217, 0.5);
+  background-color: #d9d9d9bf;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%; }
+  .dialog--hidden {
+    display: none; }
+  .dialog__message--hidden {
+    display: none; }
+  .dialog__contents {
+    display: contents; }
+    @supports not (display: contents) {
+      .dialog__contents {
+        height: 300px; } }
+  .dialog__container {
+    background: #fff;
+    padding: 8px;
+    display: flex;
+    min-height: 300px;
+    max-height: 90%;
+    justify-content: space-between;
+    flex-direction: column;
+    min-width: 600px;
+    max-width: 90%; }
+  .dialog__scrollable {
+    height: 100%;
+    overflow: auto; }
+  .dialog__button {
+    background-color: #2f54eb;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    margin: 2px;
+    padding: 8px 16px;
+    transition: 25ms background-color;
+    user-select: none; }
+    .dialog__button:hover {
+      background-color: #597ef7; }
+    .dialog__button:active {
+      background-color: #1d39c4; }
+    .dialog__button--disabled {
+      background-color: #bfbfbf;
+      cursor: not-allowed;
+      transition: none; }
+      .dialog__button--disabled:hover, .dialog__button--disabled:active {
+        background-color: #bfbfbf; }
+  .dialog__buttons {
+    display: inline-flex;
+    justify-content: space-between; }
+
+.toast {
+  background-color: #2f54eb;
+  bottom: 0;
+  color: #fff;
+  margin: 16px;
+  left: 0;
+  padding: 8px 16px;
+  position: fixed;
+  user-select: none; }
+  .toast--hidden {
+    display: none; }
 
 main {
   margin: 0 10%; }
@@ -92,53 +163,6 @@ main {
         position: unset;
         left: unset;
         bottom: unset; }
-
-[data-hidden] {
-  display: none !important; }
-
-[data-dialog] {
-  align-items: center;
-  background-color: rgba(217, 217, 217, 0.5);
-  background-color: #d9d9d9bf;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: center;
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%; }
-  [data-dialog] h2 {
-    font-size: 18px;
-    margin: 0; }
-  [data-dialog] .dialog-contents {
-    display: contents; }
-    @supports not (display: contents) {
-      [data-dialog] .dialog-contents {
-        height: 300px; } }
-  [data-dialog] .dialog-container {
-    background: #fff;
-    padding: 8px;
-    display: flex;
-    min-height: 300px;
-    max-height: 90%;
-    justify-content: space-between;
-    flex-direction: column;
-    min-width: 400px;
-    max-width: 90%; }
-    [data-dialog] .dialog-container .dialog-scrollable {
-      height: 100%;
-      overflow: auto; }
-
-[data-toast] {
-  background-color: #2f54eb;
-  color: #fff;
-  position: fixed;
-  padding: 8px 16px;
-  margin: 16px;
-  bottom: 0;
-  left: 0;
-  user-select: none; }
 
 #errors-list:empty {
   margin: 0;

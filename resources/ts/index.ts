@@ -98,7 +98,7 @@ if (COOKIE_ENABLED) {
     updateInterfaceStrings();
   }
 } else {
-  delete $totNoCookie.dataset.hidden;
+  $totNoCookie.classList.remove("toast--hidden");
   let tick = 5;
   $timNoCookie.textContent = `${tick} second${tick === 1 ? "" : "s"}`;
 
@@ -114,10 +114,10 @@ if (COOKIE_ENABLED) {
 //#endregion
 
 //#region enable interface
-$btnHelp.removeAttribute("data-disabled");
-$btnExample.removeAttribute("data-disabled");
-$btnConfig.removeAttribute("data-disabled");
-$btnParse.removeAttribute("data-disabled");
+$btnHelp.classList.remove("menu__button--disabled");
+$btnExample.classList.remove("menu__button--disabled");
+$btnConfig.classList.remove("menu__button--disabled");
+$btnParse.classList.remove("menu__button--disabled");
 $input.removeAttribute("disabled");
 //#endregion
 
@@ -128,28 +128,28 @@ const FLAG_CODES = Object.freeze(Object.keys(FLAGS));
 
 //#region help button events
 function $btnHelp_click() {
-  if (!$btnHelp.hasAttribute("data-disabled")) {
-    delete $diaHelp.dataset.hidden;
+  if (!$btnHelp.classList.contains("menu__button--disabled")) {
+    $diaHelp.classList.remove("dialog--hidden");
   }
 }
 $btnHelp.addEventListener("click", $btnHelp_click);
 
 function $btnHelpClose_click() {
-  $diaHelp.dataset.hidden = "";
+  $diaHelp.classList.add("dialog--hidden");
 }
 $btnHelpClose.addEventListener("click", $btnHelpClose_click);
 //#endregion
 
 //#region config events
 function $btnConfig_click() {
-  if (!$btnConfig.hasAttribute("data-disabled")) {
-    delete $diaConfig.dataset.hidden;
+  if (!$btnConfig.classList.contains("menu__button--disabled")) {
+    $diaConfig.classList.remove("dialog--hidden");
   }
 }
 $btnConfig.addEventListener("click", $btnConfig_click);
 
 function $btnConfigClose_click() {
-  $diaConfig.dataset.hidden = "";
+  $diaConfig.classList.add("dialog--hidden");
 }
 $btnConfigClose.addEventListener("click", $btnConfigClose_click);
 
@@ -200,7 +200,7 @@ if (COOKIE_ENABLED) {
 
 //#region example button events
 function $btnExample_click() {
-  if (!$btnExample.hasAttribute("data-disabled")) {
+  if (!$btnExample.classList.contains("menu__button--disabled")) {
     $input.value = L10n.getString("example") as string;
   }
 }
@@ -209,50 +209,50 @@ $btnExample.addEventListener("click", $btnExample_click);
 
 //#region error button events
 function $btnErrors_click() {
-  if (!$btnErrors.hasAttribute("data-disabled")) {
-    delete $diaErrors.dataset.hidden;
+  if (!$btnErrors.classList.contains("menu__button--disabled")) {
+    $diaErrors.classList.remove("dialog--hidden");
   }
 }
 $btnErrors.addEventListener("click", $btnErrors_click);
 
 function $btnErrorsClose_click() {
-  $diaErrors.dataset.hidden = "";
+  $diaErrors.classList.add("dialog--hidden");
 }
 $btnErrorsClose.addEventListener("click", $btnErrorsClose_click);
 //#endregion
 
 /* output events */
 function $btnOutputClose_click() {
-  $diaOutput.dataset.hidden = "";
+  $diaOutput.classList.add("dialog--hidden");
 }
 $btnOutputClose.addEventListener("click", $btnOutputClose_click);
 
 function $btnOutputCopy_click() {
-  if (!$btnOutputCopy.hasAttribute("data-disabled")) {
+  if (!$btnOutputCopy.classList.contains("menu__button--disabled")) {
     if ("clipboard" in navigator) {
       navigator.clipboard.writeText($output.value)
       .then(() => {
-        $btnOutputCopy.dataset.disabled = "";
+        $btnOutputCopy.classList.add("menu__button--disabled");
         $btnOutputCopy.textContent = "Copied";
       })
       .catch(() => {
-        $btnOutputCopy.dataset.disabled = "";
+        $btnOutputCopy.classList.add("menu__button--disabled");
         $btnOutputCopy.textContent = "FAILED";
       });
     } else {
       try {
         $output.select();
         document.execCommand("copy");
-        $btnOutputCopy.dataset.disabled = "";
+        $btnOutputCopy.classList.add("menu__button--disabled");
         $btnOutputCopy.textContent = "Copied";
       } catch {
-        $btnOutputCopy.dataset.disabled = "";
+        $btnOutputCopy.classList.add("menu__button--disabled");
         $btnOutputCopy.textContent = "FAILED";
       }
     }
   }
   setTimeout(() => {
-    delete $btnOutputCopy.dataset.disabled;
+    $btnOutputCopy.classList.remove("menu__button--disabled");
     $btnOutputCopy.textContent = "Copy";
   }, 1000);
 }
@@ -390,23 +390,25 @@ $btnParse.addEventListener("click", () => {
     }
   }
   if (invalid_flags.length > 0) {
-    delete $btnErrors.dataset.disabled;
-    delete $errorsOutput.dataset.hidden;
+    $btnErrors.classList.remove("menu__button--disabled");
+    $errorsOutput.classList.remove("dialog__message--hidden");
     $btnErrors.textContent = `${L10n.getInterfaceString("errors")} (${invalid_flags.length})`;
     $outputErrors.textContent = `${invalid_flags.length} error${invalid_flags.length === 1 ? "" : "s"} found`;
+
     for (let i = 0; i < invalid_flags.length; i++) {
       let $_li = document.createElement("li");
       $_li.textContent = `${invalid_flags[i][0]} (line: ${invalid_flags[i][1]})`;
       $diaErrorsList.insertAdjacentElement("beforeend", $_li);
     }
   } else {
-    $errorsOutput.dataset.hidden = "";
+    $btnErrors.classList.add("menu__button--disabled");
+    $errorsOutput.classList.add("dialog__message--hidden");
     $btnErrors.textContent = `${L10n.getInterfaceString("errors")} (0)`;
     $outputErrors.textContent = "";
   }
 
   if (invalid_flags.length > 0 && !$chkConfigIgnoreErrors.checked) {
-    delete $diaErrors.dataset.hidden;
+    $diaErrors.classList.remove("dialog--hidden");
   } else {
     // we want the flags to go in some kind of order
     let flags_sort = {};
@@ -424,6 +426,6 @@ $btnParse.addEventListener("click", () => {
     } else {
       $output.textContent = flags_output;
     }
-    delete $diaOutput.dataset.hidden;
+    $diaOutput.classList.remove("dialog--hidden");
   }
 });

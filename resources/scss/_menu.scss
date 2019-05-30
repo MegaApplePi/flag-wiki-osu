@@ -1,0 +1,16 @@
+.menu {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  height: 64px;
+  margin: 0 5%;
+  position: relative;
+
+  &__group {
+    display: flex;
+  }
+
+  &__button {
+    @include button;
+  }
+}
