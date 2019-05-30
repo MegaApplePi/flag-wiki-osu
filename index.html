@@ -8,22 +8,22 @@
     <link rel="icon" href="favicon.png"/>
   </head>
   <body>
-    <header>
-      <div>
-        <div data-button="help" data-disabled>Help</div>
-        <div data-button="example" data-disabled>Example</div>
-        <div data-button="config" data-disabled>Settings</div>
+    <header class="menu">
+      <div class="menu__group">
+        <div class="menu__button menu__button--disabled" data-button="help">Help</div>
+        <div class="menu__button menu__button--disabled" data-button="example">Example</div>
+        <div class="menu__button menu__button--disabled" data-button="config">Settings</div>
       </div>
-      <div>
-        <div data-button="errors" data-disabled>Errors (0)</div>
-        <div data-button="parse" data-disabled>Find Flags</div>
+      <div class="menu__group">
+        <div class="menu__button menu__button--disabled" data-button="errors">Errors (0)</div>
+        <div class="menu__button menu__button--disabled" data-button="parse">Find Flags</div>
       </div>
     </header>
-    <main>
-      <textarea id="input" disabled></textarea>
-      <div data-dialog="help" data-hidden>
-        <div class="dialog-container">
-          <div class="dialog-scrollable">
+    <main class="main">
+      <textarea class="main__input" id="input" disabled></textarea>
+      <div class="dialog dialog--hidden" data-dialog="help">
+        <div class="dialog__container">
+          <div class="dialog__scrollable">
             <ol>
               <li data-help="1">Copy and paste your markdown into the text box (or drag-and-drop).</li>
               <li data-help="2">Click "Find Flags".</li>
@@ -32,14 +32,14 @@
             <hr/>
             <p><a data-help="feedback" href="https://github.com/MegaApplePi/flag-wiki-osu/issues/new">Issues or Feedback</a></p>
           </div>
-          <div class="dialog-buttons">
-            <div data-button="help-close">Close</div>
+          <div class="dialog__buttons">
+            <div class="dialog__button" data-button="help-close">Close</div>
           </div>
         </div>
       </div>
-      <div data-dialog="config" data-hidden>
-        <div class="dialog-container">
-          <div class="dialog-scrollable">
+      <div class="dialog dialog--hidden" data-dialog="config">
+        <div class="dialog__container">
+          <div class="dialog__scrollable">
             <div>
               <label>
                 <input type="checkbox" data-checkbox="ignore-errors"/>
@@ -73,45 +73,45 @@
             </div>
           </div>
           <div class="dialog-buttons">
-            <div data-button="config-close">Close</div>
+            <div class="dialog__button" data-button="config-close">Close</div>
           </div>
         </div>
       </div>
-      <div data-dialog="errors" data-hidden>
-        <div class="dialog-container">
+      <div class="dialog dialog--hidden" data-dialog="errors" data-hidden>
+        <div class="dialog__container">
           <div>
-            <span id="errors-output" data-hidden>Showing errors instead of output. <span title="See settings to ignore.">(?)</span></span>
+            <span id="errors-output" class="dialog__message--hidden">Showing errors instead of output. <span title="See settings to ignore.">(?)</span></span>
             <div class="dialog-scrollable">
               <ul id="errors-list"></ul>
             </div>
           </div>
-          <div class="dialog-buttons">
-            <div data-button="errors-close">Close</div>
+          <div class="dialog__buttons">
+            <div class="dialog__button" data-button="errors-close">Close</div>
           </div>
         </div>
       </div>
-      <div data-dialog="output" data-hidden>
-        <div class="dialog-container">
-          <div class="dialog-contents">
+      <div class="dialog dialog--hidden" data-dialog="output" data-hidden>
+        <div class="dialog__container">
+          <div class="dialog__contents">
             <textarea id="output" readonly></textarea>
             <span id="output-errors"></span>
           </div>
-          <div class="dialog-buttons">
-            <div data-button="output-close">Close</div>
-            <div data-button="output-copy">Copy</div>
+          <div class="dialog__buttons">
+            <div class="dialog__button" data-button="output-close">Close</div>
+            <div class="dialog__button" data-button="output-copy">Copy</div>
           </div>
         </div>
       </div>
 
       <!-- toast -->
       <noscript>
-        <div data-toast="no-javascript">
+        <div class="toast" data-toast="no-javascript">
           <span>If you are reading this, your web browser's JavaScript is (probably) disabled!</span>
           <br>
           <span><small>All parsing is done inside your web browser using JavaScript, please enable it then reload this page.</small></span>
         </div>
       </noscript>
-      <div data-toast="no-cookie" data-hidden>
+      <div class="toast toast--hidden" data-toast="no-cookie">
         <span>Cookies are disabled; your settings will be forgotten.</span>
         <br>
         <span><small>Dismissing in <span data-time></span></small></span>

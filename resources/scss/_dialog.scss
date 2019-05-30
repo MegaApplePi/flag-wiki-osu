@@ -1,0 +1,57 @@
+.dialog {
+  align-items: center;
+  background-color: rgba(217, 217, 217, 0.5);
+  background-color: #d9d9d9bf;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+
+  &--hidden {
+    display: none;
+  }
+
+  &__message {
+    &--hidden {
+      display: none;
+    }
+  }
+
+  &__contents {
+    display: contents;
+    // display: contents; is not be supported everywhere :(
+    @supports not (display: contents) {
+      height: 300px;
+    }
+  }
+
+  &__container {
+    background: #fff;
+    padding: 8px;
+    display: flex;
+    min-height: 300px;
+    max-height: 90%;
+    justify-content: space-between;
+    flex-direction: column;
+    min-width: 600px;
+    max-width: 90%;
+  }
+
+  &__scrollable {
+    height: 100%;
+    overflow: auto;
+  }
+
+  &__button {
+    @include button;
+  }
+
+  &__buttons {
+    display: inline-flex;
+    justify-content: space-between;
+  }
+}
