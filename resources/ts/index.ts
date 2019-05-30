@@ -155,7 +155,6 @@ $btnConfigClose.addEventListener("click", $btnConfigClose_click);
 
 // the input needs to be included so the user can copy the alt values
 function $chkConfigCountryAlt_change() {
-  // TOFIX this will also uncheck $chkConfigOutputInput if the user had already checked it
   if ($chkConfigCountryAlt.checked) {
     $chkConfigOutputInput.checked = true;
     $chkConfigOutputInput.disabled = true;
@@ -183,7 +182,7 @@ function $$config_change(event: Event) {
 // for language select
 function $selConfigLanguage_change(event: Event) {
   let target = event.target as HTMLSelectElement;
-  
+
   localStorage.setItem("output-language", target.value);
 }
 
@@ -309,16 +308,15 @@ $btnParse.addEventListener("click", () => {
   let flags_output = "";
   let invalid_flags = [];
   for (let i = 0; i < lines.length; i++) {
-    /* ref links */
-    if (/!\[(.+)?\]\[flag_..(?:..)?\]/g.test(lines[i])) {
+    /*   ref links                      inline links */
+    if (/(!\[(.+)?\]\[flag_..(?:..)?\])|(\(\/wiki\/shared\/flag\/..(?:..)?\.(gif|jpe?g|png)(?: ".*")?\))/g.test(lines[i])) {
       let key = lines[i].match(/\[flag_..(?:..)?\]/g);
       if (key) {
         for (let j = 0; j < key.length; j++) {
           let countryMatch = key[j].match(/_..(?:..)?\]/g)[0];
           let countryCode = countryMatch.substring(1, (countryMatch.length - 1)).toUpperCase();
 
-          // TOFIX this is duplicated to below
-          let ext;
+          let ext: string;
           if (countryCode.length === 2) {
             ext = ".gif";
           } else if (countryCode.length === 4) {
@@ -341,39 +339,6 @@ $btnParse.addEventListener("click", () => {
         }
       }
     }
-    /* inline links */
-    if (/\(\/wiki\/shared\/flag\/..(?:..)?\.(gif|jpe?g|png)(?: ".*")?\)/g.test(lines[i])) {
-      let key = lines[i].match(/\/flag\/..(?:..)?\./g);
-      if (key) {
-        for (let j = 0; j < key.length; j++) {
-          let countryMatch = key[j].match(/\/..(?:..)?\./g)[0];
-          let countryCode = countryMatch.substring(1, (countryMatch.length - 1)).toUpperCase();
-
-          // TOFIX this is duplicated from above
-          let ext;
-          if (countryCode.length === 2) {
-            ext = ".gif";
-          } else if (countryCode.length === 4) {
-            ext = ".png";
-          }
-          let newKey = key[j].replace(key[j], getNewKey);
-          if (!FLAG_CODES.includes(countryCode)) {
-            invalid_flags.push([countryCode, (i + 1)]);
-          }
-          // parse with broken flags anyways
-          if ($chkConfigCountryTitle.checked) {
-            flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext} "${FLAGS[countryCode] ? FLAGS[countryCode] : "NOT_FOUND"}"`;
-          } else {
-            flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext}`;
-          }
-
-          if ($chkConfigCountryAlt.checked) {
-            lines[i] = lines[i].replace(/!\[\]/g, `![${countryCode}]`);
-          }
-        }
-      }
-    }
-
     // linkPath = "(/wiki/shared/flags/XX.xxx)" part; recognising title is supported
     let linkPath = lines[i].match(/\(\/wiki\/shared\/flag\/..(?:..)?\.(gif|jpe?g|png)(?: ".*")?\)/g);
     if (linkPath) {
