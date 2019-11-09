@@ -1,7 +1,7 @@
 body {
   background-color: #f0f5ff; }
 
-.toast {
+.toast-me {
   background-color: #2f54eb;
   bottom: 0;
   color: #fff;
@@ -10,7 +10,7 @@ body {
   padding: 8px 16px;
   position: fixed;
   user-select: none; }
-  .toast--hidden {
+  .toast-me--hidden {
     display: none; }
 
 .main__input {
