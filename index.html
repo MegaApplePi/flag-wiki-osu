@@ -11,12 +11,20 @@
     <div class="container mt-3">
       <div class="row">
         <div class="col-sm-6 text-left">
-          <button type="button" class="btn btn-primary" disabled data-toggle="modal" data-target="#help-modal" data-button="help">Help</button>
-          <button type="button" class="btn btn-primary" disabled data-button="example">Example</button>
-          <button type="button" class="btn btn-primary" disabled data-toggle="modal" data-target="#config-modal" data-button="config">Settings</button>
+          <button type="button" class="btn btn-primary" disabled data-toggle="modal" data-target="#help-modal" data-button="help">
+            <span data-l10n="help">help</span>
+          </button>
+          <button type="button" class="btn btn-primary" disabled data-button="example">
+            <span data-l10n="example">example</span>
+          </button>
+          <button type="button" class="btn btn-primary" disabled data-toggle="modal" data-target="#config-modal" data-button="config">
+            <span data-l10n="config">config</span>
+          </button>
         </div>
         <div class="col-sm-6 text-right">
-          <button type="button" class="btn btn-outline-primary" disabled data-button="parse">Find Flags</button>
+          <button type="button" class="btn btn-outline-primary" disabled data-button="parse">
+            <span data-l10n="parse">parse</span>
+          </button>
         </div>
       </div>
       <div class="row mt-3">
@@ -27,19 +35,23 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Help</h5>
+            <h5 class="modal-title">
+              <span data-l10n="help">help</span>
+            </h5>
           </div>
           <div class="modal-body">
             <ol>
-              <li data-help="1">Copy and paste your markdown into the text box (or drag-and-drop).</li>
-              <li data-help="2">Click "Find Flags".</li>
-              <li data-help="3">Copy and paste the results into your markdown file.</li>
+              <li><span data-l10n="help1">help1</span></li>
+              <li><span data-l10n="help2">help2</span></li>
+              <li><span data-l10n="help3">help3</span></li>
             </ol>
             <hr/>
-            <p><a data-help="feedback" href="https://github.com/MegaApplePi/flag-wiki-osu/issues/new">Issues or Feedback</a></p>
+            <p><a data-help="feedback" href="https://github.com/MegaApplePi/flag-wiki-osu/issues/new"><span data-l10n="feedback">feedback</span></a></p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" data-button="help-close">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" data-button="help-close">
+              <span data-l10n="close">close</span>
+            </button>
           </div>
         </div>
       </div>
@@ -48,29 +60,39 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Settings</h5>
+            <h5 class="modal-title">
+              <span data-l10n="config">config</span>
+            </h5>
           </div>
           <div class="modal-body">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" id="config-country-title"/>
-              <label class="form-check-label" for="config-country-title">Set country name in title (hover text)</label>
+              <label class="form-check-label" for="config-country-title">
+                <span data-l10n="config-name">config-name</span>
+              </label>
             </div>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" id="config-country-alt"/>
-              <label class="form-check-label" for="config-country-alt">Set country code in alt (image failed to load text)</label>
+              <label class="form-check-label" for="config-country-alt">
+                <span data-l10n="config-code">config-code</span>
+              </label>
             </div>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" id="config-output-input"/>
-              <label class="form-check-label" for="config-output-input">Include input with output</label>
+              <label class="form-check-label" for="config-output-input">
+                <span data-l10n="config-inout">config-inout</span>
+              </label>
             </div>
             <hr>
             <div class="form-group">
-              <label for="config-language">Interface and output lanauage:</label>
+              <label for="config-language"><span data-l10n="config-lang">config-lang</span></label>
               <select class="form-control"  id="config-language" data-select=""></select>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" data-button="config-close">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" data-button="config-close">
+              <span data-l10n="close">close</span>
+            </button>
           </div>
         </div>
       </div>
@@ -79,16 +101,26 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Output</h5>
+            <h5 class="modal-title">
+              <span data-l10n="parse">parse</span>
+            </h5>
           </div>
           <div class="modal-body">
-            <div id="output-errors">Some errors were found.</div>
+            <div id="output-has-errors">
+              <span data-l10n="output-has-errors">output-has-errors</span>
+            </div>
             <textarea id="output" readonly class="main__output"></textarea>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" data-button="output-close">Close</button>
-            <button type="button" class="btn btn-primary" disabled data-toggle="modal" data-target="#error-modal" data-button="errors" data-dismiss="modal">See Errors</button>
-            <button type="button" class="btn btn-secondary" data-button="output-copy">Copy</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" data-button="output-close">
+              <span data-l10n="close">close</span>
+            </button>
+            <button type="button" class="btn btn-primary" disabled data-toggle="modal" data-target="#error-modal" data-button="errors" data-dismiss="modal">
+              <span data-l10n="show-errors">show-errors</span>
+            </button>
+            <button type="button" class="btn btn-secondary" data-button="output-copy">
+              <span data-l10n="copy">copy</span>
+            </button>
           </div>
         </div>
       </div>
@@ -97,13 +129,17 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Errors</h5>
+            <h5 class="modal-title">
+              <span data-l10n="errors">errors</span>
+            </h5>
           </div>
           <div class="modal-body">
             <ul id="errors-list"></ul>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" data-button="error-close">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" data-button="error-close">
+              <span data-l10n="close">close</span>
+            </button>
           </div>
         </div>
       </div>

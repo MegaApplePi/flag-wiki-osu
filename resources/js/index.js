@@ -1,26 +1,22 @@
 import L10n from "./L10n.js";
 //#region DOM
-const $totNoCookie = document.querySelector('[data-toast="no-cookie"]');
-const $timNoCookie = document.querySelector('[data-toast="no-cookie"] [data-time]');
+const $noCookieToast = document.querySelector('[data-toast="no-cookie"]');
+const $noCookieTimer = document.querySelector('[data-toast="no-cookie"] [data-time]');
 const COOKIES_IS_ENABLED = navigator.cookieEnabled;
-const $btnHelp = document.querySelector('[data-button="help"]');
-const $diaHelp = document.querySelector('[data-dialog="help"]');
-const $btnHelpClose = document.querySelector('[data-button="help-close"]');
-const $btnExample = document.querySelector('[data-button="example"]');
-const $btnConfig = document.querySelector('[data-button="config"]');
-const $btnConfigClose = document.querySelector('[data-button="config-close"]');
-const $chkConfigCountryTitle = document.querySelector('#config-country-title');
-const $chkConfigCountryAlt = document.querySelector('#config-country-alt');
-const $chkConfigOutputInput = document.querySelector('#config-output-input');
-const $selConfigLanguage = document.querySelector('#config-language');
-const $btnErrors = document.querySelector('[data-button="errors"]');
+const $helpButton = document.querySelector('[data-button="help"]');
+const $exampleButton = document.querySelector('[data-button="example"]');
+const $configButton = document.querySelector('[data-button="config"]');
+const $configCountryTitleCheckbox = document.querySelector('#config-country-title');
+const $configCountryAltCheckbox = document.querySelector('#config-country-alt');
+const $configOutputInputCheckbox = document.querySelector('#config-output-input');
+const $configLanguageSelect = document.querySelector('#config-language');
+const $errorsButton = document.querySelector('[data-button="errors"]');
 const $errorsList = document.querySelector("#errors-list");
-const $btnParse = document.querySelector('[data-button="parse"]');
-const $input = document.querySelector("#input");
-const $output = document.querySelector("#output");
-const $outputErrors = document.querySelector("#output-errors");
-const $btnOutputClose = document.querySelector('[data-button="output-close"]');
-const $btnOutputCopy = document.querySelector('[data-button="output-copy"]');
+const $parseButton = document.querySelector('[data-button="parse"]');
+const $inputTextarea = document.querySelector("#input");
+const $outputTextarea = document.querySelector("#output");
+const $outputHasErrors = document.querySelector("#output-has-errors");
+const $outputCopyButton = document.querySelector('[data-button="output-copy"]');
 //#endregion
 //#region create lanauage selector options
 let lanauages = L10n.getLangCodes();
@@ -28,46 +24,37 @@ for (let lang of lanauages) {
     let $option = document.createElement("option");
     $option.setAttribute("value", lang);
     $option.textContent = L10n.getLangName(lang);
-    $selConfigLanguage.insertAdjacentElement("beforeend", $option);
+    $configLanguageSelect.insertAdjacentElement("beforeend", $option);
 }
 //#endregion
 //#region update interface strings
 function updateInterfaceStrings() {
-    $btnHelp.textContent = L10n.getInterfaceString("help");
-    $diaHelp.querySelector('[data-help="1"]').textContent = L10n.getInterfaceString("help1");
-    $diaHelp.querySelector('[data-help="2"]').textContent = L10n.getInterfaceString("help2");
-    $diaHelp.querySelector('[data-help="3"]').textContent = L10n.getInterfaceString("help3");
-    $diaHelp.querySelector('[data-help="feedback"]').textContent = L10n.getInterfaceString("feedback");
-    $btnHelpClose.textContent = L10n.getInterfaceString("close");
-    $btnExample.textContent = L10n.getInterfaceString("example");
-    $btnConfig.textContent = L10n.getInterfaceString("config");
-    $chkConfigCountryTitle.nextElementSibling.textContent = L10n.getInterfaceString("config-name");
-    $chkConfigCountryAlt.nextElementSibling.textContent = L10n.getInterfaceString("config-code");
-    $chkConfigOutputInput.nextElementSibling.textContent = L10n.getInterfaceString("config-inout");
-    $selConfigLanguage.previousElementSibling.textContent = L10n.getInterfaceString("config-lang");
-    $btnConfigClose.textContent = L10n.getInterfaceString("close");
-    $btnErrors.textContent = `${L10n.getInterfaceString("show-errors")}`;
+    const elements = [...document.body.querySelectorAll("[data-l10n]")];
+    for (const element of elements) {
+        element.textContent = L10n.getInterfaceString(element.dataset.l10n);
+        console.log(element.textContent);
+    }
 }
 //#endregion
 //#region restore options
 if (COOKIES_IS_ENABLED) {
     if (localStorage.getItem("country-title") === "true") {
-        $chkConfigCountryTitle.checked = true;
+        $configCountryTitleCheckbox.checked = true;
     }
     if (localStorage.getItem("country-alt") === "true") {
-        $chkConfigCountryAlt.checked = true;
-        $chkConfigOutputInput.checked = true;
-        $chkConfigOutputInput.disabled = true;
+        $configCountryAltCheckbox.checked = true;
+        $configOutputInputCheckbox.checked = true;
+        $configOutputInputCheckbox.disabled = true;
     }
     if (localStorage.getItem("output-input") === "true") {
-        $chkConfigOutputInput.checked = true;
+        $configOutputInputCheckbox.checked = true;
     }
     try {
-        $selConfigLanguage.querySelector(`option[value="${localStorage.getItem("output-language")}"]`).setAttribute("selected", "");
+        $configLanguageSelect.querySelector(`option[value="${localStorage.getItem("output-language")}"]`).setAttribute("selected", "");
         L10n.setLang(localStorage.getItem("output-language"));
     }
     catch (_a) {
-        $selConfigLanguage.querySelector('option[value="en"]').setAttribute("selected", "");
+        $configLanguageSelect.querySelector('option[value="en"]').setAttribute("selected", "");
         L10n.setLang("en");
     }
     finally {
@@ -75,25 +62,25 @@ if (COOKIES_IS_ENABLED) {
     }
 }
 else {
-    $totNoCookie.classList.remove("toast--hidden");
+    $noCookieToast.classList.remove("toast--hidden");
     let tick = 5;
-    $timNoCookie.textContent = `${tick} second${tick === 1 ? "" : "s"}`;
+    $noCookieTimer.textContent = `${tick} second${tick === 1 ? "" : "s"}`;
     let timer = window.setInterval(() => {
         tick--;
-        $timNoCookie.textContent = `${tick} second${tick === 1 ? "" : "s"}`;
+        $noCookieTimer.textContent = `${tick} second${tick === 1 ? "" : "s"}`;
         if (tick === 0) {
-            $totNoCookie.dataset.hidden = "";
+            $noCookieToast.dataset.hidden = "";
             window.clearInterval(timer);
         }
     }, 1000);
 }
 //#endregion
 //#region enable interface
-$btnHelp.removeAttribute("disabled");
-$btnExample.removeAttribute("disabled");
-$btnConfig.removeAttribute("disabled");
-$btnParse.removeAttribute("disabled");
-$input.removeAttribute("disabled");
+$helpButton.removeAttribute("disabled");
+$exampleButton.removeAttribute("disabled");
+$configButton.removeAttribute("disabled");
+$parseButton.removeAttribute("disabled");
+$inputTextarea.removeAttribute("disabled");
 //#endregion
 //#region get flags list from lang
 const FLAGS = L10n.getString("flag");
@@ -101,16 +88,16 @@ const FLAG_CODES = Object.freeze(Object.keys(FLAGS));
 //#endregion
 //#region config events
 function $chkConfigCountryAlt_change() {
-    if ($chkConfigCountryAlt.checked) {
-        $chkConfigOutputInput.checked = true;
-        $chkConfigOutputInput.disabled = true;
+    if ($configCountryAltCheckbox.checked) {
+        $configOutputInputCheckbox.checked = true;
+        $configOutputInputCheckbox.disabled = true;
     }
     else {
-        $chkConfigOutputInput.checked = false;
-        $chkConfigOutputInput.disabled = false;
+        $configOutputInputCheckbox.checked = false;
+        $configOutputInputCheckbox.disabled = false;
     }
 }
-$chkConfigCountryAlt.addEventListener("change", $chkConfigCountryAlt_change);
+$configCountryAltCheckbox.addEventListener("change", $chkConfigCountryAlt_change);
 // for checkboxes
 function $config_change(event) {
     let target = event.target;
@@ -132,58 +119,58 @@ function $selConfigLanguage_change(event) {
 }
 // Do not set the config events if cookies are disabled (upon setting will prevent the site from functioning properly)
 if (COOKIES_IS_ENABLED) {
-    $chkConfigCountryTitle.addEventListener("change", $config_change);
-    $chkConfigCountryAlt.addEventListener("change", $config_change);
-    $chkConfigOutputInput.addEventListener("change", $config_change);
-    $selConfigLanguage.addEventListener("change", $selConfigLanguage_change);
+    $configCountryTitleCheckbox.addEventListener("change", $config_change);
+    $configCountryAltCheckbox.addEventListener("change", $config_change);
+    $configOutputInputCheckbox.addEventListener("change", $config_change);
+    $configLanguageSelect.addEventListener("change", $selConfigLanguage_change);
 }
 //#endregion
 //#region example button events
 function $btnExample_click() {
-    if (!$btnExample.classList.contains("menu__button--disabled")) {
-        $input.value = L10n.getString("example");
+    if (!$exampleButton.classList.contains("menu__button--disabled")) {
+        $inputTextarea.value = L10n.getString("example");
     }
 }
-$btnExample.addEventListener("click", $btnExample_click);
+$exampleButton.addEventListener("click", $btnExample_click);
 //#endregion
 /* output events */
 function $btnOutputCopy_click() {
-    if (!$btnOutputCopy.classList.contains("menu__button--disabled")) {
+    if (!$outputCopyButton.classList.contains("menu__button--disabled")) {
         if ("clipboard" in navigator) {
-            navigator.clipboard.writeText($output.value)
+            navigator.clipboard.writeText($outputTextarea.value)
                 .then(() => {
-                $btnOutputCopy.classList.add("menu__button--disabled");
-                $btnOutputCopy.textContent = "Copied";
+                $outputCopyButton.classList.add("menu__button--disabled");
+                $outputCopyButton.textContent = "Copied";
             })
                 .catch(() => {
-                $btnOutputCopy.classList.add("menu__button--disabled");
-                $btnOutputCopy.textContent = "FAILED";
+                $outputCopyButton.classList.add("menu__button--disabled");
+                $outputCopyButton.textContent = "FAILED";
             });
         }
         else {
             try {
-                $output.select();
+                $outputTextarea.select();
                 document.execCommand("copy");
-                $btnOutputCopy.classList.add("menu__button--disabled");
-                $btnOutputCopy.textContent = "Copied";
+                $outputCopyButton.classList.add("menu__button--disabled");
+                $outputCopyButton.textContent = "Copied";
             }
             catch (_a) {
-                $btnOutputCopy.classList.add("menu__button--disabled");
-                $btnOutputCopy.textContent = "FAILED";
+                $outputCopyButton.classList.add("menu__button--disabled");
+                $outputCopyButton.textContent = "FAILED";
             }
         }
     }
     setTimeout(() => {
-        $btnOutputCopy.classList.remove("menu__button--disabled");
-        $btnOutputCopy.textContent = "Copy";
+        $outputCopyButton.classList.remove("menu__button--disabled");
+        $outputCopyButton.textContent = "Copy";
     }, 1000);
 }
-$btnOutputCopy.addEventListener("click", $btnOutputCopy_click);
+$outputCopyButton.addEventListener("click", $btnOutputCopy_click);
 /* drop events */
 function fileReader_load(e) {
     let text = e.target.result;
     if (text) {
-        $input.value = text;
+        $inputTextarea.value = text;
     }
 }
 function window_drop(e) {
@@ -212,11 +199,11 @@ function getReplacementLink(text) {
     let codeFormatted = code.substring(1, (code.length - 1));
     return `[flag_${codeFormatted.toUpperCase()}]`;
 }
-$btnParse.addEventListener("click", () => {
+$parseButton.addEventListener("click", () => {
     while ($errorsList.firstChild) {
         $errorsList.firstChild.remove();
     }
-    let lines = $input.value.split("\n");
+    let lines = $inputTextarea.value.split("\n");
     let flags_unsort = {};
     let flags_output = "";
     let invalid_flags = [];
@@ -240,13 +227,13 @@ $btnParse.addEventListener("click", () => {
                         invalid_flags.push([countryCode, (i + 1)]);
                     }
                     // parse with broken flags anyways
-                    if ($chkConfigCountryTitle.checked) {
+                    if ($configCountryTitleCheckbox.checked) {
                         flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext} "${FLAGS[countryCode] ? FLAGS[countryCode] : "FLAG_NOT_FOUND"}"`;
                     }
                     else {
                         flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext}`;
                     }
-                    if ($chkConfigCountryAlt.checked) {
+                    if ($configCountryAltCheckbox.checked) {
                         lines[i] = lines[i].replace(/!\[\]/g, `![${countryCode}]`);
                     }
                 }
@@ -268,8 +255,8 @@ $btnParse.addEventListener("click", () => {
         }
     }
     if (invalid_flags.length > 0) {
-        $btnErrors.removeAttribute('disabled');
-        $outputErrors.classList.remove("d-none");
+        $errorsButton.removeAttribute('disabled');
+        $outputHasErrors.classList.remove("d-none");
         for (let i = 0; i < invalid_flags.length; i++) {
             let $_li = document.createElement("li");
             $_li.textContent = `${invalid_flags[i][0]} (line: ${invalid_flags[i][1]})`;
@@ -277,8 +264,8 @@ $btnParse.addEventListener("click", () => {
         }
     }
     else {
-        $btnErrors.setAttribute('disabled', '');
-        $outputErrors.classList.add("d-none");
+        $errorsButton.setAttribute('disabled', '');
+        $outputHasErrors.classList.add("d-none");
     }
     let flags_sort = {};
     Object.keys(flags_unsort).sort()
@@ -290,11 +277,11 @@ $btnParse.addEventListener("click", () => {
             flags_output += `${key}: ${flags_sort[key]}\n`;
         }
     }
-    if ($chkConfigOutputInput.checked) {
-        $output.textContent = `${lines.join("\n")}\n${flags_output}`;
+    if ($configOutputInputCheckbox.checked) {
+        $outputTextarea.textContent = `${lines.join("\n")}\n${flags_output}`;
     }
     else {
-        $output.textContent = flags_output;
+        $outputTextarea.textContent = flags_output;
     }
     $('#output-modal').modal("show");
 });
