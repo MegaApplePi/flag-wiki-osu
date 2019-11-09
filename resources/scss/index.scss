@@ -1,25 +1,8 @@
-::selection {
-  background-color: rgba(240, 245, 255, 0.6);
-  background-color: #d6e4ff99;
-}
-
 body {
   background-color: #f0f5ff;
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  z-index: -10;
 }
 
-@import "button";
-@import "menu";
-@import "dialog";
 @import "toast";
-
-.page-title {
-  font-size: 1.5rem;
-}
 
 .main__input {
   background-color: #fff;
@@ -83,21 +66,6 @@ body {
       position: unset;
       left: unset;
       bottom: unset;
-    }
-  }
-}
-
-main {
-  margin: 0 10%;
-}
-
-#errors-list {
-  &:empty {
-    margin: 0;
-    padding: 0;
-
-    &:before {
-      content: "No errors";
     }
   }
 }
