@@ -20,10 +20,10 @@ const $outputCopyButton = document.querySelector('[data-button="output-copy"]');
 //#endregion
 //#region create lanauage selector options
 let lanauages = L10n.getLangCodes();
-for (let lang of lanauages) {
+for (let language of lanauages) {
     let $option = document.createElement("option");
-    $option.setAttribute("value", lang);
-    $option.textContent = L10n.getLangName(lang);
+    $option.setAttribute("value", language);
+    $option.textContent = L10n.getLangName(language);
     $configLanguageSelect.insertAdjacentElement("beforeend", $option);
 }
 //#endregion
@@ -32,7 +32,6 @@ function updateInterfaceStrings() {
     const elements = [...document.body.querySelectorAll("[data-l10n]")];
     for (const element of elements) {
         element.textContent = L10n.getInterfaceString(element.dataset.l10n);
-        console.log(element.textContent);
     }
 }
 //#endregion
@@ -112,19 +111,22 @@ function $config_change(event) {
         }
     }
 }
-// for language select
-function $selConfigLanguage_change(event) {
-    let target = event.target;
-    localStorage.setItem("output-language", target.value);
-}
 // Do not set the config events if cookies are disabled (upon setting will prevent the site from functioning properly)
 if (COOKIES_IS_ENABLED) {
     $configCountryTitleCheckbox.addEventListener("change", $config_change);
     $configCountryAltCheckbox.addEventListener("change", $config_change);
     $configOutputInputCheckbox.addEventListener("change", $config_change);
-    $configLanguageSelect.addEventListener("change", $selConfigLanguage_change);
 }
 //#endregion
+function $selConfigLanguage_change(event) {
+    let target = event.target;
+    L10n.setLang(target.value);
+    updateInterfaceStrings();
+    if (COOKIES_IS_ENABLED) {
+        localStorage.setItem("output-language", target.value);
+    }
+}
+$configLanguageSelect.addEventListener("change", $selConfigLanguage_change);
 //#region example button events
 function $btnExample_click() {
     if (!$exampleButton.classList.contains("menu__button--disabled")) {
@@ -135,34 +137,35 @@ $exampleButton.addEventListener("click", $btnExample_click);
 //#endregion
 /* output events */
 function $btnOutputCopy_click() {
-    if (!$outputCopyButton.classList.contains("menu__button--disabled")) {
-        if ("clipboard" in navigator) {
-            navigator.clipboard.writeText($outputTextarea.value)
-                .then(() => {
-                $outputCopyButton.classList.add("menu__button--disabled");
-                $outputCopyButton.textContent = "Copied";
-            })
-                .catch(() => {
-                $outputCopyButton.classList.add("menu__button--disabled");
-                $outputCopyButton.textContent = "FAILED";
-            });
+    if ($outputCopyButton.hasAttribute("disabled")) {
+        return;
+    }
+    if ("clipboard" in navigator) {
+        navigator.clipboard.writeText($outputTextarea.value)
+            .then(() => {
+            $outputCopyButton.setAttribute("disabled", "");
+            $outputCopyButton.textContent = L10n.getInterfaceString("copied");
+        })
+            .catch(() => {
+            $outputCopyButton.setAttribute("disabled", "");
+            $outputCopyButton.textContent = L10n.getInterfaceString("failed");
+        });
+    }
+    else {
+        try {
+            $outputTextarea.select();
+            document.execCommand("copy");
+            $outputCopyButton.setAttribute("disabled", "");
+            $outputCopyButton.textContent = L10n.getInterfaceString("copied");
         }
-        else {
-            try {
-                $outputTextarea.select();
-                document.execCommand("copy");
-                $outputCopyButton.classList.add("menu__button--disabled");
-                $outputCopyButton.textContent = "Copied";
-            }
-            catch (_a) {
-                $outputCopyButton.classList.add("menu__button--disabled");
-                $outputCopyButton.textContent = "FAILED";
-            }
+        catch (_a) {
+            $outputCopyButton.setAttribute("disabled", "");
+            $outputCopyButton.textContent = L10n.getInterfaceString("failed");
         }
     }
     setTimeout(() => {
-        $outputCopyButton.classList.remove("menu__button--disabled");
-        $outputCopyButton.textContent = "Copy";
+        $outputCopyButton.removeAttribute("disabled");
+        $outputCopyButton.textContent = L10n.getInterfaceString("copy");
     }, 1000);
 }
 $outputCopyButton.addEventListener("click", $btnOutputCopy_click);
@@ -185,9 +188,9 @@ function window_drop(e) {
 window.addEventListener("drop", window_drop);
 /* parsing events */
 function getCode(text) {
-    // reference links = _xxyy]
-    // inline links = /xxyy.
-    let code = text.match(/(_|\/)..(?:..)?(\]|\.)/)[0];
+    // reference links = _xx]
+    // inline links = /xx.
+    let code = text.match(/(_|\/)..(\]|\.)/)[0];
     let codeFormatted = code.substring(1, (code.length - 1));
     return codeFormatted.toUpperCase();
 }
@@ -195,7 +198,7 @@ function makeReference(text) {
     return `[flag_${getCode(text)}]`;
 }
 function getReplacementLink(text) {
-    let code = text.match(/\/..(?:..)?\./)[0];
+    let code = text.match(/\/..?\./)[0];
     let codeFormatted = code.substring(1, (code.length - 1));
     return `[flag_${codeFormatted.toUpperCase()}]`;
 }
@@ -209,11 +212,11 @@ $parseButton.addEventListener("click", () => {
     let invalid_flags = [];
     for (let i = 0; i < lines.length; i++) {
         /*   ref links                      inline links */
-        if (/(!\[(.+)?\]\[flag_..(?:..)?\])|(\(\/wiki\/shared\/flag\/..(?:..)?\.(gif|jpe?g|png)(?: ".*")?\))/g.test(lines[i])) {
-            let key = lines[i].match(/\[flag_..(?:..)?\]/g);
+        if (/(!\[(.+)?\]\[flag_..?\])|(\(\/wiki\/shared\/flag\/..?\.(gif|jpe?g|png)(?: ".*")?\))/g.test(lines[i])) {
+            let key = lines[i].match(/\[flag_..?\]/g);
             if (key) {
                 for (let j = 0; j < key.length; j++) {
-                    let countryMatch = key[j].match(/_..(?:..)?\]/g)[0];
+                    let countryMatch = key[j].match(/_..?\]/g)[0];
                     let countryCode = countryMatch.substring(1, (countryMatch.length - 1)).toUpperCase();
                     let ext;
                     if (countryCode.length === 2) {
@@ -240,14 +243,14 @@ $parseButton.addEventListener("click", () => {
             }
         }
         // linkPath = "(/wiki/shared/flags/XX.xxx)" part; recognising title is supported
-        let linkPath = lines[i].match(/\(\/wiki\/shared\/flag\/..(?:..)?\.(gif|jpe?g|png)(?: ".*")?\)/g);
+        let linkPath = lines[i].match(/\(\/wiki\/shared\/flag\/..?\.(gif|jpe?g|png)(?: ".*")?\)/g);
         if (linkPath) {
             for (let j = 0; j < linkPath.length; j++) {
                 lines[i] = lines[i].replace(linkPath[j], getReplacementLink);
             }
         }
         // referenceName = "[flag_XX]" part
-        let referenceName = lines[i].match(/\[flag_..(?:..)?\]/g);
+        let referenceName = lines[i].match(/\[flag_..?\]/g);
         if (referenceName) {
             for (let j = 0; j < referenceName.length; j++) {
                 lines[i] = lines[i].replace(referenceName[j], makeReference);

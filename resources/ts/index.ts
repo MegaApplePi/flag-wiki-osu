@@ -30,10 +30,10 @@ const $outputCopyButton: HTMLDivElement = document.querySelector('[data-button="
 
 //#region create lanauage selector options
 let lanauages = L10n.getLangCodes();
-for (let lang of lanauages) {
+for (let language of lanauages) {
   let $option: HTMLOptionElement = document.createElement("option");
-  $option.setAttribute("value", lang);
-  $option.textContent = L10n.getLangName(lang);
+  $option.setAttribute("value", language);
+  $option.textContent = L10n.getLangName(language);
 
   $configLanguageSelect.insertAdjacentElement("beforeend", $option);
 }
@@ -44,7 +44,6 @@ function updateInterfaceStrings() {
   const elements = [...document.body.querySelectorAll<HTMLSpanElement>("[data-l10n]")];
   for (const element of elements) {
     element.textContent = L10n.getInterfaceString(element.dataset.l10n);
-    console.log(element.textContent);
   }
 }
 //#endregion
@@ -127,22 +126,24 @@ function $config_change(event: Event) {
   }
 }
 
-// for language select
-function $selConfigLanguage_change(event: Event) {
-  let target = event.target as HTMLSelectElement;
-
-  localStorage.setItem("output-language", target.value);
-}
-
 // Do not set the config events if cookies are disabled (upon setting will prevent the site from functioning properly)
 if (COOKIES_IS_ENABLED) {
   $configCountryTitleCheckbox.addEventListener("change", $config_change);
   $configCountryAltCheckbox.addEventListener("change", $config_change);
   $configOutputInputCheckbox.addEventListener("change", $config_change);
-
-  $configLanguageSelect.addEventListener("change", $selConfigLanguage_change);
 }
 //#endregion
+
+function $selConfigLanguage_change(event: Event) {
+  let target = event.target as HTMLSelectElement;
+  L10n.setLang(target.value);
+  updateInterfaceStrings();
+
+  if (COOKIES_IS_ENABLED) {
+    localStorage.setItem("output-language", target.value);
+  }
+}
+$configLanguageSelect.addEventListener("change", $selConfigLanguage_change);
 
 //#region example button events
 function $btnExample_click() {
@@ -155,32 +156,33 @@ $exampleButton.addEventListener("click", $btnExample_click);
 
 /* output events */
 function $btnOutputCopy_click() {
-  if (!$outputCopyButton.classList.contains("menu__button--disabled")) {
-    if ("clipboard" in navigator) {
-      navigator.clipboard.writeText($outputTextarea.value)
-      .then(() => {
-        $outputCopyButton.classList.add("menu__button--disabled");
-        $outputCopyButton.textContent = "Copied";
-      })
-      .catch(() => {
-        $outputCopyButton.classList.add("menu__button--disabled");
-        $outputCopyButton.textContent = "FAILED";
-      });
-    } else {
-      try {
-        $outputTextarea.select();
-        document.execCommand("copy");
-        $outputCopyButton.classList.add("menu__button--disabled");
-        $outputCopyButton.textContent = "Copied";
-      } catch {
-        $outputCopyButton.classList.add("menu__button--disabled");
-        $outputCopyButton.textContent = "FAILED";
-      }
+  if ($outputCopyButton.hasAttribute("disabled")) {
+    return;
+  }
+  if ("clipboard" in navigator) {
+    navigator.clipboard.writeText($outputTextarea.value)
+    .then(() => {
+      $outputCopyButton.setAttribute("disabled", "");
+      $outputCopyButton.textContent = L10n.getInterfaceString("copied");
+    })
+    .catch(() => {
+      $outputCopyButton.setAttribute("disabled", "");
+      $outputCopyButton.textContent = L10n.getInterfaceString("failed");
+    });
+  } else {
+    try {
+      $outputTextarea.select();
+      document.execCommand("copy");
+      $outputCopyButton.setAttribute("disabled", "");
+      $outputCopyButton.textContent = L10n.getInterfaceString("copied");
+    } catch {
+      $outputCopyButton.setAttribute("disabled", "");
+      $outputCopyButton.textContent = L10n.getInterfaceString("failed");
     }
   }
   setTimeout(() => {
-    $outputCopyButton.classList.remove("menu__button--disabled");
-    $outputCopyButton.textContent = "Copy";
+    $outputCopyButton.removeAttribute("disabled");
+    $outputCopyButton.textContent = L10n.getInterfaceString("copy");
   }, 1000);
 }
 $outputCopyButton.addEventListener("click", $btnOutputCopy_click);

@@ -260,6 +260,7 @@ export default Object.freeze({
         "close": "Close",
         "copy": "Copy",
         "copied": "Copied",
+        "failed": "Failed",
         "help": "Help",
         "help1": "Copy and paste your markdown into the text box (or drag-and-drop).",
         "help2": "Click \"Find Flags\".",
