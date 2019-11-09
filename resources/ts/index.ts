@@ -28,7 +28,6 @@ const $outputHasErrors: HTMLSpanElement = document.querySelector("#output-has-er
 const $outputCopyButton: HTMLDivElement = document.querySelector('[data-button="output-copy"]');
 //#endregion
 
-//#region create lanauage selector options
 let lanauages = L10n.getLangCodes();
 for (let language of lanauages) {
   let $option: HTMLOptionElement = document.createElement("option");
@@ -37,19 +36,15 @@ for (let language of lanauages) {
 
   $configLanguageSelect.insertAdjacentElement("beforeend", $option);
 }
-//#endregion
 
-//#region update interface strings
 function updateInterfaceStrings() {
   const elements = [...document.body.querySelectorAll<HTMLSpanElement>("[data-l10n]")];
   for (const element of elements) {
     element.textContent = L10n.getInterfaceString(element.dataset.l10n);
   }
 }
-//#endregion
 
-//#region restore options
-if (COOKIES_IS_ENABLED) {
+if (COOKIES_IS_ENABLED && false) {
   if (localStorage.getItem("country-title") === "true") {
     $configCountryTitleCheckbox.checked = true;
   }
@@ -61,18 +56,8 @@ if (COOKIES_IS_ENABLED) {
   if (localStorage.getItem("output-input") === "true") {
     $configOutputInputCheckbox.checked = true;
   }
-
-  try {
-    ($configLanguageSelect.querySelector(`option[value="${localStorage.getItem("output-language")}"]`) as HTMLOptionElement).setAttribute("selected", "");
-    L10n.setLang(localStorage.getItem("output-language"));
-  } catch {
-    ($configLanguageSelect.querySelector('option[value="en"]') as HTMLOptionElement).setAttribute("selected", "");
-    L10n.setLang("en");
-  } finally {
-    updateInterfaceStrings();
-  }
 } else {
-  $noCookieToast.classList.remove("toast--hidden");
+  $noCookieToast.classList.remove("d-none");
   let tick = 5;
   $noCookieTimer.textContent = `${tick} second${tick === 1 ? "" : "s"}`;
 
@@ -80,28 +65,34 @@ if (COOKIES_IS_ENABLED) {
     tick--;
     $noCookieTimer.textContent = `${tick} second${tick === 1 ? "" : "s"}`;
     if (tick === 0) {
-      $noCookieToast.dataset.hidden = "";
+      $noCookieToast.classList.add("d-none");
       window.clearInterval(timer);
     }
   }, 1000);
 }
-//#endregion
 
-//#region enable interface
+try {
+  $configLanguageSelect.querySelector<HTMLOptionElement>(`option[value="${localStorage.getItem("output-language")}"]`).setAttribute("selected", "");
+  L10n.setLang(localStorage.getItem("output-language"));
+} catch {
+  $configLanguageSelect.querySelector<HTMLOptionElement>('option[value="en"]').setAttribute("selected", "");
+  L10n.setLang("en");
+} finally {
+  updateInterfaceStrings();
+}
+
+// everything should be ready at this point, so we'll enable the buttons
 $helpButton.removeAttribute("disabled");
 $exampleButton.removeAttribute("disabled");
 $configButton.removeAttribute("disabled");
 $parseButton.removeAttribute("disabled");
 $inputTextarea.removeAttribute("disabled");
-//#endregion
 
-//#region get flags list from lang
 const FLAGS = L10n.getString("flag") as string[];
 const FLAG_CODES = Object.freeze(Object.keys(FLAGS));
-//#endregion
 
 //#region config events
-function $chkConfigCountryAlt_change() {
+function $configCountryAltCheckbox_change() {
   if ($configCountryAltCheckbox.checked) {
     $configOutputInputCheckbox.checked = true;
     $configOutputInputCheckbox.disabled = true;
@@ -110,7 +101,7 @@ function $chkConfigCountryAlt_change() {
     $configOutputInputCheckbox.disabled = false;
   }
 }
-$configCountryAltCheckbox.addEventListener("change", $chkConfigCountryAlt_change);
+$configCountryAltCheckbox.addEventListener("change", $configCountryAltCheckbox_change);
 
 // for checkboxes
 function $config_change(event: Event) {
@@ -132,9 +123,7 @@ if (COOKIES_IS_ENABLED) {
   $configCountryAltCheckbox.addEventListener("change", $config_change);
   $configOutputInputCheckbox.addEventListener("change", $config_change);
 }
-//#endregion
-
-function $selConfigLanguage_change(event: Event) {
+function $configLanguageSelect_change(event: Event) {
   let target = event.target as HTMLSelectElement;
   L10n.setLang(target.value);
   updateInterfaceStrings();
@@ -143,19 +132,17 @@ function $selConfigLanguage_change(event: Event) {
     localStorage.setItem("output-language", target.value);
   }
 }
-$configLanguageSelect.addEventListener("change", $selConfigLanguage_change);
+$configLanguageSelect.addEventListener("change", $configLanguageSelect_change);
+//#endregion
 
-//#region example button events
-function $btnExample_click() {
+function $exampleButton_click() {
   if (!$exampleButton.classList.contains("menu__button--disabled")) {
     $inputTextarea.value = L10n.getString("example") as string;
   }
 }
-$exampleButton.addEventListener("click", $btnExample_click);
-//#endregion
+$exampleButton.addEventListener("click", $exampleButton_click);
 
-/* output events */
-function $btnOutputCopy_click() {
+function $outputCopyButton_click() {
   if ($outputCopyButton.hasAttribute("disabled")) {
     return;
   }
@@ -185,9 +172,9 @@ function $btnOutputCopy_click() {
     $outputCopyButton.textContent = L10n.getInterfaceString("copy");
   }, 1000);
 }
-$outputCopyButton.addEventListener("click", $btnOutputCopy_click);
+$outputCopyButton.addEventListener("click", $outputCopyButton_click);
 
-/* drop events */
+//#region FileReader
 function fileReader_load(e): void {
   let text = e.target.result;
   if (text) {
@@ -204,8 +191,9 @@ function window_drop(e): void {
   }
 }
 window.addEventListener("drop", window_drop);
+//#endregion
 
-/* parsing events */
+//#region parsing
 function getCode(text: string): string {
   // reference links = _xx]
   // inline links = /xx.
@@ -224,7 +212,8 @@ function getReplacementLink(text: string): string {
   return `[flag_${codeFormatted.toUpperCase()}]`;
 }
 
-$parseButton.addEventListener("click", () => {
+// This is where most of the magic stays
+function $parseButton_click() {
   while ($errorsList.firstChild) {
     $errorsList.firstChild.remove();
   }
@@ -235,37 +224,33 @@ $parseButton.addEventListener("click", () => {
   let invalid_flags = [];
   for (let i = 0; i < lines.length; i++) {
     /*   ref links                      inline links */
-    if (/(!\[(.+)?\]\[flag_..?\])|(\(\/wiki\/shared\/flag\/..?\.(gif|jpe?g|png)(?: ".*")?\))/g.test(lines[i])) {
-      let key = lines[i].match(/\[flag_..?\]/g);
-      if (key) {
-        for (let j = 0; j < key.length; j++) {
-          let countryMatch = key[j].match(/_..?\]/g)[0];
-          let countryCode = countryMatch.substring(1, (countryMatch.length - 1)).toUpperCase();
+    if (/(!\[(.+)?\]\[flag_..?\])|(\(\/wiki\/shared\/flag\/..?\.gif(?: ".*")?\))/g.test(lines[i])) {
+      let key = lines[i].match(/\[flag_..?\]|(\(\/wiki\/shared\/flag\/..?\.gif(?: ".*")?\))/g);
+      if (!key) {
+        continue;
+      }
+      for (let j = 0; j < key.length; j++) {
+        let countryMatch = key[j].match(/(?:_..?\])|(?:..?\.gif)/g)[0];
+        console.log(countryMatch);
+        let countryCode = countryMatch.replace(/_|]|\.gif/g, "").toUpperCase();
 
-          let ext: string;
-          if (countryCode.length === 2) {
-            ext = ".gif";
-          } else if (countryCode.length === 4) {
-            ext = ".png";
-          }
-          let newKey = key[j].replace(key[j], makeReference);
-          if (!FLAG_CODES.includes(countryCode)) {
-            invalid_flags.push([countryCode, (i + 1)]);
-          }
-          // parse with broken flags anyways
-          if ($configCountryTitleCheckbox.checked) {
-            flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext} "${FLAGS[countryCode] ? FLAGS[countryCode] : "FLAG_NOT_FOUND"}"`;
-          } else {
-            flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext}`;
-          }
+        let newKey = key[j].replace(key[j], makeReference);
+        if (!FLAG_CODES.includes(countryCode)) {
+          invalid_flags.push([countryCode, (i + 1)]);
+        }
 
-          if ($configCountryAltCheckbox.checked) {
-            lines[i] = lines[i].replace(/!\[\]/g, `![${countryCode}]`);
-          }
+        if ($configCountryTitleCheckbox.checked) {
+          flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}.gif "${FLAGS[countryCode] ? FLAGS[countryCode] : "FLAG_NOT_FOUND"}"`;
+        } else {
+          flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}.gif`;
+        }
+
+        if ($configCountryAltCheckbox.checked) {
+          lines[i] = lines[i].replace(/!\[\]/g, `![${countryCode}]`);
         }
       }
     }
-    // linkPath = "(/wiki/shared/flags/XX.xxx)" part; recognising title is supported
+
     let linkPath = lines[i].match(/\(\/wiki\/shared\/flag\/..?\.(gif|jpe?g|png)(?: ".*")?\)/g);
     if (linkPath) {
       for (let j = 0; j < linkPath.length; j++) {
@@ -310,4 +295,6 @@ $parseButton.addEventListener("click", () => {
     $outputTextarea.textContent = flags_output;
   }
   $('#output-modal').modal("show");
-});
+}
+$parseButton.addEventListener("click", $parseButton_click);
+//#endRegion

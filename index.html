@@ -66,19 +66,19 @@
           </div>
           <div class="modal-body">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="config-country-title"/>
+              <input class="form-check-input" type="checkbox" id="config-country-title" data-checkbox="country-title"/>
               <label class="form-check-label" for="config-country-title">
                 <span data-l10n="config-name">config-name</span>
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="config-country-alt"/>
+              <input class="form-check-input" type="checkbox" id="config-country-alt" data-checkbox="country-alt"/>
               <label class="form-check-label" for="config-country-alt">
                 <span data-l10n="config-code">config-code</span>
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="config-output-input"/>
+              <input class="form-check-input" type="checkbox" id="config-output-input" data-checkbox="output-input"/>
               <label class="form-check-label" for="config-output-input">
                 <span data-l10n="config-inout">config-inout</span>
               </label>
@@ -151,7 +151,7 @@
         <span><small>All parsing is done inside your web browser using JavaScript. Please enable it then reload this page.</small></span>
       </div>
     </noscript>
-    <div class="toast toast--hidden" data-toast="no-cookie">
+    <div class="toast d-none" data-toast="no-cookie">
       <span>Cookies are disabled; your settings will be forgotten.</span>
       <br>
       <span><small>Dismissing in <span data-time></span></small></span>
