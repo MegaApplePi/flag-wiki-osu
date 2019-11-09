@@ -3,8 +3,6 @@ import L10n from "./L10n.js";
 declare const $: any;
 
 //#region DOM
-const $noCookieToast: HTMLDivElement = document.querySelector('[data-toast="no-cookie"]');
-const $noCookieTimer: HTMLDivElement = document.querySelector('[data-toast="no-cookie"] [data-time]');
 const COOKIES_IS_ENABLED = navigator.cookieEnabled;
 
 const $helpButton: HTMLDivElement = document.querySelector('[data-button="help"]');
@@ -181,22 +179,8 @@ window.addEventListener("drop", window_drop);
 //#endregion
 
 //#region parsing
-function getCode(text: string): string {
-  // reference links = _xx]
-  // inline links = /xx.
-  let code = text.match(/(_|\/)..(\]|\.)/)[0];
-  let codeFormatted = code.substring(1, (code.length - 1));
-  return codeFormatted.toUpperCase();
-}
-
-function makeReference(text: string): string {
-  return `[flag_${getCode(text)}]`;
-}
-
-function getReplacementLink(text: string): string {
-  let code = text.match(/\/..?\./)[0];
-  let codeFormatted = code.substring(1, (code.length - 1));
-  return `[flag_${codeFormatted.toUpperCase()}]`;
+function makeReference(countryCode: string): string {
+  return `[flag_${countryCode}]`;
 }
 
 // This is where most of the magic stays
@@ -206,51 +190,47 @@ function $parseButton_click() {
   }
 
   let lines = $inputTextarea.value.split("\n");
-  let flags_unsort = {};
+  let flags_list = new Map();
   let flags_output = "";
   let invalid_flags = [];
+  let replacementData = [];
+
+  // Inspect all lines
   for (let i = 0; i < lines.length; i++) {
-    /*   ref links                      inline links */
-    if (/(!\[(.+)?\]\[flag_..?\])|(\(\/wiki\/shared\/flag\/..?\.gif(?: ".*")?\))/g.test(lines[i])) {
-      let key = lines[i].match(/\[flag_..?\]|(\(\/wiki\/shared\/flag\/..?\.gif(?: ".*")?\))/g);
-      if (!key) {
-        continue;
+    let inputRegex = /!\[(.*?)\](\[flag_(.*?)\]|\(\/wiki\/shared\/flag\/(.*?)\.gif(?: ".*?")?\))/g;
+    let inputRegexMatch: RegExpExecArray;
+    while ((inputRegexMatch = inputRegex.exec(lines[i])) != null) {
+      let countryCode: string;
+      if (inputRegexMatch[3]) {
+        countryCode = inputRegexMatch[3].toUpperCase();
+      } else {
+        countryCode = inputRegexMatch[4].toUpperCase();
       }
-      for (let j = 0; j < key.length; j++) {
-        let countryMatch = key[j].match(/(?:_..?\])|(?:..?\.gif)/g)[0];
-        let countryCode = countryMatch.replace(/_|]|\.gif/g, "").toUpperCase();
-
-        let newKey = key[j].replace(key[j], makeReference);
-        if (!FLAG_CODES.includes(countryCode)) {
-          invalid_flags.push([countryCode, (i + 1)]);
-        }
-
-        if ($configCountryTitleCheckbox.checked) {
-          flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}.gif "${FLAGS[countryCode] ? FLAGS[countryCode] : "FLAG_NOT_FOUND"}"`;
-        } else {
-          flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}.gif`;
-        }
-
-        if ($configCountryAltCheckbox.checked) {
-          lines[i] = lines[i].replace(/!\[\]/g, `![${countryCode}]`);
-        }
+      if (!FLAG_CODES.includes(countryCode)) {
+        invalid_flags.push([countryCode, (i + 1)]);
       }
-    }
 
-    let linkPath = lines[i].match(/\(\/wiki\/shared\/flag\/..?\.gif(?: ".*")?\)/g);
-    if (linkPath) {
-      for (let j = 0; j < linkPath.length; j++) {
-        lines[i] = lines[i].replace(linkPath[j], getReplacementLink);
-      }
-    }
-    // referenceName = "[flag_XX]" part
-    let referenceName = lines[i].match(/\[flag_..?\]/g);
-    if (referenceName) {
-      for (let j = 0; j < referenceName.length; j++) {
-        lines[i] = lines[i].replace(referenceName[j], makeReference);
+      // the replacements need to be done in reverse
+      replacementData.unshift([i, inputRegexMatch, countryCode]);
+
+      let newKey = makeReference(countryCode);
+      if ($configCountryTitleCheckbox.checked) {
+        flags_list.set(newKey, `/wiki/shared/flag/${countryCode}.gif "${FLAGS[countryCode] ? FLAGS[countryCode] : "FLAG_NOT_FOUND"}"`);
+      } else {
+        flags_list.set(newKey, `/wiki/shared/flag/${countryCode}.gif`);
       }
     }
   }
+
+  // Run the replacements
+  replacementData.forEach((value) => {
+    if ($configCountryAltCheckbox.checked) {
+      lines[value[0]] = `${lines[value[0]].substring(0, value[1].index)}![${value[2]}]${makeReference(value[2])}${lines[value[0]].substring(value[1].index + value[1][0].length, lines[value[0]].length)}`;
+    } else {
+      lines[value[0]] = `${lines[value[0]].substring(0, value[1].index)}![]${makeReference(value[2])}${lines[value[0]].substring(value[1].index + value[1][0].length, lines[value[0]].length)}`;
+    }
+  });
+
   if (invalid_flags.length > 0) {
     $errorsButton.removeAttribute('disabled');
     $outputHasErrors.classList.remove("d-none");
@@ -265,16 +245,10 @@ function $parseButton_click() {
     $outputHasErrors.classList.add("d-none");
   }
 
-  let flags_sort = {};
-  Object.keys(flags_unsort).sort()
-    .forEach((key) => {
-      flags_sort[key] = flags_unsort[key];
-    });
-  for (let key in flags_sort) {
-    if (flags_sort.hasOwnProperty(key)) {
-      flags_output += `${key}: ${flags_sort[key]}\n`;
-    }
-  }
+  flags_list = new Map([...flags_list.entries()].sort());
+  flags_list.forEach((value, key) => {
+    flags_output += `${key}: ${value}\n`;
+  });
   if ($configOutputInputCheckbox.checked) {
     $outputTextarea.textContent = `${lines.join("\n")}\n${flags_output}`;
   } else {
