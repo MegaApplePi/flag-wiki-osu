@@ -1,63 +1,73 @@
 import Strings from "./Strings.js";
 
 abstract class L10n {
-  private static locale = "en";
+  private static lang = "en";
 
-  public static get currentLocale() {
-    return this.locale;
+  public static get currentLang() {
+    return this.lang;
   }
 
-  public static setLocale(locale: string): void {
-    if (Object.keys(Strings).includes(locale)) {
-      this.locale = locale;
+  public static setLang(lang: string): void {
+    if (Object.keys(Strings).includes(lang)) {
+      this.lang = lang;
     } else {
-      this.locale = "en";
-      throw new Error("Undefined locale");
+      this.lang = "en";
+      throw new Error("Undefined lang");
     }
   }
 
   public static getString(string: string): string | string[] {
-    if (Strings[this.locale][string]) {
-      return Strings[this.locale][string];
+    if (Strings[this.lang][string]) {
+      return Strings[this.lang][string];
     }
     return Strings["en"][string];
   }
 
   public static getInterfaceString(string: string): string {
-    if (Strings[this.locale].interface[string]) {
-      return Strings[this.locale].interface[string];
+    if (Strings[this.lang].interface[string]) {
+      return Strings[this.lang].interface[string];
     }
     return Strings["en"].interface[string];
   }
 
   public static getFlagString(string: string): string {
-    if (Strings[this.locale].flag[string]) {
-      return Strings[this.locale].flag[string];
+    if (Strings[this.lang].flag[string]) {
+      return Strings[this.lang].flag[string];
     }
     return Strings["en"].flag[string];
   }
 
-  public static hasLocale(locale: string): boolean {
-    if (locale in Strings) {
+  public static hasLang(lang: string): boolean {
+    if (lang in Strings) {
       return true;
     }
     return false;
   }
 
-  public static getLocales(): string[] {
+  /**
+   * Get a list of defined lang codes.
+   * @returns A list of lang codes.
+   */
+  public static getLangCodes(): string[] {
     return Object.keys(Strings);
   }
 
-  public static getLocaleName(locale: string): string {
-    return Strings[locale]._name;
+  /**
+   * Get the lang's full name.
+   * @param langCode The lang code
+   * @retuns The lang name
+   */
+  public static getLangName(langCode: string): string {
+    return Strings[langCode]._name;
   }
 
   /**
-   * Get the locale's version number. Used for comparision between the locale and English.
-   * @param locale The locale name
+   * Get the lang's version number. Used for comparision between the lang and English.
+   * @param lang The lang name
+   * @returns The lang version string
    */
-  public static getLocaleVersion(locale: string): string {
-    return Strings[locale]._version;
+  public static getLangVersion(lang: string): string {
+    return Strings[lang]._version;
   }
 }
 

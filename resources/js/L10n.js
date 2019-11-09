@@ -1,55 +1,65 @@
 import Strings from "./Strings.js";
 class L10n {
-    static get currentLocale() {
-        return this.locale;
+    static get currentLang() {
+        return this.lang;
     }
-    static setLocale(locale) {
-        if (Object.keys(Strings).includes(locale)) {
-            this.locale = locale;
+    static setLang(lang) {
+        if (Object.keys(Strings).includes(lang)) {
+            this.lang = lang;
         }
         else {
-            this.locale = "en";
-            throw new Error("Undefined locale");
+            this.lang = "en";
+            throw new Error("Undefined lang");
         }
     }
     static getString(string) {
-        if (Strings[this.locale][string]) {
-            return Strings[this.locale][string];
+        if (Strings[this.lang][string]) {
+            return Strings[this.lang][string];
         }
         return Strings["en"][string];
     }
     static getInterfaceString(string) {
-        if (Strings[this.locale].interface[string]) {
-            return Strings[this.locale].interface[string];
+        if (Strings[this.lang].interface[string]) {
+            return Strings[this.lang].interface[string];
         }
         return Strings["en"].interface[string];
     }
     static getFlagString(string) {
-        if (Strings[this.locale].flag[string]) {
-            return Strings[this.locale].flag[string];
+        if (Strings[this.lang].flag[string]) {
+            return Strings[this.lang].flag[string];
         }
         return Strings["en"].flag[string];
     }
-    static hasLocale(locale) {
-        if (locale in Strings) {
+    static hasLang(lang) {
+        if (lang in Strings) {
             return true;
         }
         return false;
     }
-    static getLocales() {
+    /**
+     * Get a list of defined lang codes.
+     * @returns A list of lang codes.
+     */
+    static getLangCodes() {
         return Object.keys(Strings);
     }
-    static getLocaleName(locale) {
-        return Strings[locale]._name;
+    /**
+     * Get the lang's full name.
+     * @param langCode The lang code
+     * @retuns The lang name
+     */
+    static getLangName(langCode) {
+        return Strings[langCode]._name;
     }
     /**
-     * Get the locale's version number. Used for comparision between the locale and English.
-     * @param locale The locale name
+     * Get the lang's version number. Used for comparision between the lang and English.
+     * @param lang The lang name
+     * @returns The lang version string
      */
-    static getLocaleVersion(locale) {
-        return Strings[locale]._version;
+    static getLangVersion(lang) {
+        return Strings[lang]._version;
     }
 }
-L10n.locale = "en";
+L10n.lang = "en";
 export default L10n;
 //# sourceMappingURL=L10n.js.map

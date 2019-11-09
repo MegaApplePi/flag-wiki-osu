@@ -1,5 +1,5 @@
 export default Object.freeze({
-  "_version": 1,
+  "_version": 2,
   "_name": "English",
   "flag": {
     "AD": "Andorra",
@@ -293,12 +293,11 @@ export default Object.freeze({
     "feedback": "Issues or Feedback",
     "example": "Example",
     "config": "Settings",
-    "config-ignore": "Ignore errors",
     "config-name": "Set country name in title (hover text)",
     "config-code": "Set country code in alt (image failed to load text)",
     "config-inout": "Include input with output",
-    "config-lang": "Output Lanauage:",
-    "errors": "Errors",
+    "config-lang": "Interface and output lanauage:",
+    "show-errors": "Show Errors",
     "parse": "Find Flags"
   },
   "example": "# Example Tournament XXYY\n\n![World Cup XXYY](logo.jpg)\n\nThe Example Tournament XXYY (*ET XXYY*) is not a real tournament because this is an example. It is the first and last installment for flag-wiki-osu.\n\n## Tournament schedule\n\nTo be announced.\n\n## Organisation\n\nThe Example Tournament XXYY is ran by various community members by distributing the multitude of tasks into various fields of responsibility.\n\n### Tournament management\n\n- ![][flag_DE] [Loctav](https://osu.ppy.sh/users/71366)\n- ![][flag_DE] [p3n](https://osu.ppy.sh/users/123703)\n- ![ES][flag_ES] [Deif](https://osu.ppy.sh/users/318565)\n- ![][flag_FR] [shARPII](https://osu.ppy.sh/users/776257)\n\n### Map selectors\n\n- ![][flag_JP] [Asahina Momoko](https://osu.ppy.sh/users/3650145)\n- ![][flag_DE] [Okorin](https://osu.ppy.sh/users/1623405)\n- ![][flag_HK] [Skystar](https://osu.ppy.sh/users/873961)\n\n### Commentators\n\n- ![][flag_AU] [Bauxe](https://osu.ppy.sh/users/1881685)\n- ![][flag_US] [Daikyi](https://osu.ppy.sh/users/811832)\n- ![][flag_NZ] [deadbeat](https://osu.ppy.sh/users/128370)\n- ![][flag_GB] [Doomsday](https://osu.ppy.sh/users/18983)\n- ![](/wiki/shared/flag/CA.gif) [Evrien](https://osu.ppy.sh/users/791660)\n- ![][flag_AR] [juankristal](https://osu.ppy.sh/users/443656)\n- ![](/wiki/shared/flag/AT.gif \"Austria\") [Omgforz](https://osu.ppy.sh/users/578943)\n- ![][flag_GB] [Rime](https://osu.ppy.sh/users/1397232)\n- ![][flag_FR] [Slainv](https://osu.ppy.sh/users/4823843)\n- ![][flag_US] [ztrot](https://osu.ppy.sh/users/6347)\n\n### Statistician\n\n- ![][flag_NZ] [deadbeat](https://osu.ppy.sh/users/128370)\n- ![][flag_DE] [Nwolf](https://osu.ppy.sh/users/1910766)\n"

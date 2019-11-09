@@ -1,9 +1,11 @@
 import L10n from "./L10n.js";
 
+declare const $: any;
+
 //#region DOM
 const $totNoCookie: HTMLDivElement = document.querySelector('[data-toast="no-cookie"]');
 const $timNoCookie: HTMLDivElement = document.querySelector('[data-toast="no-cookie"] [data-time]');
-const COOKIE_ENABLED = navigator.cookieEnabled;
+const COOKIES_IS_ENABLED = navigator.cookieEnabled;
 
 const $btnHelp: HTMLDivElement = document.querySelector('[data-button="help"]');
 const $diaHelp: HTMLDivElement = document.querySelector('[data-dialog="help"]');
@@ -12,37 +14,31 @@ const $btnHelpClose: HTMLDivElement = document.querySelector('[data-button="help
 const $btnExample: HTMLDivElement = document.querySelector('[data-button="example"]');
 
 const $btnConfig: HTMLDivElement = document.querySelector('[data-button="config"]');
-const $diaConfig: HTMLDivElement = document.querySelector('[data-dialog="config"]');
 const $btnConfigClose: HTMLDivElement = document.querySelector('[data-button="config-close"]');
-const $chkConfigIgnoreErrors: HTMLInputElement = document.querySelector('[data-checkbox="ignore-errors"]');
-const $chkConfigCountryTitle: HTMLInputElement = document.querySelector('[data-checkbox="country-title"]');
-const $chkConfigCountryAlt: HTMLInputElement = document.querySelector('[data-checkbox="country-alt"]');
-const $chkConfigOutputInput: HTMLInputElement = document.querySelector('[data-checkbox="output-input"]');
-const $selConfigLanguage: HTMLSelectElement = document.querySelector('[data-select="language"]');
+const $chkConfigCountryTitle: HTMLInputElement = document.querySelector('#config-country-title');
+const $chkConfigCountryAlt: HTMLInputElement = document.querySelector('#config-country-alt');
+const $chkConfigOutputInput: HTMLInputElement = document.querySelector('#config-output-input');
+const $selConfigLanguage: HTMLSelectElement = document.querySelector('#config-language');
 
-const $errorsOutput: HTMLDivElement = document.querySelector("#errors-output");
 const $btnErrors: HTMLDivElement = document.querySelector('[data-button="errors"]');
-const $diaErrors: HTMLDivElement = document.querySelector('[data-dialog="errors"]');
-const $btnErrorsClose: HTMLDivElement = document.querySelector('[data-button="errors-close"]');
-const $diaErrorsList: HTMLDivElement = document.querySelector("#errors-list");
+const $errorsList: HTMLDivElement = document.querySelector("#errors-list");
 
 const $btnParse: HTMLDivElement = document.querySelector('[data-button="parse"]');
 
-const $input: HTMLInputElement = document.querySelector("#input");
-
+const $input: HTMLTextAreaElement = document.querySelector("#input");
 const $output: HTMLTextAreaElement = document.querySelector("#output");
+
 const $outputErrors: HTMLSpanElement = document.querySelector("#output-errors");
-const $diaOutput: HTMLDivElement = document.querySelector('[data-dialog="output"]');
 const $btnOutputClose: HTMLDivElement = document.querySelector('[data-button="output-close"]');
 const $btnOutputCopy: HTMLDivElement = document.querySelector('[data-button="output-copy"]');
 //#endregion
 
 //#region create lanauage selector options
-let lanauages = L10n.getLocales();
+let lanauages = L10n.getLangCodes();
 for (let lang of lanauages) {
   let $option: HTMLOptionElement = document.createElement("option");
   $option.setAttribute("value", lang);
-  $option.textContent = L10n.getLocaleName(lang);
+  $option.textContent = L10n.getLangName(lang);
 
   $selConfigLanguage.insertAdjacentElement("beforeend", $option);
 }
@@ -60,22 +56,18 @@ function updateInterfaceStrings() {
   $btnExample.textContent = L10n.getInterfaceString("example");
 
   $btnConfig.textContent = L10n.getInterfaceString("config");
-  $chkConfigIgnoreErrors.nextElementSibling.textContent = L10n.getInterfaceString("config-ignore");
   $chkConfigCountryTitle.nextElementSibling.textContent = L10n.getInterfaceString("config-name");
   $chkConfigCountryAlt.nextElementSibling.textContent = L10n.getInterfaceString("config-code");
   $chkConfigOutputInput.nextElementSibling.textContent = L10n.getInterfaceString("config-inout");
   $selConfigLanguage.previousElementSibling.textContent = L10n.getInterfaceString("config-lang");
   $btnConfigClose.textContent = L10n.getInterfaceString("close");
 
-  $btnErrors.textContent = `${L10n.getInterfaceString("errors")} (0)`;
+  $btnErrors.textContent = `${L10n.getInterfaceString("show-errors")}`;
 }
 //#endregion
 
 //#region restore options
-if (COOKIE_ENABLED) {
-  if (localStorage.getItem("ignore-errors") === "true") {
-    $chkConfigIgnoreErrors.checked = true;
-  }
+if (COOKIES_IS_ENABLED) {
   if (localStorage.getItem("country-title") === "true") {
     $chkConfigCountryTitle.checked = true;
   }
@@ -87,13 +79,13 @@ if (COOKIE_ENABLED) {
   if (localStorage.getItem("output-input") === "true") {
     $chkConfigOutputInput.checked = true;
   }
-  // Using try instead. If the lanauge does not exist, it will throw into the catch.
+
   try {
     ($selConfigLanguage.querySelector(`option[value="${localStorage.getItem("output-language")}"]`) as HTMLOptionElement).setAttribute("selected", "");
-    L10n.setLocale(localStorage.getItem("output-language"));
+    L10n.setLang(localStorage.getItem("output-language"));
   } catch {
     ($selConfigLanguage.querySelector('option[value="en"]') as HTMLOptionElement).setAttribute("selected", "");
-    L10n.setLocale("en");
+    L10n.setLang("en");
   } finally {
     updateInterfaceStrings();
   }
@@ -114,46 +106,19 @@ if (COOKIE_ENABLED) {
 //#endregion
 
 //#region enable interface
-$btnHelp.classList.remove("menu__button--disabled");
-$btnExample.classList.remove("menu__button--disabled");
-$btnConfig.classList.remove("menu__button--disabled");
-$btnParse.classList.remove("menu__button--disabled");
+$btnHelp.removeAttribute("disabled");
+$btnExample.removeAttribute("disabled");
+$btnConfig.removeAttribute("disabled");
+$btnParse.removeAttribute("disabled");
 $input.removeAttribute("disabled");
 //#endregion
 
-//#region get flags list from locale
+//#region get flags list from lang
 const FLAGS = L10n.getString("flag") as string[];
 const FLAG_CODES = Object.freeze(Object.keys(FLAGS));
 //#endregion
 
-//#region help button events
-function $btnHelp_click() {
-  if (!$btnHelp.classList.contains("menu__button--disabled")) {
-    $diaHelp.classList.remove("dialog--hidden");
-  }
-}
-$btnHelp.addEventListener("click", $btnHelp_click);
-
-function $btnHelpClose_click() {
-  $diaHelp.classList.add("dialog--hidden");
-}
-$btnHelpClose.addEventListener("click", $btnHelpClose_click);
-//#endregion
-
 //#region config events
-function $btnConfig_click() {
-  if (!$btnConfig.classList.contains("menu__button--disabled")) {
-    $diaConfig.classList.remove("dialog--hidden");
-  }
-}
-$btnConfig.addEventListener("click", $btnConfig_click);
-
-function $btnConfigClose_click() {
-  $diaConfig.classList.add("dialog--hidden");
-}
-$btnConfigClose.addEventListener("click", $btnConfigClose_click);
-
-// the input needs to be included so the user can copy the alt values
 function $chkConfigCountryAlt_change() {
   if ($chkConfigCountryAlt.checked) {
     $chkConfigOutputInput.checked = true;
@@ -166,7 +131,7 @@ function $chkConfigCountryAlt_change() {
 $chkConfigCountryAlt.addEventListener("change", $chkConfigCountryAlt_change);
 
 // for checkboxes
-function $$config_change(event: Event) {
+function $config_change(event: Event) {
   let target = event.target as HTMLInputElement;
   let targetName = target.dataset.checkbox;
   if (target.checked) {
@@ -187,11 +152,10 @@ function $selConfigLanguage_change(event: Event) {
 }
 
 // Do not set the config events if cookies are disabled (upon setting will prevent the site from functioning properly)
-if (COOKIE_ENABLED) {
-  $chkConfigIgnoreErrors.addEventListener("change", $$config_change);
-  $chkConfigCountryTitle.addEventListener("change", $$config_change);
-  $chkConfigCountryAlt.addEventListener("change", $$config_change);
-  $chkConfigOutputInput.addEventListener("change", $$config_change);
+if (COOKIES_IS_ENABLED) {
+  $chkConfigCountryTitle.addEventListener("change", $config_change);
+  $chkConfigCountryAlt.addEventListener("change", $config_change);
+  $chkConfigOutputInput.addEventListener("change", $config_change);
 
   $selConfigLanguage.addEventListener("change", $selConfigLanguage_change);
 }
@@ -206,26 +170,7 @@ function $btnExample_click() {
 $btnExample.addEventListener("click", $btnExample_click);
 //#endregion
 
-//#region error button events
-function $btnErrors_click() {
-  if (!$btnErrors.classList.contains("menu__button--disabled")) {
-    $diaErrors.classList.remove("dialog--hidden");
-  }
-}
-$btnErrors.addEventListener("click", $btnErrors_click);
-
-function $btnErrorsClose_click() {
-  $diaErrors.classList.add("dialog--hidden");
-}
-$btnErrorsClose.addEventListener("click", $btnErrorsClose_click);
-//#endregion
-
 /* output events */
-function $btnOutputClose_click() {
-  $diaOutput.classList.add("dialog--hidden");
-}
-$btnOutputClose.addEventListener("click", $btnOutputClose_click);
-
 function $btnOutputCopy_click() {
   if (!$btnOutputCopy.classList.contains("menu__button--disabled")) {
     if ("clipboard" in navigator) {
@@ -284,7 +229,7 @@ function getCode(text: string): string {
   return codeFormatted.toUpperCase();
 }
 
-function getNewKey(text: string): string {
+function makeReference(text: string): string {
   return `[flag_${getCode(text)}]`;
 }
 
@@ -294,13 +239,9 @@ function getReplacementLink(text: string): string {
   return `[flag_${codeFormatted.toUpperCase()}]`;
 }
 
-function getFixedRef(text: string): string {
-  return `[flag_${getCode(text)}]`;
-}
-
 $btnParse.addEventListener("click", () => {
-  while ($diaErrorsList.firstChild) {
-    $diaErrorsList.firstChild.remove();
+  while ($errorsList.firstChild) {
+    $errorsList.firstChild.remove();
   }
 
   let lines = $input.value.split("\n");
@@ -322,13 +263,13 @@ $btnParse.addEventListener("click", () => {
           } else if (countryCode.length === 4) {
             ext = ".png";
           }
-          let newKey = key[j].replace(key[j], getNewKey);
+          let newKey = key[j].replace(key[j], makeReference);
           if (!FLAG_CODES.includes(countryCode)) {
             invalid_flags.push([countryCode, (i + 1)]);
           }
           // parse with broken flags anyways
           if ($chkConfigCountryTitle.checked) {
-            flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext} "${FLAGS[countryCode] ? FLAGS[countryCode] : "NOT_FOUND"}"`;
+            flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext} "${FLAGS[countryCode] ? FLAGS[countryCode] : "FLAG_NOT_FOUND"}"`;
           } else {
             flags_unsort[newKey] = `/wiki/shared/flag/${countryCode}${ext}`;
           }
@@ -350,47 +291,38 @@ $btnParse.addEventListener("click", () => {
     let referenceName = lines[i].match(/\[flag_..(?:..)?\]/g);
     if (referenceName) {
       for (let j = 0; j < referenceName.length; j++) {
-        lines[i] = lines[i].replace(referenceName[j], getFixedRef);
+        lines[i] = lines[i].replace(referenceName[j], makeReference);
       }
     }
   }
   if (invalid_flags.length > 0) {
-    $btnErrors.classList.remove("menu__button--disabled");
-    $errorsOutput.classList.remove("dialog__message--hidden");
-    $btnErrors.textContent = `${L10n.getInterfaceString("errors")} (${invalid_flags.length})`;
-    $outputErrors.textContent = `${invalid_flags.length} error${invalid_flags.length === 1 ? "" : "s"} found`;
+    $btnErrors.removeAttribute('disabled');
+    $outputErrors.classList.remove("d-none");
 
     for (let i = 0; i < invalid_flags.length; i++) {
       let $_li = document.createElement("li");
       $_li.textContent = `${invalid_flags[i][0]} (line: ${invalid_flags[i][1]})`;
-      $diaErrorsList.insertAdjacentElement("beforeend", $_li);
+      $errorsList.insertAdjacentElement("beforeend", $_li);
     }
   } else {
-    $btnErrors.classList.add("menu__button--disabled");
-    $errorsOutput.classList.add("dialog__message--hidden");
-    $btnErrors.textContent = `${L10n.getInterfaceString("errors")} (0)`;
-    $outputErrors.textContent = "";
+    $btnErrors.setAttribute('disabled', '');
+    $outputErrors.classList.add("d-none");
   }
 
-  if (invalid_flags.length > 0 && !$chkConfigIgnoreErrors.checked) {
-    $diaErrors.classList.remove("dialog--hidden");
-  } else {
-    // we want the flags to go in some kind of order
-    let flags_sort = {};
-    Object.keys(flags_unsort).sort()
-      .forEach((key) => {
-        flags_sort[key] = flags_unsort[key];
-      });
-    for (let key in flags_sort) {
-      if (flags_sort.hasOwnProperty(key)) {
-        flags_output += `${key}: ${flags_sort[key]}\n`;
-      }
+  let flags_sort = {};
+  Object.keys(flags_unsort).sort()
+    .forEach((key) => {
+      flags_sort[key] = flags_unsort[key];
+    });
+  for (let key in flags_sort) {
+    if (flags_sort.hasOwnProperty(key)) {
+      flags_output += `${key}: ${flags_sort[key]}\n`;
     }
-    if ($chkConfigOutputInput.checked) {
-      $output.textContent = `${lines.join("\n")}\n${flags_output}`;
-    } else {
-      $output.textContent = flags_output;
-    }
-    $diaOutput.classList.remove("dialog--hidden");
   }
+  if ($chkConfigOutputInput.checked) {
+    $output.textContent = `${lines.join("\n")}\n${flags_output}`;
+  } else {
+    $output.textContent = flags_output;
+  }
+  $('#output-modal').modal("show");
 });

@@ -17,73 +17,78 @@ body {
 @import "dialog";
 @import "toast";
 
-main {
-  margin: 0 10%;
+.page-title {
+  font-size: 1.5rem;
+}
 
-  textarea#input {
-    background-color: #fff;
-    border: 2px solid #2f54eb;
-    box-sizing: border-box;
-    color: #000;
+.main__input {
+  background-color: #fff;
+  border: 2px solid #2f54eb;
+  box-sizing: border-box;
+  color: #000;
+  display: block;
+  font-family: monospace;
+  height: 100vh;
+  height: calc(100vh - 64px - 16px);
+  margin: 0;
+  margin-bottom: 16px;
+  min-height: 300px;
+  outline: none;
+  padding: 0;
+  position: relative;
+  resize: none;
+  transition: 25ms background-color;
+  width: 100%;
+
+  &:disabled {
+    background-color: #bfbfbf;
+    color: #fff;
+  }
+}
+
+.main__output {
+  background-color: #eee;
+  border: none;
+  font-family: monospace;
+  margin: 0;
+  min-height: 55vh;
+  padding: 0;
+  position: relative;
+  resize: none;
+  user-select: all;
+  white-space: pre-wrap;
+  width: 100%;
+
+  &:before {
+    font-family: sans-serif;
+    content: "";
+    /* @supports (user-select: all) {
+      content: "Click inside box to select all.";
+    } */
     display: block;
-    font-family: monospace;
-    height: 100vh;
-    height: calc(100vh - 64px - 16px);
-    margin: 0;
-    margin-bottom: 16px;
-    min-height: 300px;
-    outline: none;
-    padding: 0;
-    position: relative;
-    resize: none;
-    transition: 25ms background-color;
-    width: 100%;
-
-    &:disabled {
-      background-color: #bfbfbf;
-      color: #fff;
-    }
+    position: absolute;
+    left: 0;
+    bottom: 100%;
   }
 
-  textarea#output {
-    background-color: #eee;
-    border: none;
-    height: 100%;
+  &:empty {
     margin: 0;
     padding: 0;
-    position: relative;
-    resize: none;
-    user-select: all;
-    white-space: pre-wrap;
-    width: 100%;
+    background-color: unset;
+    position: unset;
+    top: unset;
 
     &:before {
-      font-family: sans-serif;
-      content: "";
-      /* @supports (user-select: all) {
-        content: "Click inside box to select all.";
-      } */
-      display: block;
-      position: absolute;
-      left: 0;
-      bottom: 100%;
-    }
-
-    &:empty {
-      margin: 0;
-      padding: 0;
-      background-color: unset;
+      content: "No flags found";
       position: unset;
-      top: unset;
-
-      &:before {
-        content: "No flags found";
-        position: unset;
-        left: unset;
-        bottom: unset;
-      }
+      left: unset;
+      bottom: unset;
     }
   }
+}
+
+main {
+  margin: 0 10%;
 }
 
 #errors-list {
