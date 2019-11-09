@@ -24,11 +24,16 @@ class L10n {
         }
         return Strings["en"].interface[string];
     }
-    static getFlagString(string) {
+    static getCountryName(string) {
         if (Strings[this.lang].flag[string]) {
             return Strings[this.lang].flag[string];
         }
-        return Strings["en"].flag[string];
+        else if (Strings["en"].flag[string]) {
+            return Strings["en"].flag[string];
+        }
+        else {
+            return "FLAG_NOT_FOUND";
+        }
     }
     static hasLang(lang) {
         if (lang in Strings) {

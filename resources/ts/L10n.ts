@@ -30,11 +30,14 @@ abstract class L10n {
     return Strings["en"].interface[string];
   }
 
-  public static getFlagString(string: string): string {
+  public static getCountryName(string: string): string {
     if (Strings[this.lang].flag[string]) {
       return Strings[this.lang].flag[string];
+    } else if (Strings["en"].flag[string]) {
+      return Strings["en"].flag[string];
+    } else {
+      return "FLAG_NOT_FOUND";
     }
-    return Strings["en"].flag[string];
   }
 
   public static hasLang(lang: string): boolean {
