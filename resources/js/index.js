@@ -113,15 +113,20 @@ function $outputCopyButton_click() {
     if ($outputCopyButton.hasAttribute("disabled")) {
         return;
     }
+    $outputCopyButton.querySelector('[data-l10n="copy"]').classList.remove("d-none");
+    $outputCopyButton.querySelector('[data-l10n="copied"]').classList.add("d-none");
+    $outputCopyButton.querySelector('[data-l10n="failed"]').classList.add("d-none");
     if ("clipboard" in navigator) {
         navigator.clipboard.writeText($outputTextarea.value)
             .then(() => {
             $outputCopyButton.setAttribute("disabled", "");
-            $outputCopyButton.textContent = L10n.getInterfaceString("copied");
+            $outputCopyButton.querySelector('[data-l10n="copied"]').classList.remove("d-none");
+            $outputCopyButton.querySelector('[data-l10n="copy"]').classList.add("d-none");
         })
             .catch(() => {
             $outputCopyButton.setAttribute("disabled", "");
-            $outputCopyButton.textContent = L10n.getInterfaceString("failed");
+            $outputCopyButton.querySelector('[data-l10n="failed"]').classList.remove("d-none");
+            $outputCopyButton.querySelector('[data-l10n="copy"]').classList.add("d-none");
         });
     }
     else {
@@ -129,16 +134,20 @@ function $outputCopyButton_click() {
             $outputTextarea.select();
             document.execCommand("copy");
             $outputCopyButton.setAttribute("disabled", "");
-            $outputCopyButton.textContent = L10n.getInterfaceString("copied");
+            $outputCopyButton.querySelector('[data-l10n="copied"]').classList.remove("d-none");
+            $outputCopyButton.querySelector('[data-l10n="copy"]').classList.add("d-none");
         }
         catch (_a) {
             $outputCopyButton.setAttribute("disabled", "");
-            $outputCopyButton.textContent = L10n.getInterfaceString("failed");
+            $outputCopyButton.querySelector('[data-l10n="failed"]').classList.remove("d-none");
+            $outputCopyButton.querySelector('[data-l10n="copy"]').classList.add("d-none");
         }
     }
     setTimeout(() => {
         $outputCopyButton.removeAttribute("disabled");
-        $outputCopyButton.textContent = L10n.getInterfaceString("copy");
+        $outputCopyButton.querySelector('[data-l10n="copy"]').classList.remove("d-none");
+        $outputCopyButton.querySelector('[data-l10n="copied"]').classList.add("d-none");
+        $outputCopyButton.querySelector('[data-l10n="failed"]').classList.add("d-none");
     }, 1000);
 }
 $outputCopyButton.addEventListener("click", $outputCopyButton_click);
