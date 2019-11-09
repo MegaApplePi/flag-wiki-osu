@@ -205,9 +205,9 @@ window.addEventListener("drop", window_drop);
 
 /* parsing events */
 function getCode(text: string): string {
-  // reference links = _xxyy]
-  // inline links = /xxyy.
-  let code = text.match(/(_|\/)..(?:..)?(\]|\.)/)[0];
+  // reference links = _xx]
+  // inline links = /xx.
+  let code = text.match(/(_|\/)..(\]|\.)/)[0];
   let codeFormatted = code.substring(1, (code.length - 1));
   return codeFormatted.toUpperCase();
 }
@@ -217,7 +217,7 @@ function makeReference(text: string): string {
 }
 
 function getReplacementLink(text: string): string {
-  let code = text.match(/\/..(?:..)?\./)[0];
+  let code = text.match(/\/..?\./)[0];
   let codeFormatted = code.substring(1, (code.length - 1));
   return `[flag_${codeFormatted.toUpperCase()}]`;
 }
@@ -233,11 +233,11 @@ $parseButton.addEventListener("click", () => {
   let invalid_flags = [];
   for (let i = 0; i < lines.length; i++) {
     /*   ref links                      inline links */
-    if (/(!\[(.+)?\]\[flag_..(?:..)?\])|(\(\/wiki\/shared\/flag\/..(?:..)?\.(gif|jpe?g|png)(?: ".*")?\))/g.test(lines[i])) {
-      let key = lines[i].match(/\[flag_..(?:..)?\]/g);
+    if (/(!\[(.+)?\]\[flag_..?\])|(\(\/wiki\/shared\/flag\/..?\.(gif|jpe?g|png)(?: ".*")?\))/g.test(lines[i])) {
+      let key = lines[i].match(/\[flag_..?\]/g);
       if (key) {
         for (let j = 0; j < key.length; j++) {
-          let countryMatch = key[j].match(/_..(?:..)?\]/g)[0];
+          let countryMatch = key[j].match(/_..?\]/g)[0];
           let countryCode = countryMatch.substring(1, (countryMatch.length - 1)).toUpperCase();
 
           let ext: string;
@@ -264,14 +264,14 @@ $parseButton.addEventListener("click", () => {
       }
     }
     // linkPath = "(/wiki/shared/flags/XX.xxx)" part; recognising title is supported
-    let linkPath = lines[i].match(/\(\/wiki\/shared\/flag\/..(?:..)?\.(gif|jpe?g|png)(?: ".*")?\)/g);
+    let linkPath = lines[i].match(/\(\/wiki\/shared\/flag\/..?\.(gif|jpe?g|png)(?: ".*")?\)/g);
     if (linkPath) {
       for (let j = 0; j < linkPath.length; j++) {
         lines[i] = lines[i].replace(linkPath[j], getReplacementLink);
       }
     }
     // referenceName = "[flag_XX]" part
-    let referenceName = lines[i].match(/\[flag_..(?:..)?\]/g);
+    let referenceName = lines[i].match(/\[flag_..?\]/g);
     if (referenceName) {
       for (let j = 0; j < referenceName.length; j++) {
         lines[i] = lines[i].replace(referenceName[j], makeReference);
