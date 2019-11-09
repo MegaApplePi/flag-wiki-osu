@@ -44,7 +44,7 @@ function updateInterfaceStrings() {
   }
 }
 
-if (COOKIES_IS_ENABLED && false) {
+if (COOKIES_IS_ENABLED) {
   if (localStorage.getItem("country-title") === "true") {
     $configCountryTitleCheckbox.checked = true;
   }
@@ -56,19 +56,6 @@ if (COOKIES_IS_ENABLED && false) {
   if (localStorage.getItem("output-input") === "true") {
     $configOutputInputCheckbox.checked = true;
   }
-} else {
-  $noCookieToast.classList.remove("d-none");
-  let tick = 5;
-  $noCookieTimer.textContent = `${tick} second${tick === 1 ? "" : "s"}`;
-
-  let timer = window.setInterval(() => {
-    tick--;
-    $noCookieTimer.textContent = `${tick} second${tick === 1 ? "" : "s"}`;
-    if (tick === 0) {
-      $noCookieToast.classList.add("d-none");
-      window.clearInterval(timer);
-    }
-  }, 1000);
 }
 
 try {
@@ -231,7 +218,6 @@ function $parseButton_click() {
       }
       for (let j = 0; j < key.length; j++) {
         let countryMatch = key[j].match(/(?:_..?\])|(?:..?\.gif)/g)[0];
-        console.log(countryMatch);
         let countryCode = countryMatch.replace(/_|]|\.gif/g, "").toUpperCase();
 
         let newKey = key[j].replace(key[j], makeReference);
@@ -251,7 +237,7 @@ function $parseButton_click() {
       }
     }
 
-    let linkPath = lines[i].match(/\(\/wiki\/shared\/flag\/..?\.(gif|jpe?g|png)(?: ".*")?\)/g);
+    let linkPath = lines[i].match(/\(\/wiki\/shared\/flag\/..?\.gif(?: ".*")?\)/g);
     if (linkPath) {
       for (let j = 0; j < linkPath.length; j++) {
         lines[i] = lines[i].replace(linkPath[j], getReplacementLink);
