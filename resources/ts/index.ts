@@ -207,7 +207,7 @@ function $parseButton_click() {
 
   // Inspect all lines
   for (let i = 0; i < lines.length; i++) {
-    let inputRegex = /!\[(.*?)\](\[flag_(.*?)\]|\(\/wiki\/shared\/flag\/(.*?)\.gif(?: ".*?")?\))/g;
+    let inputRegex = /!\[([^\]]*?)\](\[flag_(.*?)\]|\(\/wiki\/shared\/flag\/(.*?)\.gif(?: ".*?")?\))/g;
     let inputRegexMatch: RegExpExecArray;
     while ((inputRegexMatch = inputRegex.exec(lines[i])) != null) {
       let countryCode: string;
