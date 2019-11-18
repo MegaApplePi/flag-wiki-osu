@@ -234,11 +234,15 @@ function $parseButton_click() {
 
   // Run the replacements
   replacementData.forEach((value) => {
+    let replacementValue: string;
+
     if ($configCountryAltCheckbox.checked) {
-      lines[value[0]] = `${lines[value[0]].substring(0, value[1].index)}![${value[2]}]${makeReference(value[2])}${lines[value[0]].substring(value[1].index + value[1][0].length, lines[value[0]].length)}`;
+      replacementValue = `![${value[2]}]${makeReference(value[2])}`;
     } else {
-      lines[value[0]] = `${lines[value[0]].substring(0, value[1].index)}![]${makeReference(value[2])}${lines[value[0]].substring(value[1].index + value[1][0].length, lines[value[0]].length)}`;
+      replacementValue = `![]${makeReference(value[2])}`;
     }
+
+    lines[value[0]] = `${lines[value[0]].substring(0, value[1].index)}${replacementValue}${lines[value[0]].substring(value[1].index + value[1][0].length, lines[value[0]].length)}`;
   });
 
   if (invalid_flags.length > 0) {
