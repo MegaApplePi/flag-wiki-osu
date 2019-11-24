@@ -1,9 +1,9 @@
 export default Object.freeze({
-  "_version": 3,
+  "_version": 4,
   "_name": "English",
   "flag": {
     /**
-     * The names are how osu! spells them.
+     * The country names listed below is how osu! spells them.
      */
     "__": "",
 
@@ -282,12 +282,16 @@ export default Object.freeze({
     "config": "Settings",
     "config-name": "Set country name in title (hover text)",
     "config-code": "Set country code in alt (image failed to load text)",
+    "config-parsefix": "Try to apply fixes right away",
     "config-inout": "Include input with output",
     "config-lang": "Interface and output lanauage:",
-    "output-has-errors": "Some errors were found.",
-    "show-errors": "Show Errors",
+    "output-has-errors": "Some issues were found.",
+    "output-has-fixes": "Some modifications were made.",
+    "show-errors": "Show Issues",
     "parse": "Find Flags",
-    "errors": "Errors"
+    "errors": "Issues",
+    "use-instead": "use instead:",
+    "line": "line"
   },
   "example": "---\ntags:\n  - FWO20XX\n---\n\n# flag-wiki-osu 20XX\n\n![FWO20XX Logo](img/logo.png)\n\nThe **flag-wiki-osu** (***FWO20XX***) was a country-based double-elimination osu! tournament hosted by ![Austrila][flag_AU] [peppy] https://osu.ppy.sh/users/2), ![](/wiki/shared/flag/DE.gif \"Germany\") [Loctav](https://osu.ppy.sh/users/71366), and ![NZ][flag_NZ] [deadbeat](https://osu.ppy.sh/users/128370). It was the first installment of the flag-wiki-osu.\n\n## Schedule\n\n| Event | Timestamp |\n| --: | :-- |\n| Registration Phase | 2018-01-01/2018-01-28 |\n| Live Drawings | 2018-01-29 (12:00 UTC) |\n\n## Prizes\n\n| Placing | Prize(s) |\n| :-: | :-- |\n| ![Gold Crown](/wiki/shared/GCrown.png \"1st place\") | ![](/wiki/shared/flag/AR.gif) [juankristal](https://osu.ppy.sh/users/43656) |\n| ![Silver Crown](/wiki/shared/SCrown.png \"2nd place\") | ![][flag_US] [ztrot](https://osu.ppy.sh/users/6347) |\n| ![Bronze Crown](/wiki/shared/BCrown.png \"3rd place\") | ![DE][flag_DE] [Nwolf](https://osu.ppy.sh/users/1910766) |\n\n## Organisation\n\nThe flag-wiki-osu is run by various community members by distributing the multitude of tasks into various fields of responsibility.\n\n| Position | Member(s) |\n| :-- | :-- |\n| Manager | ![][flag_US] [clayton](https://osu.ppy.sh/users/3666350) |\n| Map Selector | ![][flag_CN] [kj415j45](https://osu.ppy.sh/users/9367540) |\n| Statistician | ![US][flag_US] [Joehu](https://osu.ppy.sh/users/8549835) |\n\n## Random People\n\n|  | Country | Members |\n| :-: | :-: | :-- |\n| ![][flag_AU] | **Australia** | [peppy](https://osu.ppy.sh/users/2), [BanchoBot](https://osu.ppy.sh/users/3) |\n| ![][flag_US] | **United States** | [Toy](https://osu.ppy.sh/users/2757689), [Apraxia](https://osu.ppy.sh/users/4194445) |\n\n"
 });
