@@ -12,8 +12,29 @@ const $configButton: HTMLDivElement = document.querySelector('[data-button="conf
 const $configCountryTitleCheckbox: HTMLInputElement = document.querySelector('#config-country-title');
 const $configCountryAltCheckbox: HTMLInputElement = document.querySelector('#config-country-alt');
 const $configOutputInputCheckbox: HTMLInputElement = document.querySelector('#config-output-input');
-const $configParseFixCheckbox: HTMLInputElement = document.querySelector('#config-parsefix');
+const $configParsefixCheckbox: HTMLInputElement = document.querySelector('#config-parsefix');
 const $configLanguageSelect: HTMLSelectElement = document.querySelector('#config-language');
+const CONFIG_SETTINGS = {
+  get countryTitle() {
+    return $configCountryTitleCheckbox.checked;
+  },
+
+  get countryAlt() {
+    return $configCountryAltCheckbox.checked;
+  },
+
+  get outputInput() {
+    return $configOutputInputCheckbox.checked;
+  },
+
+  get parsefix() {
+    return $configParsefixCheckbox.checked;
+  },
+
+  get language() {
+    return $configLanguageSelect.value;
+  }
+}
 
 const $errorsButton: HTMLDivElement = document.querySelector('[data-button="errors"]');
 const $errorsList: HTMLDivElement = document.querySelector("#errors-list");
@@ -56,7 +77,7 @@ if (COOKIES_IS_ENABLED) {
     $configOutputInputCheckbox.checked = true;
   }
   if (localStorage.getItem("parsefix") === "true") {
-    $configParseFixCheckbox.checked = true;
+    $configParsefixCheckbox.checked = true;
   }
 }
 
@@ -82,11 +103,11 @@ const FLAG_CODES = Object.freeze(Object.keys(FLAGS));
 
 //#region config events
 function $configCountryAltCheckbox_change() {
-  if ($configCountryAltCheckbox.checked) {
+  if (CONFIG_SETTINGS.countryAlt) {
     $configOutputInputCheckbox.checked = true;
     $configOutputInputCheckbox.disabled = true;
   } else {
-    if (!$configParseFixCheckbox.checked) {
+    if (!CONFIG_SETTINGS.parsefix) {
       $configOutputInputCheckbox.checked = false;
       $configOutputInputCheckbox.disabled = false;
     }
@@ -95,17 +116,17 @@ function $configCountryAltCheckbox_change() {
 $configCountryAltCheckbox.addEventListener("change", $configCountryAltCheckbox_change);
 
 function $configParseFixCheckbox_change() {
-  if ($configParseFixCheckbox.checked) {
+  if (CONFIG_SETTINGS.parsefix) {
     $configOutputInputCheckbox.checked = true;
     $configOutputInputCheckbox.disabled = true;
   } else {
-    if (!$configCountryAltCheckbox.checked) {
+    if (!CONFIG_SETTINGS.countryAlt) {
       $configOutputInputCheckbox.checked = false;
       $configOutputInputCheckbox.disabled = false;
     }
   }
 }
-$configParseFixCheckbox.addEventListener("change", $configParseFixCheckbox_change);
+$configParsefixCheckbox.addEventListener("change", $configParseFixCheckbox_change);
 
 // for checkboxes
 function $config_change(event: Event) {
@@ -115,12 +136,6 @@ function $config_change(event: Event) {
     localStorage.setItem(targetName, "true");
   } else {
     localStorage.setItem(targetName, "false");
-    if (targetName === "country-alt") {
-      localStorage.setItem("output-input", "false");
-    }
-    if (targetName === "parsefix") {
-      localStorage.setItem("output-input", "false");
-    }
   }
 }
 
@@ -129,7 +144,7 @@ if (COOKIES_IS_ENABLED) {
   $configCountryTitleCheckbox.addEventListener("change", $config_change);
   $configCountryAltCheckbox.addEventListener("change", $config_change);
   $configOutputInputCheckbox.addEventListener("change", $config_change);
-  $configParseFixCheckbox.addEventListener("change", $config_change);
+  $configParsefixCheckbox.addEventListener("change", $config_change);
 }
 function $configLanguageSelect_change(event: Event) {
   let target = event.target as HTMLSelectElement;
@@ -258,7 +273,7 @@ function $parseButton_click() {
         }
         invalid_flags.push([countryCode, (i + 1), solution]);
 
-        if ($configParseFixCheckbox.checked) {
+        if (CONFIG_SETTINGS.parsefix) {
           countryCode = solution;
         }
       }
@@ -267,7 +282,7 @@ function $parseButton_click() {
       replacementData.unshift([i, inputRegexMatch, countryCode]);
 
       let newKey = makeReference(countryCode);
-      if ($configCountryTitleCheckbox.checked) {
+      if (CONFIG_SETTINGS.countryTitle) {
         if (countryCode === "__") {
           flags_list.set(newKey, "/wiki/shared/flag/__.gif");
         } else {
@@ -283,7 +298,7 @@ function $parseButton_click() {
   replacementData.forEach((value) => {
     let replacementValue: string;
 
-    if ($configCountryAltCheckbox.checked) {
+    if (CONFIG_SETTINGS.countryAlt) {
       if (value[2] === "__") {
         replacementValue = `![]${makeReference(value[2])}`;
       } else {
@@ -299,7 +314,7 @@ function $parseButton_click() {
   if (invalid_flags.length > 0) {
     $errorsButton.removeAttribute('disabled');
 
-    if ($configParseFixCheckbox.checked) {
+    if (CONFIG_SETTINGS.parsefix) {
       $outputHasErrors.textContent = L10n.getInterfaceString("output-has-fixes");
 
       for (let i = 0; i < invalid_flags.length; i++) {
@@ -325,7 +340,7 @@ function $parseButton_click() {
   flags_list.forEach((value, key) => {
     flags_output += `${key}: ${value}\n`;
   });
-  if ($configOutputInputCheckbox.checked) {
+  if (CONFIG_SETTINGS.outputInput) {
     $outputTextarea.textContent = `${lines.join("\n")}\n${flags_output}`;
   } else {
     $outputTextarea.textContent = flags_output;
