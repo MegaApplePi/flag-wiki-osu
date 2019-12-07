@@ -56,7 +56,7 @@ export default Object.freeze({
     "CO": "Colombia",
     "CR": "Costa Rica",
     "CU": "Cuba",
-    "CV": "Cape Verde",
+    "CV": "Cabo Verde",
     "CX": "Christmas Island",
     "CY": "Cyprus",
     "CZ": "Czech Republic",
@@ -228,7 +228,7 @@ export default Object.freeze({
     "ST": "Sao Tome and Principe",
     "SV": "El Salvador",
     "SY": "Syrian Arab Republic",
-    "SZ": "Swaziland",
+    "SZ": "Eswatini",
 
     "TC": "Turks and Caicos Islands",
     "TD": "Chad",
