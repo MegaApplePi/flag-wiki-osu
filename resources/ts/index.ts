@@ -98,8 +98,7 @@ $configButton.removeAttribute("disabled");
 $parseButton.removeAttribute("disabled");
 $inputTextarea.removeAttribute("disabled");
 
-const FLAGS = L10n.getString("flag") as string[];
-const FLAG_CODES = Object.freeze(Object.keys(FLAGS));
+const FLAG_CODES = Object.freeze(L10n.getFlagCodes());
 
 //#region config events
 function $configCountryAltCheckbox_change(): void {
@@ -286,7 +285,8 @@ function $parseButton_click(): void {
         if (countryCode === "__") {
           flags_list.set(newKey, "/wiki/shared/flag/__.gif");
         } else {
-          flags_list.set(newKey, `/wiki/shared/flag/${countryCode}.gif "${FLAGS[countryCode] ? FLAGS[countryCode] : "FLAG_NOT_FOUND"}"`);
+          let countryName = L10n.getCountryName(countryCode);
+          flags_list.set(newKey, `/wiki/shared/flag/${countryCode}.gif "${countryName ? countryName : "FLAG_NOT_FOUND"}"`);
         }
       } else {
         flags_list.set(newKey, `/wiki/shared/flag/${countryCode}.gif`);
