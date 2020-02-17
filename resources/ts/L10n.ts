@@ -28,20 +28,28 @@ export default class L10n {
   }
 
   public static getInterfaceString(string: string): string {
-    if (Strings[this.lang].interface[string]) {
-      return Strings[this.lang].interface[string];
+    if (Strings[this.lang].interface) {
+      if (Strings[this.lang].interface[string]) {
+        return Strings[this.lang].interface[string];
+      }
     }
     return Strings["en"].interface[string];
   }
 
   public static getCountryName(string: string): string {
-    if (Strings[this.lang].flag[string]) {
-      return Strings[this.lang].flag[string];
-    } else if (Strings["en"].flag[string]) {
-      return Strings["en"].flag[string];
-    } else {
-      return "FLAG_NOT_FOUND";
+    if (Strings[this.lang].flag) {
+      if (Strings[this.lang].flag[string]) {
+        return Strings[this.lang].flag[string];
+      } else if (Strings["en"].flag[string]) {
+        return Strings["en"].flag[string];
+      }
     }
+    return "FLAG_NOT_FOUND";
+  }
+
+  // NOTE using the English file, assuming that it will always be updated
+  public static getFlagCodes(): string[] {
+    return Object.keys(Strings["en"].flag);
   }
 
   public static hasLang(lang: string): boolean {
