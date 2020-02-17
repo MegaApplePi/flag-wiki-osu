@@ -1,6 +1,10 @@
 import Strings from "./Strings.js";
 
-abstract class L10n {
+export default class L10n {
+  constructor() {
+    throw new Error("L10n only contains static members and should not be instantiated.");
+  }
+
   private static lang = "en";
 
   public static get currentLang() {
@@ -73,5 +77,3 @@ abstract class L10n {
     return Strings[lang]._version;
   }
 }
-
-export default L10n;

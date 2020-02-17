@@ -1,5 +1,8 @@
 import Strings from "./Strings.js";
-class L10n {
+export default class L10n {
+    constructor() {
+        throw new Error("L10n only contains static members and should not be instantiated.");
+    }
     static get currentLang() {
         return this.lang;
     }
@@ -66,5 +69,4 @@ class L10n {
     }
 }
 L10n.lang = "en";
-export default L10n;
 //# sourceMappingURL=L10n.js.map

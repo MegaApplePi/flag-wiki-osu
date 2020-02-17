@@ -15,23 +15,23 @@ const $configOutputInputCheckbox: HTMLInputElement = document.querySelector('#co
 const $configParsefixCheckbox: HTMLInputElement = document.querySelector('#config-parsefix');
 const $configLanguageSelect: HTMLSelectElement = document.querySelector('#config-language');
 const CONFIG_SETTINGS = {
-  get countryTitle() {
+  get countryTitle(): boolean {
     return $configCountryTitleCheckbox.checked;
   },
 
-  get countryAlt() {
+  get countryAlt(): boolean {
     return $configCountryAltCheckbox.checked;
   },
 
-  get outputInput() {
+  get outputInput(): boolean {
     return $configOutputInputCheckbox.checked;
   },
 
-  get parsefix() {
+  get parsefix(): boolean {
     return $configParsefixCheckbox.checked;
   },
 
-  get language() {
+  get language(): string {
     return $configLanguageSelect.value;
   }
 }
@@ -57,7 +57,7 @@ for (let language of lanauages) {
   $configLanguageSelect.insertAdjacentElement("beforeend", $option);
 }
 
-function updateInterfaceStrings() {
+function updateInterfaceStrings(): void {
   const elements = [...document.body.querySelectorAll<HTMLSpanElement>("[data-l10n]")];
   for (const element of elements) {
     element.textContent = L10n.getInterfaceString(element.dataset.l10n);
@@ -102,7 +102,7 @@ const FLAGS = L10n.getString("flag") as string[];
 const FLAG_CODES = Object.freeze(Object.keys(FLAGS));
 
 //#region config events
-function $configCountryAltCheckbox_change() {
+function $configCountryAltCheckbox_change(): void {
   if (CONFIG_SETTINGS.countryAlt) {
     $configOutputInputCheckbox.checked = true;
     $configOutputInputCheckbox.disabled = true;
@@ -115,7 +115,7 @@ function $configCountryAltCheckbox_change() {
 }
 $configCountryAltCheckbox.addEventListener("change", $configCountryAltCheckbox_change);
 
-function $configParseFixCheckbox_change() {
+function $configParseFixCheckbox_change(): void {
   if (CONFIG_SETTINGS.parsefix) {
     $configOutputInputCheckbox.checked = true;
     $configOutputInputCheckbox.disabled = true;
@@ -129,7 +129,7 @@ function $configParseFixCheckbox_change() {
 $configParsefixCheckbox.addEventListener("change", $configParseFixCheckbox_change);
 
 // for checkboxes
-function $config_change(event: Event) {
+function $config_change(event: Event): void {
   let target = event.target as HTMLInputElement;
   let targetName = target.dataset.checkbox;
   if (target.checked) {
@@ -146,7 +146,7 @@ if (COOKIES_IS_ENABLED) {
   $configOutputInputCheckbox.addEventListener("change", $config_change);
   $configParsefixCheckbox.addEventListener("change", $config_change);
 }
-function $configLanguageSelect_change(event: Event) {
+function $configLanguageSelect_change(event: Event): void {
   let target = event.target as HTMLSelectElement;
   L10n.setLang(target.value);
   updateInterfaceStrings();
@@ -158,14 +158,14 @@ function $configLanguageSelect_change(event: Event) {
 $configLanguageSelect.addEventListener("change", $configLanguageSelect_change);
 //#endregion
 
-function $exampleButton_click() {
+function $exampleButton_click(): void {
   if (!$exampleButton.classList.contains("menu__button--disabled")) {
     $inputTextarea.value = L10n.getString("example") as string;
   }
 }
 $exampleButton.addEventListener("click", $exampleButton_click);
 
-function $outputCopyButton_click() {
+function $outputCopyButton_click(): void {
   if ($outputCopyButton.hasAttribute("disabled")) {
     return;
   }
@@ -232,7 +232,7 @@ function makeReference(countryCode: string): string {
 }
 
 // This is where most of the magic stays
-function $parseButton_click() {
+function $parseButton_click(): void {
   while ($errorsList.firstChild) {
     $errorsList.firstChild.remove();
   }
