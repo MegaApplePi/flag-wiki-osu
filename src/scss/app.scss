@@ -1,5 +1,6 @@
 body {
-  background-color: #f0f5ff; }
+  background-color: #f0f5ff;
+}
 
 .toast-me {
   background-color: #2f54eb;
@@ -9,9 +10,12 @@ body {
   left: 0;
   padding: 8px 16px;
   position: fixed;
-  user-select: none; }
-  .toast-me--hidden {
-    display: none; }
+  user-select: none;
+
+  &--hidden {
+    display: none;
+  }
+}
 
 .main__input {
   background-color: #fff;
@@ -22,18 +26,18 @@ body {
   font-family: monospace;
   height: 100vh;
   height: calc(100vh - 64px - 16px);
-  margin: 0;
-  margin-bottom: 16px;
   min-height: 300px;
   outline: none;
   padding: 0;
   position: relative;
   resize: none;
   transition: 25ms background-color;
-  width: 100%; }
-  .main__input:disabled {
+
+  &:disabled {
     background-color: #bfbfbf;
-    color: #fff; }
+    color: #fff;
+  }
+}
 
 .main__output {
   background-color: #eee;
@@ -46,8 +50,9 @@ body {
   resize: none;
   user-select: all;
   white-space: pre-wrap;
-  width: 100%; }
-  .main__output:before {
+  width: 100%;
+
+  &:before {
     font-family: sans-serif;
     content: "";
     /* @supports (user-select: all) {
@@ -56,17 +61,21 @@ body {
     display: block;
     position: absolute;
     left: 0;
-    bottom: 100%; }
-  .main__output:empty {
+    bottom: 100%;
+  }
+
+  &:empty {
     margin: 0;
     padding: 0;
     background-color: unset;
     position: unset;
-    top: unset; }
-    .main__output:empty:before {
+    top: unset;
+
+    &:before {
       content: "No flags found";
       position: unset;
       left: unset;
-      bottom: unset; }
-
-/*# sourceMappingURL=index.css.map */
+      bottom: unset;
+    }
+  }
+}

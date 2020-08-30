@@ -1,4 +1,4 @@
-export default Object.freeze({
+export default {
   "_version": 4,
   "_name": "French (output only)",
   "flag": {
@@ -265,4 +265,4 @@ export default Object.freeze({
     "ZM": "Zambie",
     "ZW": "Zimbabwe",
   },
-});
+};

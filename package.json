@@ -1,6 +1,20 @@
 {
   "private": true,
   "scripts": {
-    "dev": "php -S localhost:8080 & tsc --watch & sass --watch resources/scss/index.scss:resources/css/index.css"
+    "dev": "webpack-dev-server --config webpack.config.js --optimize-minimize"
+  },
+  "devDependencies": {
+    "@types/node": "^13.13.15",
+    "css-loader": "^4.2.2",
+    "mini-css-extract-plugin": "^0.11.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "sass": "^1.26.10",
+    "sass-loader": "^10.0.1",
+    "terser-webpack-plugin": "^4.1.0",
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   }
 }

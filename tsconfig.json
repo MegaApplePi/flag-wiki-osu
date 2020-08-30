@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
-		"target": "es2016",
-		"sourceMap": true,
-    "outDir": "resources/js"
+    "target": "es2018",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "removeComments": true,
+    "sourceMap": true,
+    "outDir": "dist/js",
+    "strict": true
   },
   "include": [
-      "resources/ts/**/*"
+      "src/ts/**/*"
   ],
   "exclude": [
     "node_modules"

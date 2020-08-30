@@ -1,4 +1,4 @@
-import Strings from "./Strings.js";
+import Strings from "./Strings";
 
 export default class L10n {
   constructor() {

@@ -1,19 +1,19 @@
-import L10n from "./L10n.js";
+import L10n from "./L10n";
 
 declare const $: any;
 
 //#region DOM
 const COOKIES_IS_ENABLED = navigator.cookieEnabled;
 
-const $helpButton: HTMLDivElement = document.querySelector('[data-button="help"]');
-const $exampleButton: HTMLDivElement = document.querySelector('[data-button="example"]');
-const $configButton: HTMLDivElement = document.querySelector('[data-button="config"]');
+const $helpButton: HTMLDivElement = document.querySelector('[data-button="help"]') as HTMLDivElement;
+const $exampleButton: HTMLDivElement = document.querySelector('[data-button="example"]') as HTMLDivElement;
+const $configButton: HTMLDivElement = document.querySelector('[data-button="config"]') as HTMLDivElement;
 
-const $configCountryTitleCheckbox: HTMLInputElement = document.querySelector('#config-country-title');
-const $configCountryAltCheckbox: HTMLInputElement = document.querySelector('#config-country-alt');
-const $configOutputInputCheckbox: HTMLInputElement = document.querySelector('#config-output-input');
-const $configParsefixCheckbox: HTMLInputElement = document.querySelector('#config-parsefix');
-const $configLanguageSelect: HTMLSelectElement = document.querySelector('#config-language');
+const $configCountryTitleCheckbox: HTMLInputElement = document.querySelector('#config-country-title') as HTMLInputElement;
+const $configCountryAltCheckbox: HTMLInputElement = document.querySelector('#config-country-alt') as HTMLInputElement;
+const $configOutputInputCheckbox: HTMLInputElement = document.querySelector('#config-output-input') as HTMLInputElement;
+const $configParsefixCheckbox: HTMLInputElement = document.querySelector('#config-parsefix') as HTMLInputElement;
+const $configLanguageSelect: HTMLSelectElement = document.querySelector('#config-language') as HTMLSelectElement;
 const CONFIG_SETTINGS = {
   get countryTitle(): boolean {
     return $configCountryTitleCheckbox.checked;
@@ -36,16 +36,16 @@ const CONFIG_SETTINGS = {
   }
 }
 
-const $errorsButton: HTMLDivElement = document.querySelector('[data-button="errors"]');
-const $errorsList: HTMLDivElement = document.querySelector("#errors-list");
+const $errorsButton: HTMLDivElement = document.querySelector('[data-button="errors"]') as HTMLDivElement;
+const $errorsList: HTMLDivElement = document.querySelector("#errors-list") as HTMLDivElement;
 
-const $parseButton: HTMLDivElement = document.querySelector('[data-button="parse"]');
+const $parseButton: HTMLDivElement = document.querySelector('[data-button="parse"]') as HTMLDivElement;
 
-const $inputTextarea: HTMLTextAreaElement = document.querySelector("#input");
-const $outputTextarea: HTMLTextAreaElement = document.querySelector("#output");
+const $inputTextarea: HTMLTextAreaElement = document.querySelector("#input") as HTMLTextAreaElement;
+const $outputTextarea: HTMLTextAreaElement = document.querySelector("#output") as HTMLTextAreaElement;
 
-const $outputHasErrors: HTMLSpanElement = document.querySelector("#output-has-errors");
-const $outputCopyButton: HTMLDivElement = document.querySelector('[data-button="output-copy"]');
+const $outputHasErrors: HTMLSpanElement = document.querySelector("#output-has-errors") as HTMLSpanElement;
+const $outputCopyButton: HTMLDivElement = document.querySelector('[data-button="output-copy"]') as HTMLDivElement;
 //#endregion
 
 let lanauages = L10n.getLangCodes();
@@ -60,7 +60,9 @@ for (let language of lanauages) {
 function updateInterfaceStrings(): void {
   const elements = [...document.body.querySelectorAll<HTMLSpanElement>("[data-l10n]")];
   for (const element of elements) {
-    element.textContent = L10n.getInterfaceString(element.dataset.l10n);
+    if (element.dataset.l10n) {
+      element.textContent = L10n.getInterfaceString(element.dataset.l10n);
+    }
   }
 }
 
@@ -82,11 +84,15 @@ if (COOKIES_IS_ENABLED) {
 }
 
 try {
-  $configLanguageSelect.querySelector<HTMLOptionElement>(`option[value="${localStorage.getItem("output-language")}"]`).setAttribute("selected", "");
-  L10n.setLang(localStorage.getItem("output-language"));
-} catch {
-  $configLanguageSelect.querySelector<HTMLOptionElement>('option[value="en"]').setAttribute("selected", "");
-  L10n.setLang("en");
+  $configLanguageSelect.querySelector<HTMLOptionElement>(`option[value="${localStorage.getItem("output-language")}"]`)?.setAttribute("selected", "");
+
+  let outputLanguage = localStorage.getItem("output-language")
+  if (outputLanguage) {
+    L10n.setLang(outputLanguage);
+  } else {
+    $configLanguageSelect.querySelector<HTMLOptionElement>('option[value="en"]')?.setAttribute("selected", "");
+    L10n.setLang("en");
+  }
 } finally {
   updateInterfaceStrings();
 }
@@ -131,10 +137,12 @@ $configParsefixCheckbox.addEventListener("change", $configParseFixCheckbox_chang
 function $config_change(event: Event): void {
   let target = event.target as HTMLInputElement;
   let targetName = target.dataset.checkbox;
-  if (target.checked) {
-    localStorage.setItem(targetName, "true");
-  } else {
-    localStorage.setItem(targetName, "false");
+  if (targetName) {
+    if (target.checked) {
+      localStorage.setItem(targetName, "true");
+    } else {
+      localStorage.setItem(targetName, "false");
+    }
   }
 }
 
@@ -168,56 +176,56 @@ function $outputCopyButton_click(): void {
   if ($outputCopyButton.hasAttribute("disabled")) {
     return;
   }
-  $outputCopyButton.querySelector('[data-l10n="copy"]').classList.remove("d-none");
-  $outputCopyButton.querySelector('[data-l10n="copied"]').classList.add("d-none");
-  $outputCopyButton.querySelector('[data-l10n="failed"]').classList.add("d-none");
+  $outputCopyButton.querySelector('[data-l10n="copy"]')?.classList.remove("d-none");
+  $outputCopyButton.querySelector('[data-l10n="copied"]')?.classList.add("d-none");
+  $outputCopyButton.querySelector('[data-l10n="failed"]')?.classList.add("d-none");
 
   if ("clipboard" in navigator) {
     navigator.clipboard.writeText($outputTextarea.value)
     .then(() => {
       $outputCopyButton.setAttribute("disabled", "");
-      $outputCopyButton.querySelector('[data-l10n="copied"]').classList.remove("d-none");
-  $outputCopyButton.querySelector('[data-l10n="copy"]').classList.add("d-none");
+      $outputCopyButton.querySelector('[data-l10n="copied"]')?.classList.remove("d-none");
+      $outputCopyButton.querySelector('[data-l10n="copy"]')?.classList.add("d-none");
     })
     .catch(() => {
       $outputCopyButton.setAttribute("disabled", "");
-      $outputCopyButton.querySelector('[data-l10n="failed"]').classList.remove("d-none");
-  $outputCopyButton.querySelector('[data-l10n="copy"]').classList.add("d-none");
+      $outputCopyButton.querySelector('[data-l10n="failed"]')?.classList.remove("d-none");
+      $outputCopyButton.querySelector('[data-l10n="copy"]')?.classList.add("d-none");
     });
   } else {
     try {
       $outputTextarea.select();
       document.execCommand("copy");
       $outputCopyButton.setAttribute("disabled", "");
-      $outputCopyButton.querySelector('[data-l10n="copied"]').classList.remove("d-none");
-  $outputCopyButton.querySelector('[data-l10n="copy"]').classList.add("d-none");
+      $outputCopyButton.querySelector('[data-l10n="copied"]')?.classList.remove("d-none");
+      $outputCopyButton.querySelector('[data-l10n="copy"]')?.classList.add("d-none");
     } catch {
       $outputCopyButton.setAttribute("disabled", "");
-      $outputCopyButton.querySelector('[data-l10n="failed"]').classList.remove("d-none");
-  $outputCopyButton.querySelector('[data-l10n="copy"]').classList.add("d-none");
+      $outputCopyButton.querySelector('[data-l10n="failed"]')?.classList.remove("d-none");
+      $outputCopyButton.querySelector('[data-l10n="copy"]')?.classList.add("d-none");
     }
   }
   setTimeout(() => {
     $outputCopyButton.removeAttribute("disabled");
-    $outputCopyButton.querySelector('[data-l10n="copy"]').classList.remove("d-none");
-    $outputCopyButton.querySelector('[data-l10n="copied"]').classList.add("d-none");
-    $outputCopyButton.querySelector('[data-l10n="failed"]').classList.add("d-none");
+    $outputCopyButton.querySelector('[data-l10n="copy"]')?.classList.remove("d-none");
+    $outputCopyButton.querySelector('[data-l10n="copied"]')?.classList.add("d-none");
+    $outputCopyButton.querySelector('[data-l10n="failed"]')?.classList.add("d-none");
   }, 1000);
 }
 $outputCopyButton.addEventListener("click", $outputCopyButton_click);
 
 //#region FileReader
-function fileReader_load(e): void {
-  let text = e.target.result;
+function fileReader_load(ev: ProgressEvent<FileReader>): void {
+  let text = ev.target?.result;
   if (text) {
-    $inputTextarea.value = text;
+    $inputTextarea.value = text.toString();
   }
 }
-function window_drop(e): void {
+function window_drop(ev: DragEvent): void {
   let fileReader = new FileReader();
   fileReader.addEventListener("load", fileReader_load);
-  e.preventDefault();
-  let file = e.dataTransfer.files[0];
+  ev.preventDefault();
+  let file = ev.dataTransfer?.files[0];
   if (file && file.type === "text/markdown") {
     fileReader.readAsText(file);
   }
@@ -240,12 +248,16 @@ function $parseButton_click(): void {
   let flags_list = new Map();
   let flags_output = "";
   let invalid_flags = [];
-  let replacementData = [];
+  let replacementData: {
+    0: number,
+    1: RegExpExecArray,
+    2: string
+  }[] = [];
 
   // Inspect all lines
   for (let i = 0; i < lines.length; i++) {
     let inputRegex = /!\[([^\]]*?)\](\[flag_(.*?)\]|\(\/wiki\/shared\/flag\/(.*?)\.gif(?: ".*?")?\))/g;
-    let inputRegexMatch: RegExpExecArray;
+    let inputRegexMatch: RegExpExecArray|null;
     while ((inputRegexMatch = inputRegex.exec(lines[i])) != null) {
       let countryCode: string;
       if (inputRegexMatch[3]) {
