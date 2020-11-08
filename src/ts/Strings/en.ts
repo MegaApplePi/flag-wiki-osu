@@ -6,7 +6,6 @@ export default {
      * The country names listed below is how osu! spells them.
      */
     "__": "",
-
     "AD": "Andorra",
     "AE": "United Arab Emirates",
     "AF": "Afghanistan",
@@ -23,7 +22,6 @@ export default {
     "AW": "Aruba",
     "AX": "Aland Islands",
     "AZ": "Azerbaijan",
-
     "BA": "Bosnia and Herzegovina",
     "BB": "Barbados",
     "BD": "Bangladesh",
@@ -43,7 +41,6 @@ export default {
     "BW": "Botswana",
     "BY": "Belarus",
     "BZ": "Belize",
-
     "CA": "Canada",
     "CD": "Congo, The Democratic Republic of the",
     "CF": "Central African Republic",
@@ -60,14 +57,12 @@ export default {
     "CX": "Christmas Island",
     "CY": "Cyprus",
     "CZ": "Czech Republic",
-
     "DE": "Germany",
     "DJ": "Djibouti",
     "DK": "Denmark",
     "DM": "Dominica",
     "DO": "Dominican Republic",
     "DZ": "Algeria",
-
     "EC": "Ecuador",
     "EE": "Estonia",
     "EG": "Egypt",
@@ -75,14 +70,12 @@ export default {
     "ES": "Spain",
     "ET": "Ethiopia",
     "EU": "Europe",
-
     "FI": "Finland",
     "FJ": "Fiji",
     "FK": "Falkland Islands (Malvinas)",
     "FM": "Micronesia, Federated States of",
     "FO": "Faroe Islands",
     "FR": "France",
-
     "GA": "Gabon",
     "GB": "United Kingdom",
     "GD": "Grenada",
@@ -101,14 +94,12 @@ export default {
     "GU": "Guam",
     "GW": "Guinea-Bissau",
     "GY": "Guyana",
-
     "HK": "Hong Kong",
     "HM": "Heard Island and McDonald Islands",
     "HN": "Honduras",
     "HR": "Croatia",
     "HT": "Haiti",
     "HU": "Hungary",
-
     "ID": "Indonesia",
     "IE": "Ireland",
     "IL": "Israel",
@@ -118,12 +109,10 @@ export default {
     "IR": "Iran, Islamic Republic of",
     "IS": "Iceland",
     "IT": "Italy",
-
     "JE": "Jersey",
     "JM": "Jamaica",
     "JO": "Jordan",
     "JP": "Japan",
-
     "KE": "Kenya",
     "KG": "Kyrgyzstan",
     "KH": "Cambodia",
@@ -135,7 +124,6 @@ export default {
     "KW": "Kuwait",
     "KY": "Cayman Islands",
     "KZ": "Kazakhstan",
-
     "LA": "Lao People's Democratic Republic",
     "LB": "Lebanon",
     "LC": "Saint Lucia",
@@ -147,7 +135,6 @@ export default {
     "LU": "Luxembourg",
     "LV": "Latvia",
     "LY": "Libya",
-
     "MA": "Morocco",
     "MC": "Monaco",
     "MD": "Moldova",
@@ -171,7 +158,6 @@ export default {
     "MX": "Mexico",
     "MY": "Malaysia",
     "MZ": "Mozambique",
-
     "NA": "Namibia",
     "NC": "New Caledonia",
     "NE": "Niger",
@@ -184,9 +170,7 @@ export default {
     "NR": "Nauru",
     "NU": "Niue",
     "NZ": "New Zealand",
-
     "OM": "Oman",
-
     "PA": "Panama",
     "PE": "Peru",
     "PF": "French Polynesia",
@@ -201,15 +185,12 @@ export default {
     "PT": "Portugal",
     "PW": "Palau",
     "PY": "Paraguay",
-
     "QA": "Qatar",
-
     "RE": "Reunion",
     "RO": "Romania",
     "RS": "Serbia",
     "RU": "Russian Federation",
     "RW": "Rwanda",
-
     "SA": "Saudi Arabia",
     "SB": "Solomon Islands",
     "SC": "Seychelles",
@@ -229,7 +210,6 @@ export default {
     "SV": "El Salvador",
     "SY": "Syrian Arab Republic",
     "SZ": "Eswatini",
-
     "TC": "Turks and Caicos Islands",
     "TD": "Chad",
     "TG": "Togo",
@@ -244,13 +224,11 @@ export default {
     "TV": "Tuvalu",
     "TW": "Taiwan",
     "TZ": "Tanzania, United Republic of",
-
     "UA": "Ukraine",
     "UG": "Uganda",
     "US": "United States",
     "UY": "Uruguay",
     "UZ": "Uzbekistan",
-
     "VA": "Holy See (Vatican City State)",
     "VC": "Saint Vincent and the Grenadines",
     "VE": "Venezuela",
@@ -258,12 +236,9 @@ export default {
     "VI": "Virgin Islands, U.S.",
     "VN": "Vietnam",
     "VU": "Vanuatu",
-
     "WS": "Samoa",
-
     "YE": "Yemen",
     "YT": "Mayotte",
-
     "ZA": "South Africa",
     "ZM": "Zambia",
     "ZW": "Zimbabwe",

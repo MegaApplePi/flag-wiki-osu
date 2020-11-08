@@ -3,7 +3,6 @@ export default {
   "_name": "Polish (output only)",
   "flag": {
     "__": "",
-
     "AD": "Andora",
     "AE": "Zjednoczone Emiraty Arabskie",
     "AF": "Afganistan",
@@ -20,7 +19,6 @@ export default {
     "AW": "Aruba",
     "AX": "Wyspy Alandzkie",
     "AZ": "Azerbejdżan",
-
     "BA": "Bośnia i Hercegowina",
     "BB": "Barbados",
     "BD": "Bangladesz",
@@ -40,7 +38,6 @@ export default {
     "BW": "Botswana",
     "BY": "Białoruś",
     "BZ": "Belize",
-
     "CA": "Kanada",
     "CD": "Demokratyczna Republika Konga",
     "CF": "Republika Środkowoafrykańska",
@@ -57,14 +54,12 @@ export default {
     "CX": "Wyspa Bożego Narodzenia",
     "CY": "Cypr",
     "CZ": "Czechy",
-
     "DE": "Niemcy",
     "DJ": "Dżibuti",
     "DK": "Dania",
     "DM": "Dominika",
     "DO": "Dominikana",
     "DZ": "Algieria",
-
     "EC": "Ekwador",
     "EE": "Estonia",
     "EG": "Egipt",
@@ -72,14 +67,12 @@ export default {
     "ES": "Hiszpania",
     "ET": "Etiopia",
     "EU": "Europa",
-
     "FI": "Finlandia",
     "FJ": "Fidżi",
     "FK": "Falklandy (Malwiny)",
     "FM": "Mikronezja",
     "FO": "Wyspy Owcze",
     "FR": "Francja",
-
     "GA": "Gabon",
     "GB": "Wielka Brytania",
     "GD": "Grenada",
@@ -98,14 +91,12 @@ export default {
     "GU": "Guam",
     "GW": "Gwinea Bissau",
     "GY": "Gujana",
-
     "HK": "Hongkong",
     "HM": "Wyspy Heard i McDonald",
     "HN": "Honduras",
     "HR": "Chorwacja",
     "HT": "Haiti",
     "HU": "Węgry",
-
     "ID": "Indonezja",
     "IE": "Irlandia",
     "IL": "Izrael",
@@ -115,12 +106,10 @@ export default {
     "IR": "Iran",
     "IS": "Islandia",
     "IT": "Włochy",
-
     "JE": "Jersey",
     "JM": "Jamajka",
     "JO": "Jordania",
     "JP": "Japonia",
-
     "KE": "Kenia",
     "KG": "Kirgistan",
     "KH": "Kambodża",
@@ -132,7 +121,6 @@ export default {
     "KW": "Kuwejt",
     "KY": "Kajmany",
     "KZ": "Kazachstan",
-
     "LA": "Laos",
     "LB": "Liban",
     "LC": "Saint Lucia",
@@ -144,7 +132,6 @@ export default {
     "LU": "Luksemburg",
     "LV": "Łotwa",
     "LY": "Libia",
-
     "MA": "Maroko",
     "MC": "Monako",
     "MD": "Mołdawia",
@@ -168,7 +155,6 @@ export default {
     "MX": "Meksyk",
     "MY": "Malezja",
     "MZ": "Mozambik",
-
     "NA": "Namibia",
     "NC": "Nowa Kaledonia",
     "NE": "Niger",
@@ -181,9 +167,7 @@ export default {
     "NR": "Nauru",
     "NU": "Niue",
     "NZ": "Nowa Zelandia",
-
     "OM": "Oman",
-
     "PA": "Panama",
     "PE": "Peru",
     "PF": "Polinezja Francuska",
@@ -198,15 +182,12 @@ export default {
     "PT": "Portugalia",
     "PW": "Palau",
     "PY": "Paragwaj",
-
     "QA": "Katar",
-
     "RE": "Reunion",
     "RO": "Rumunia",
     "RS": "Serbia",
     "RU": "Rosja",
     "RW": "Rwanda",
-
     "SA": "Arabia Saudyjska",
     "SB": "Wyspy Salomona",
     "SC": "Seszele",
@@ -226,7 +207,6 @@ export default {
     "SV": "Salwador",
     "SY": "Syria",
     "SZ": "Eswatini",
-
     "TC": "Turks i Caicos",
     "TD": "Czad",
     "TG": "Togo",
@@ -241,13 +221,11 @@ export default {
     "TV": "Tuwalu",
     "TW": "Tajwan",
     "TZ": "Tanzania",
-
     "UA": "Ukraina",
     "UG": "Uganda",
     "US": "Stany Zjednoczone",
     "UY": "Urugwaj",
     "UZ": "Uzbekistan",
-
     "VA": "Watykan",
     "VC": "Saint Vincent i Grenadyny",
     "VE": "Wenezuela",
@@ -255,12 +233,9 @@ export default {
     "VI": "Wyspy Dziewicze",
     "VN": "Wietnam",
     "VU": "Vanuatu",
-
     "WS": "Samoa",
-
     "YE": "Jemen",
     "YT": "Majotta",
-
     "ZA": "Republika Południowej Afryki",
     "ZM": "Zambia",
     "ZW": "Zimbabwe",

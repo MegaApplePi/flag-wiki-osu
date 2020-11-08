@@ -3,7 +3,6 @@ export default {
   "_name": "Turkish (output only)",
   "flag": {
     "__": "",
-
     "AD": "Andorra",
     "AE": "Birleşik Arap Emirlikleri",
     "AF": "Afganistan",
@@ -20,7 +19,6 @@ export default {
     "AW": "Aruba",
     "AX": "Aland Adaları",
     "AZ": "Azerbaycan",
-
     "BA": "Bosnia Hersek",
     "BB": "Barbados",
     "BD": "Bangladeş",
@@ -40,7 +38,6 @@ export default {
     "BW": "Botsvana",
     "BY": "Belarus",
     "BZ": "Belize",
-
     "CA": "Kanada",
     "CD": "Kongo Demokratik Cumhuriyeti",
     "CF": "Orta Afrika Cumhuriyeti",
@@ -57,14 +54,12 @@ export default {
     "CX": "Christmas Adası",
     "CY": "Kıbrıs Cumhuriyeti",
     "CZ": "Çek Cumhuriyeti",
-
     "DE": "Almanya",
     "DJ": "Cibuti",
     "DK": "Danimarka",
     "DM": "Dominika",
     "DO": "Dominik Cumhuriyeti",
     "DZ": "Cezayir",
-
     "EC": "Ekvador",
     "EE": "Estonya",
     "EG": "Mısır",
@@ -72,14 +67,12 @@ export default {
     "ES": "İspanya",
     "ET": "Etiyopya",
     "EU": "Avrupa",
-
     "FI": "Finlandiya",
     "FJ": "Fiji",
     "FK": "Falkland Adaları (Malvinalar)",
     "FM": "Mikronezya Federal Devletleri",
     "FO": "Faroe Adaları",
     "FR": "Fransa",
-
     "GA": "Gabon",
     "GB": "Birleşik Krallık",
     "GD": "Grenada",
@@ -98,14 +91,12 @@ export default {
     "GU": "Guam",
     "GW": "Gine-Bissau",
     "GY": "Guyana",
-
     "HK": "Hong Kong",
     "HM": "Heard Adası ve McDonald Adaları",
     "HN": "Honduras",
     "HR": "Hırvatistan",
     "HT": "Haiti",
     "HU": "Macaristan",
-
     "ID": "Endonezya",
     "IE": "İrlanda",
     "IL": "İsrail",
@@ -115,12 +106,10 @@ export default {
     "IR": "İran İslam Cumhuriyeti",
     "IS": "İzlanda",
     "IT": "İtalya",
-
     "JE": "Jersey",
     "JM": "Jamaika",
     "JO": "Ürdün",
     "JP": "Japonya",
-
     "KE": "Kenya",
     "KG": "Kırgızistan",
     "KH": "Kamboçya",
@@ -132,7 +121,6 @@ export default {
     "KW": "Kuveyt",
     "KY": "Cayman Adaları",
     "KZ": "Kazakistan",
-
     "LA": "Lao Demokratik Halk Cumhuriyeti",
     "LB": "Lübnan",
     "LC": "Saint Lucia",
@@ -144,7 +132,6 @@ export default {
     "LU": "Lüksemburg",
     "LV": "Letonya",
     "LY": "Libya",
-
     "MA": "Fas",
     "MC": "Monako",
     "MD": "Moldova",
@@ -168,7 +155,6 @@ export default {
     "MX": "Meksika",
     "MY": "Malezya",
     "MZ": "Mozambik",
-
     "NA": "Namibya",
     "NC": "Yeni Kaledonya",
     "NE": "Nijer",
@@ -181,9 +167,7 @@ export default {
     "NR": "Nauru",
     "NU": "Niue",
     "NZ": "Yeni Zelanda",
-
     "OM": "Oman",
-
     "PA": "Panama",
     "PE": "Peru",
     "PF": "Fransız Polynezyası",
@@ -198,15 +182,12 @@ export default {
     "PT": "Portekiz",
     "PW": "Palau",
     "PY": "Paraguay",
-
     "QA": "Katar",
-
     "RE": "Reunion",
     "RO": "Romanya",
     "RS": "Sırbistan",
     "RU": "Rusya Federasyonu",
     "RW": "Ruanda",
-
     "SA": "Suudi Arabistan",
     "SB": "Solomon Adaları",
     "SC": "Seyşeller",
@@ -226,7 +207,6 @@ export default {
     "SV": "El Salvador",
     "SY": "Suriye Arap Cumhuriyeti",
     "SZ": "Esvatini",
-
     "TC": "Turks ve Caicos Adaları",
     "TD": "Çad",
     "TG": "Togo",
@@ -241,13 +221,11 @@ export default {
     "TV": "Tuvalu",
     "TW": "Tayvan",
     "TZ": "Tanzanya Birleşik Cumhuriyeti",
-
     "UA": "Ukrayna",
     "UG": "Uganda",
     "US": "Birleşik Devletler",
     "UY": "Uruguay",
     "UZ": "Özbekistan",
-
     "VA": "Kutsal Makam (Vatikan Şehir Devleti)",
     "VC": "Saint Vincent ve Grenadinler",
     "VE": "Venezuela",
@@ -255,12 +233,9 @@ export default {
     "VI": "A.B.D. Virjin Adaları",
     "VN": "Vietnam",
     "VU": "Vanuatu",
-
     "WS": "Samoa",
-
     "YE": "Yemen",
     "YT": "Mayotte",
-
     "ZA": "Güney Afrika",
     "ZM": "Zambiya",
     "ZW": "Zimbabve"
